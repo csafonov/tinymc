@@ -1,0 +1,8 @@
+1. Build command:
+	ndk-build NDK_BUILD=1 APP_OPTIM=debug
+2. AndroidMAnifest.xml:
+<application
+        android:debuggable="true"
+3. Replace android_v4 jar
+3. Remove string from menu xml
+4. Reopen eclipe

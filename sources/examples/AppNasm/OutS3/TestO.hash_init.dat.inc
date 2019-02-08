@@ -1,0 +1,12 @@
+_InitHashData:
+	DD	.HLC0+MY_LOAD_ADDRESS
+	DD	0x21290000
+	DD	.HLC1+MY_LOAD_ADDRESS
+	DD	0xcf590000
+	DD	.HLC2+MY_LOAD_ADDRESS
+	DD	0x49b50000
+.HLC0	DB	'?error',0x0
+.HLC1	DB	'Iq_ave',0x0
+.HLC2	DB	'Thetas',0x0
+_InitHashDataLen:
+	DD	3

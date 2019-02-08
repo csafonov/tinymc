@@ -1,0 +1,4 @@
+# Commands for GDB session
+# loaded by source <file> command
+b tmcTestO
+r

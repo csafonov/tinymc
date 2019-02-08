@@ -1,0 +1,51 @@
+﻿Build started 2017-07-23 2:04:11 AM.
+     1>Project "D:\Data_D\HSKOST\TMC\rel_sourceforge\tmc_src-1.11\examples\AppEx_qd\VS2013\SIMO_2013.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\include /I..\stubs /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D EXTINY0_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /Zc:wchar_t /Zc:forScope /Fo"Win32\Debug\\" /Fd"Win32\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt ..\OutC\TestO._init_hash_data.c ..\OutC\TestO.c ..\OutC\TestO.globals.c ..\OutC\backsub.c ..\OutC\cauchymt.c ..\OutC\forsub.c ..\OutC\gcdgn.c ..\OutC\gcdroot.c ..\OutC\hessqr.c ..\OutC\hqrt.c ..\OutC\multroot.c ..\OutC\pejroot.c ..\OutC\polyder.c ..\OutC\polyr2p.c ..\OutC\scalsq.c ..\OutC\sylmat.c ..\OutC\sylves.c ..\OutC\zminsv.c
+         zminsv.c
+         sylves.c
+         sylmat.c
+         scalsq.c
+         polyr2p.c
+         polyder.c
+         pejroot.c
+         multroot.c
+         hqrt.c
+         hessqr.c
+         gcdroot.c
+         gcdgn.c
+         forsub.c
+         cauchymt.c
+         backsub.c
+         TestO.globals.c
+         TestO.c
+         TestO._init_hash_data.c
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Win32\Debug\SIMO.dll" /INCREMENTAL /NOLOGO /LIBPATH:..\..\..\LIB\ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:"..\Stubs\SIMO.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"Win32\Debug\SIMO.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Win32\Debug\SIMO.lib" /MACHINE:X86 /SAFESEH /DLL Win32\Debug\ExMex1.obj
+         Win32\Debug\backsub.obj
+         Win32\Debug\cauchymt.obj
+         Win32\Debug\forsub.obj
+         Win32\Debug\gcdgn.obj
+         Win32\Debug\gcdroot.obj
+         Win32\Debug\hessqr.obj
+         Win32\Debug\hqrt.obj
+         Win32\Debug\multroot.obj
+         Win32\Debug\pejroot.obj
+         Win32\Debug\polyder.obj
+         Win32\Debug\polyr2p.obj
+         Win32\Debug\scalsq.obj
+         Win32\Debug\sylmat.obj
+         Win32\Debug\sylves.obj
+         Win32\Debug\TestO.obj
+         Win32\Debug\TestO.globals.obj
+         Win32\Debug\TestO._init_hash_data.obj
+         Win32\Debug\zminsv.obj
+         ..\..\..\src\qdlapack_tmcruntime\VS2013\Win32\Debug\tmcrtvc_qd_2013.lib
+         ..\..\..\src\tmcruntime\VS2013\Win32\Debug\tmcrtvc_2013.lib
+         SIMO_2013.vcxproj -> D:\Data_D\HSKOST\TMC\rel_sourceforge\tmc_src-1.11\examples\AppEx_qd\VS2013\Win32\Debug\SIMO.dll
+     1>Done Building Project "D:\Data_D\HSKOST\TMC\rel_sourceforge\tmc_src-1.11\examples\AppEx_qd\VS2013\SIMO_2013.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.12

@@ -118,7 +118,7 @@ extern int tmcpar_debug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 24 "TmcParParser.Y"
+#line 24 "TmcParParser.y"
 
 	char   *str;
 	double num;

@@ -1,0 +1,5 @@
+./OutC/TestO.globals.c
+./OutC/TestO._init_hash_data.c
+./OutC/myeq.c
+./OutC/solvemyeq.c
+./OutC/TestO.c

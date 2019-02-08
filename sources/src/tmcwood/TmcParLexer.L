@@ -454,7 +454,7 @@ int tmcpar_wrap (void)
 }
 void dbgPrintLspToken(long TokVal)
 {
-	fprintf(stderr,"%Tok=%d, l=%d,c=%d,int_value=%d ",TokVal,(int)tmcpar_lineno,0,tmcpar_lval.int_value);
+	fprintf(stderr,"Tok=%d, l=%d,c=%d,int_value=%d ",TokVal,(int)tmcpar_lineno,0,tmcpar_lval.int_value);
 	if (TokVal==STRING)
 		fprintf(stderr,"%s\n",tmcpar_lval.str);
 	else if (TokVal==IDENT)

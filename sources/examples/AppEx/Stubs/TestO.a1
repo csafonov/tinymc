@@ -1,0 +1,63 @@
+% TestO 
+function y=TestO(x) 
+a = x+1;
+b = a+2;
+c = MySum(a,b);
+P=a+b;
+disp(P);
+
+function y5=MySum(x1,x2,P)
+
+y1 = x1+x2;
+y2 = x1-x2;
+y3 = y1*y2;
+y4=  y1+y2+y3;
+y5 = y4^2+P;
+
+y=func1(y1,y2,y3);
+
+return;
+
+%addpath('D:\Data_D\HSKOST\TMC\TMC_forLibre\examples\AppSIMO\MexSRC\MexDLLS')
+%addpath('D:\Data_D\HSKOST\TMC\TMC_forLibre\examples\AppSIMO\MatSRC')
+% global ite;
+% [a,b,v]=vvv(1);
+% 
+% k=1;
+% while k<100
+% k=k+1;
+%     if k==2
+%         break;
+%     elseif k==3
+%         break
+%     else
+%         break
+%     end
+%     
+%     
+% end
+% x=[1:100];
+% summa = sum(x);
+% disp(summa);
+% 
+% y= Test2(x)+1;
+% disp(y)
+% 
+% 
+% function z=Test2(x)
+% z = sin(x)+2+Test3(x);
+% r = z.*z;
+% if length(r)>1
+% disp('scalar')
+% 	return;
+% 	z=0;
+% 	else
+% 	disp('vector')
+% end
+% 
+% function z=Test3(x)
+% z = cos(x)+2;
+% 
+% 
+% return;
+% 

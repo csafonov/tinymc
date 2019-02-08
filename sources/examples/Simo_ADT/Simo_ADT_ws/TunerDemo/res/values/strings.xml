@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TunerDemo</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="redraw_button_label">Redraw</string>
+	<string name="nextcrl_button_label">next</string>
+	<string name="prevcrl_button_label">prev</string>
+	<string name="title_activity_plotnic">Nichols plot</string>
+		
+	
+</resources>

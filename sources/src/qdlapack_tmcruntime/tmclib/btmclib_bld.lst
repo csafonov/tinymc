@@ -1,0 +1,80 @@
+MAKE Version 5.2  Copyright (c) 1987, 2000 Borland
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 cmatrix.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+cmatrix.c:
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmcmstruct.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmcmstruct.c:
+Warning W8004 tmcmstruct.c 225: 'stat' is assigned a value that is never used in function _tmcFindFieldMat
+Warning W8004 tmcmstruct.c 420: 'numfields' is assigned a value that is never used in function tmcfieldnames
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmcmath.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmcmath.c:
+Warning W8004 tmcmath.c 390: 'br' is assigned a value that is never used in function _tmcAddScalar
+Warning W8004 tmcmath.c 459: 'br' is assigned a value that is never used in function _tmcMultByScalar
+Warning W8004 tmcmath.c 513: 'br' is assigned a value that is never used in function _tmcDivByScalar
+Warning W8004 tmcmath.c 2798: 'x0' is assigned a value that is never used in function tmcinterp1
+Warning W8004 tmcmath.c 3305: 'len' is assigned a value that is never used in function _tmcCalcNorm
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 graphic_stubs.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+graphic_stubs.c:
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 lapackutils.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+lapackutils.c:
+Warning W8004 lapackutils.c 379: 'stat' is assigned a value that is never used in function _tmcsvd_z
+Warning W8004 lapackutils.c 597: 'stat' is assigned a value that is never used in function tmcsvd
+Warning W8004 lapackutils.c 740: 'stat' is assigned a value that is never used in function _tmcRealLeftDiv
+Warning W8004 lapackutils.c 922: 'stat' is assigned a value that is never used in function _tmcComplexLeftDiv
+Warning W8004 lapackutils.c 1198: 'stat' is assigned a value that is never used in function _tmceig_r
+Warning W8004 lapackutils.c 1475: 'stat' is assigned a value that is never used in function tmceig
+Warning W8019 lapackutils.c 2017: Code has no effect in function tmcqr
+Warning W8019 lapackutils.c 2017: Code has no effect in function tmcqr
+Warning W8004 lapackutils.c 2082: 'stat' is assigned a value that is never used in function tmcqr
+Warning W8004 lapackutils.c 2180: 'stat' is assigned a value that is never used in function _tmcdet_z
+Warning W8004 lapackutils.c 2160: 'detsig' is assigned a value that is never used in function _tmcdet_z
+Warning W8004 lapackutils.c 2274: 'stat' is assigned a value that is never used in function tmcdet
+Warning W8004 lapackutils.c 2257: 'detsig' is assigned a value that is never used in function tmcdet
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmc_unsupported.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmc_unsupported.c:
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmccell.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmccell.c:
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmcexcpt.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmcexcpt.c:
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmclib.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmclib.c:
+Warning W8004 tmclib.c 1011: 'bScalar' is assigned a value that is never used in function _tmcAndOrScalar
+Warning W8004 tmclib.c 2296: 'MN' is assigned a value that is never used in function tmcTransposeScalar
+Warning W8004 tmclib.c 2326: 'MN' is assigned a value that is never used in function tmcTranspose
+Warning W8004 tmclib.c 2510: 'ImFac' is assigned a value that is never used in function _tmcTransposeMatrix
+Warning W8004 tmclib.c 2510: 'bHasIm' is assigned a value that is never used in function _tmcTransposeMatrix
+Warning W8004 tmclib.c 2592: 'stat' is assigned a value that is never used in function _Mstrcmp
+Warning W8075 tmclib.c 4584: Suspicious pointer conversion in function tmcconnectdebugger
+Warning W8075 tmclib.c 4584: Suspicious pointer conversion in function tmcconnectdebugger
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmcstringhash.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmcstringhash.c:
+Warning W8004 tmcstringhash.c 101: 'stat' is assigned a value that is never used in function _dstrcmp
+Warning W8004 tmcstringhash.c 157: 'n' is assigned a value that is never used in function hcode2string
+Warning W8004 tmcstringhash.c 274: 'n1' is assigned a value that is never used in function load_hash_table
+Warning W8060 tmcstringhash.c 321: Possibly incorrect assignment in function hash
+Warning W8065 tmcstringhash.c 337: Call to function 'no_space' with no prototype in function make_bucket
+Warning W8065 tmcstringhash.c 341: Call to function 'no_space' with no prototype in function make_bucket
+Warning W8065 tmcstringhash.c 343: Call to function 'no_space' with no prototype in function make_bucket
+Warning W8065 tmcstringhash.c 357: Call to function 'no_space' with no prototype in function dmake_bucket
+Warning W8065 tmcstringhash.c 361: Call to function 'no_space' with no prototype in function dmake_bucket
+	bcc32 -D_BCC55_ -c -w-8057 -w-8010 tmcio.c
+Borland C++ 5.5.1 for Win32 Copyright (c) 1993, 2000 Borland
+tmcio.c:
+Warning W8004 tmcio.c 425: 'X' is assigned a value that is never used in function _tmcreadmatrixelm
+Warning W8004 tmcio.c 424: 'Mx' is assigned a value that is never used in function _tmcreadmatrixelm
+Warning W8004 tmcio.c 1169: 'spos' is assigned a value that is never used in function tmcwritesavemimatrix
+Warning W8004 tmcio.c 1411: 'stat' is assigned a value that is never used in function tmcfclose
+Warning W8004 tmcio.c 1483: 'cPtrPrev' is assigned a value that is never used in function tmcfprintf
+Warning W8004 tmcio.c 1589: 'out' is assigned a value that is never used in function tmcsprintf
+Warning W8004 tmcio.c 1582: 'nc' is assigned a value that is never used in function tmcsprintf
+	tlib tmclib.lib +cmatrix.obj +tmcmstruct.obj +tmcmath.obj +graphic_stubs.obj +lapackutils.obj   +tmc_unsupported.obj +tmccell.obj +tmcexcpt.obj   +tmclib.obj +tmcstringhash.obj +tmcio.obj
+TLIB 4.5 Copyright (c) 1987, 1999 Inprise Corporation

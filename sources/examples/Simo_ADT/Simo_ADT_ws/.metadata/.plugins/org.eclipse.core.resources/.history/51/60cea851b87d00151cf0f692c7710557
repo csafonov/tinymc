@@ -1,0 +1,388 @@
+/// File: mainTunerDemoJni.c
+/// Implements native methods of class com.tmc.tunerdemo.MainActivity contained in libTmcTunerDemo.so library:
+//    public native String  runTmcTuning(float M);
+//    public native int pidgetNumFreqs();
+//    public native int pidgetTypeCrl();
+//    public native int pidgetNumPlants();
+//    public native int pidgetGetPlants(double [] a);
+//    public native int pidgetNumCrl();
+//    public native int pidgetGetCrl(double [] a);
+
+
+#include <string.h>
+#include <jni.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include <signal.h>
+
+
+
+void main_designer(double *err,double *r1,double *i1,double a);
+
+/* This is a trivial JNI example where we use a native method
+ * to return a new VM String. See the corresponding Java source
+ * file located at:
+ *
+ *   apps/samples/hello-jni/project/src/com/example/hellojni/HelloJni.java
+ */
+
+typedef long int integer;
+typedef unsigned long int uinteger;
+typedef char *address;
+typedef short int shortint;
+typedef float real;
+typedef double doublereal;
+typedef struct { real r, i; } complex;
+typedef struct { doublereal r, i; } doublecomplex;
+typedef long int logical;
+typedef short int shortlogical;
+typedef char logical1;
+typedef char integer1;
+#define max(a,b) ((a) >= (b) ? (a) : (b))
+
+
+
+int zgels(char *trans, integer *m, integer *n, integer *
+ 	nrhs, doublecomplex *a, integer *lda, doublecomplex *b, integer *ldb,
+ 	doublecomplex *work, integer *lwork, integer *info);
+
+
+
+//Java_com_example_shmuel_myapplication_MainActivity_stringFromJNI(JNIEnv* env, jobject thiz,jfloat M0)
+//Java_com_visualgdb_example_SimoA4_SimoA4_stringFromJNI
+struct CPIDData
+{
+	int numFreqs;
+	int  numPlants;
+	int nCrl;
+	int  typeCrl;
+	double *plants;
+	double *crl ;
+	int dimCrl;
+	int dimPlants;
+
+};
+struct CPIDData g_PIDData;
+
+
+void storePIDData(int _numFreqs, int  _numPlants,  int _nCrl, int  _typeCrl, double* rData, double* iData,
+		double* Fw,	double* ki,double* kp,double* kd,double* polew)
+{
+	int kk,m;
+
+	if (_nCrl > 10000)
+		_nCrl=10000;
+
+
+	g_PIDData.numFreqs=_numFreqs;
+	g_PIDData.numPlants=_numPlants;
+	g_PIDData.nCrl=_nCrl;
+	g_PIDData.typeCrl=_typeCrl;
+	g_PIDData.dimPlants = (1+_numPlants * 2) * _numFreqs;
+	g_PIDData.plants = (double*)malloc(g_PIDData.dimPlants * sizeof(double) );
+	g_PIDData.dimCrl = 4 ;// KD,KP,KI,w
+	g_PIDData.crl = (double*)malloc(g_PIDData.dimCrl * _nCrl * sizeof(double));
+
+
+	for ( kk=0 ; kk<  _numFreqs; kk++)
+	{
+		g_PIDData.plants[kk]= Fw[kk];
+		for (m=0;m<_numPlants;m++)
+		{
+			g_PIDData.plants[_numFreqs+m*_numFreqs*2+ kk]= rData[kk];
+			g_PIDData.plants[_numFreqs+m*_numFreqs*2+  _numFreqs +kk]= iData[kk];//HAZARD: same plants
+		}
+		for (m=0;  m<  _nCrl;m++)
+		{
+			g_PIDData.crl[m]= kd[m];
+			g_PIDData.crl[m + _nCrl]= kp[m];
+			g_PIDData.crl[m + _nCrl*2]= ki[m];
+			g_PIDData.crl[m + _nCrl*3]= polew[m];
+		}
+	}
+}
+
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetNumFreqs(
+                JNIEnv *env,
+                jobject callingObject)
+{
+	return g_PIDData.numFreqs;
+}
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetTypeCrl(
+                JNIEnv *env,
+                jobject callingObject)
+{
+	return g_PIDData.typeCrl;
+}
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetNumPlants(
+                JNIEnv *env,
+                jobject callingObject)
+{
+	return g_PIDData.numPlants;
+}
+
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetGetPlants(
+                JNIEnv *env,
+                jobject callingObject,
+                jdoubleArray a)
+{
+	int kk;
+/*
+ * The last argument to the ReleaseByteArrayElements function above can have the following values:
+ *  •0: Updates to the array from within the C code are reflected in the Java language copy.
+    •JNI_COMMIT: The Java language copy is updated, but the local jbyteArray is not freed.
+    •JNI_ABORT: Changes are not copied back, but the jbyteArray is freed.
+     The value is used only if the array is obtained with a get mode of JNI_TRUE meaning the array is a copy.
+ *
+ */
+	jdouble *element=(*env)->GetDoubleArrayElements(env,a, 0);
+
+	     for(  kk=0; kk<g_PIDData.dimPlants; kk++) {
+	        element[kk] = g_PIDData.plants[kk];
+	     }
+	return g_PIDData.dimPlants;
+}
+
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetNumCrl(
+                JNIEnv *env,
+                jobject callingObject)
+{
+	return g_PIDData.nCrl;
+}
+
+jint Java_com_tmc_tunerdemo_MainActivity_pidgetGetCrl(
+                JNIEnv *env,
+                jobject callingObject,
+                jdoubleArray a)
+{
+	int kk;
+
+	jdouble *element=(*env)->GetDoubleArrayElements(env,a, 0);
+
+	     for(  kk=0; kk<g_PIDData.dimCrl * g_PIDData.nCrl; kk++) {
+	        element[kk] = g_PIDData.crl[kk];
+	     }
+	return g_PIDData.dimCrl* g_PIDData.nCrl;
+}
+
+
+
+jobject Java_com_tmc_tunerdemo_MainActivity_objGetPlants(
+                JNIEnv *env,
+                jobject callingObject,
+                jint param)
+{
+/// public PIDData(int _numFreqs, int _numPlants,  int _nCrl, int  _typeCrl,double [] _Plants, double [] _Crl )
+	//	Signature Java Type
+	//	Z boolean
+	//	B byte
+	//	C char
+	//	S short
+	//	I int
+	//	J long
+	//	F float
+	//	D double
+	//	L fully-qualified-class ;  fully-qualified-class
+	//	[ type type[]
+	//	( arg-types ) ret-type method type
+	int _numFreqs=3;
+	         int _numPlants=1;
+	         int _nCrl=2;
+	         int  _typeCrl=1;
+	         double _Plants[]= {1,2,3, 100,10,1, 1,1,1};
+	         double _Crl[]= {1,1,1,1, 2,2,2,2};
+
+	jclass cls;
+	jmethodID methodId;
+	jobject obj=0;
+
+
+		(*env)->GetJavaVM(env,&g_JavaVM);
+
+          cls = (*env)->FindClass(env,"com/tmc/tunerdemo/PIDData");
+          if (cls)
+          {
+          methodId = (*env)->GetMethodID(env,cls, "<init>", "(IIII[D[D)V");
+        	  //methodId = (*env)->GetMethodID(env,cls, "<init>", "(I)V");
+          	  if (methodId)
+          	  {
+          		obj = (*env)->NewObject(env,cls, methodId, _numFreqs,_numPlants,_nCrl,_typeCrl,_Plants,_Crl);
+          	  }
+          }
+
+
+
+         return obj;
+}
+
+
+jstring Java_com_tmc_tunerdemo_MainActivity_runTmcTuning(JNIEnv* env, jobject thiz, jfloat M0)
+{
+#if defined(__arm__)
+  #if defined(__ARM_ARCH_7A__)
+    #if defined(__ARM_NEON__)
+      #define ABI "armeabi-v7a with NEON"
+    #else
+      #define ABI "armeabi-v7a"
+    #endif
+  #else
+   #define ABI "armeabi"
+  #endif
+#elif defined(__i386__)
+   #define ABI "x86"
+#elif defined(__mips__)
+   #define ABI "mips"
+#else
+   #define ABI "unknown"
+#endif
+
+
+long k0;
+char buf[10000];
+//float S=1;
+//float *p = malloc ( 10000 * sizeof(float));
+
+/*
+x =
+
+    17    19   165
+     7    13     2
+     3    57    97
+     */
+     /*
+     inv(x)
+
+     ans =
+
+         0.0173    0.1144   -0.0319
+        -0.0102    0.0175    0.0170
+         0.0054   -0.0138    0.0013
+         */
+
+const double m_rData[9] = {17,7,3,19,13,57,165,2,97};
+const double m_iData[9] = {0,0,0,0,0,0,0,0,0};
+
+const double B_m_rData[9] = {1,0,0,0,1,0,0,0,1};
+const double B_m_iData[9] = {0,0,0,0,0,0,0,0,0};
+
+double X_m_rData[9];
+double X_m_iData[9];
+
+///////////
+long m,n;
+long k;
+double err,xr,xi;
+
+integer stat;
+doublecomplex OptWork;
+doublecomplex *work;
+integer info;
+integer lwork=-1;
+
+integer M=3;
+integer N=3;
+integer nrhs =3;
+integer lda = M;
+integer ldb = 3;
+
+initJniGlobals(thiz,env);
+
+doublecomplex *a = (doublecomplex *)malloc(sizeof(doublecomplex)*lda*N);
+doublecomplex *b = (doublecomplex *)malloc(sizeof(doublecomplex)*ldb*nrhs);
+
+InstallExcptHandler();
+
+for (k=0;k<lda*N;k++)
+{
+	a[k].r=m_rData[k];
+}
+
+	for (k=0;k<lda*N;k++)
+	{
+		a[k].i=m_iData[k];
+	}
+
+////
+for (k=0;k<ldb*nrhs;k++)
+{
+	b[k].r=B_m_rData[k];
+}
+
+	for (k=0;k<ldb*nrhs;k++)
+	{
+		b[k].i=B_m_iData[k];
+	}
+
+
+
+////////
+/*
+for (k0=2; k0<M0; k0++)
+{
+  if (k0<10000)
+             p[k0] = k0;
+    S = S*k0;
+}
+*/
+
+//free(p);
+
+stat = zgels("N",&M, &N, &nrhs, a, &lda, b, &ldb,
+	&OptWork, &lwork, &info);
+
+	lwork = (integer)OptWork.r;
+	work = malloc(max(1,lwork)*sizeof(doublecomplex));
+
+stat = zgels_("N",&M, &N, &nrhs, a, &lda, b, &ldb,
+	work, &lwork, &info);
+
+	 for (m=0;m<N;m++)
+		 for (n=0;n<nrhs;n++)
+		 {
+			 X_m_rData[n*N+m]=b[ldb*n+m].r;
+			 X_m_iData[n*N+m]=b[ldb*n+m].i;
+		 }
+	free(a);
+	free(b);
+	free(work);
+
+sprintf(buf,"inv(X)=[%f,%f,%f ;\n %f,%f,%f\n ; %f,%f,%f]",
+X_m_rData[0],X_m_rData[3],X_m_rData[6],
+X_m_rData[1],X_m_rData[4],X_m_rData[7],
+X_m_rData[2],X_m_rData[5],X_m_rData[8]);
+
+
+	(*env)->GetJavaVM(env,&g_JavaVM);
+
+
+    if (M0==0)
+    return (*env)->NewStringUTF(env,  ABI);
+    else if (M0==3)
+    {
+    	//Plants[0]=12;Plants[1]=13;Sizes[0]=2;
+    	return (*env)->NewStringUTF(env,  "ABR");
+    } else
+    {
+    main_designer(&err,&xr,&xi,M0);
+
+    sprintf(buf,"Oded Calculations finished Ok, result in Download/Output.txt");
+
+
+//sprintf(buf,"sample inv(X)=[%f,%f,%f ;\n %f,%f,%f\n ; %f,%f,%f]\n, err=%g,x=(%g,%g)\n Oded Calculations finished Ok, result in Download/Output.txt",
+//X_m_rData[0],X_m_rData[3],X_m_rData[6],
+//X_m_rData[1],X_m_rData[4],X_m_rData[7],
+//X_m_rData[2],X_m_rData[5],X_m_rData[8],err,xr,xi);
+
+
+
+
+    return (*env)->NewStringUTF(env, buf );
+    }
+}
+
+
+
+
+
+

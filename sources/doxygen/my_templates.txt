@@ -1,0 +1,20 @@
+/**
+ *  \file   cccc.c
+ *
+ *  \brief  Utilities for debugging and interfaces.
+ *
+ *   This file contains the debugging implementations.
+ */
+
+
+
+//! \addtogroup TMC_parser
+//! @ingroup  TMC
+//! @{
+
+/**
+ * \brief HD mnemonics
+  * \param   		none.\n
+ * 
+ * \return  errcode (0:success) .\n*
+ */

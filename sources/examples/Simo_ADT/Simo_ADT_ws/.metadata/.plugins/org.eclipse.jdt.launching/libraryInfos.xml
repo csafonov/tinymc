@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse" version="1.7.0_51">
+<bootpath>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\resources.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\rt.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\sunrsasign.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\jsse.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\jce.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\charsets.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\jfr.jar"/>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\ext"/>
+<entry path="C:\WINDOWS\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="D:\Data_D\HSKOST\Tools\adt-bundle-windows-x86_64-20131030\eclipse\jre\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="code">
+      <UniqueIdentifier>{18397fb9-fbb8-4071-a7de-d1cb959c7d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libs">
+      <UniqueIdentifier>{f32c341f-ea1e-4d7f-8f2c-e03126433462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="stub">
+      <UniqueIdentifier>{b71de128-0666-4a5d-8ec3-009fba22e2b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Listings">
+      <UniqueIdentifier>{8e7a378f-c5cc-42a5-a84e-590b3c14b8fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Listings\LSP">
+      <UniqueIdentifier>{2b57d3e8-7fc8-4dcb-af88-1c42244fde17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MAIN">
+      <UniqueIdentifier>{c3ec5a69-5461-4f36-a475-74c7d3a07802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="def">
+      <UniqueIdentifier>{0a78fd5f-593d-4330-9a54-e4b359e46584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M-files">
+      <UniqueIdentifier>{d5bad3e2-65eb-4475-8517-0a90238ef0e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M-files\stubs">
+      <UniqueIdentifier>{9fb8ff3b-a2fa-44bc-8897-3e6b56d2a105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M-files\multiroot">
+      <UniqueIdentifier>{5ac07218-4a42-4a79-bf9e-7c54b0481230}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\OutC\backsub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\cauchymt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\forsub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\gcdgn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\gcdroot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\hessqr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\hqrt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\multroot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\pejroot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\polyder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\polyr2p.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\scalsq.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\sylmat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\sylves.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\zminsv.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MexSRC\ExMex1.c">
+      <Filter>Libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\TestO._init_hash_data.c">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\TestO.c">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OutC\TestO.globals.c">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\OutC\stdtmc.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Stubs\External_func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OutC\TestO.globals.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\OutC\TestO.inputfilelist.txt">
+      <Filter>Listings</Filter>
+    </Text>
+    <Text Include="..\OutC\TestO.srcfilelist.txt">
+      <Filter>Listings</Filter>
+    </Text>
+    <Text Include="..\OutC\testO2.err.log">
+      <Filter>Listings</Filter>
+    </Text>
+    <Text Include="..\OutL\TestO.filelist.txt">
+      <Filter>Listings\LSP</Filter>
+    </Text>
+    <Text Include="..\OutL\testO.lsp.txt">
+      <Filter>Listings\LSP</Filter>
+    </Text>
+    <Text Include="..\..\multroot\README.txt">
+      <Filter>M-files\multiroot</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OutL\TestO.sym.dat">
+      <Filter>Listings\LSP</Filter>
+    </None>
+    <None Include="..\OutL\external_fnc.sym.dat">
+      <Filter>MAIN</Filter>
+    </None>
+    <None Include="..\OutC\TestO.hash_init.dat">
+      <Filter>MAIN</Filter>
+    </None>
+    <None Include="..\Stubs\SIMO.def">
+      <Filter>def</Filter>
+    </None>
+    <None Include="..\Stubs\TestO.m">
+      <Filter>M-files\stubs</Filter>
+    </None>
+    <None Include="..\..\multroot\backsub.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\cauchymt.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\forsub.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\gcdgn.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\gcdroot.01">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\gcdroot.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\hessqr.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\hqrt.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\multroot.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\pejroot.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\polyder.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\polyr2p.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\scalsq.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\sylmat.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\sylves.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+    <None Include="..\..\multroot\zminsv.m">
+      <Filter>M-files\multiroot</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\src\qdlapack_tmcruntime\VS2013\Win32\Debug\tmcrtvc_qd_2013.lib" />
+    <Library Include="..\..\..\src\tmcruntime\VS2013\Win32\Debug\tmcrtvc_2013.lib" />
+  </ItemGroup>
+</Project>

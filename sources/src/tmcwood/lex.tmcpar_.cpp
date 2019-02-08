@@ -615,8 +615,8 @@ static int yy_more_len = 0;
 #define YY_MORE_ADJ (yy_more_len)
 #define YY_RESTORE_YY_MORE_OFFSET
 char *tmcpar_text;
-#line 1 "TmcParLexer.L"
-#line 7 "TmcParLexer.L"
+#line 1 "TmcParLexer.l"
+#line 7 "TmcParLexer.l"
 //! Scanner for m-file parser
 /******************************************************************************
  * Copyright (c) 2009-2015 by Shmuel Safonov.
@@ -852,7 +852,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 89 "TmcParLexer.L"
+#line 89 "TmcParLexer.l"
 
 
 
@@ -953,19 +953,19 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 92 "TmcParLexer.L"
+#line 92 "TmcParLexer.l"
 {BEGIN(INITIAL);}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 94 "TmcParLexer.L"
+#line 94 "TmcParLexer.l"
 {
 				}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 97 "TmcParLexer.L"
+#line 97 "TmcParLexer.l"
 {BEGIN(ExpectQuoteAsCTRANSPOSE);
 	*(tmcpar_text+tmcpar_leng-1) = '\0'; tmcpar_lval.num=atof(tmcpar_text);
 	 yyinsert_comma_in_input(NUMBER_IM);
@@ -975,7 +975,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 104 "TmcParLexer.L"
+#line 104 "TmcParLexer.l"
 {BEGIN(ExpectQuoteAsCTRANSPOSE);
   tmcpar_lval.num=atof(tmcpar_text);
 	yyinsert_comma_in_input(NUMBER);
@@ -984,87 +984,87 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 110 "TmcParLexer.L"
+#line 110 "TmcParLexer.l"
 { return ReturnLspToken( RETURN);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 111 "TmcParLexer.L"
+#line 111 "TmcParLexer.l"
 { return ReturnLspToken( IF);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 112 "TmcParLexer.L"
+#line 112 "TmcParLexer.l"
 { return ReturnLspToken( ELSEIF);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 113 "TmcParLexer.L"
+#line 113 "TmcParLexer.l"
 { return ReturnLspToken( ELSE);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 114 "TmcParLexer.L"
+#line 114 "TmcParLexer.l"
 { return ReturnLspToken( BREAK);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 115 "TmcParLexer.L"
+#line 115 "TmcParLexer.l"
 { return ReturnLspToken( CONTINUE);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 116 "TmcParLexer.L"
+#line 116 "TmcParLexer.l"
 { return ReturnLspToken( WHILE);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 117 "TmcParLexer.L"
+#line 117 "TmcParLexer.l"
 {return ReturnLspToken( SWITCH);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 118 "TmcParLexer.L"
+#line 118 "TmcParLexer.l"
 {return ReturnLspToken( CASE);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 119 "TmcParLexer.L"
+#line 119 "TmcParLexer.l"
 {return ReturnLspToken( OTHERWISE);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 120 "TmcParLexer.L"
+#line 120 "TmcParLexer.l"
 { return ReturnLspToken( FOR);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 121 "TmcParLexer.L"
+#line 121 "TmcParLexer.l"
 { return ReturnLspToken( TRY);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 122 "TmcParLexer.L"
+#line 122 "TmcParLexer.l"
 { return ReturnLspToken( CATCH);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 123 "TmcParLexer.L"
+#line 123 "TmcParLexer.l"
 { return ReturnLspToken( FUNCTION);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 124 "TmcParLexer.L"
+#line 124 "TmcParLexer.l"
 { return ReturnLspToken( GLOBAL);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 125 "TmcParLexer.L"
+#line 125 "TmcParLexer.l"
 {  return ReturnLspToken( END_OF_INPUT); } // HAZARD: added for OCTAVE syntax support
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 126 "TmcParLexer.L"
+#line 126 "TmcParLexer.l"
 {
 	if (get_indexdeep()>0)
 	{
@@ -1081,14 +1081,14 @@ case 22:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up tmcpar_text again */
 YY_RULE_SETUP
-#line 138 "TmcParLexer.L"
+#line 138 "TmcParLexer.l"
 {
 							yymore();
 							}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 142 "TmcParLexer.L"
+#line 142 "TmcParLexer.l"
 {
 
 		register int i, size;
@@ -1116,7 +1116,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 167 "TmcParLexer.L"
+#line 167 "TmcParLexer.l"
 {
  BEGIN(ExpectQuoteAsCTRANSPOSE);
  get_identifier();
@@ -1126,218 +1126,218 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 174 "TmcParLexer.L"
+#line 174 "TmcParLexer.l"
 {BEGIN(ExpectQuoteAsCTRANSPOSE);
 			  tmcpar_lval.int_value = TRANSPOSE; return ReturnLspToken( TRANSPOSE ); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 177 "TmcParLexer.L"
+#line 177 "TmcParLexer.l"
 {
 			tmcpar_lval.int_value = CTRANSPOSE; return ReturnLspToken( CTRANSPOSE );  }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 181 "TmcParLexer.L"
+#line 181 "TmcParLexer.l"
 {
 			 tmcpar_lval.int_value = LEXERROR; return ReturnLspToken( LEXERROR );  }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 185 "TmcParLexer.L"
+#line 185 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = PLUS; return ReturnLspToken( PLUS ); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 186 "TmcParLexer.L"
+#line 186 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = MINUS; return ReturnLspToken( MINUS ); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 187 "TmcParLexer.L"
+#line 187 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = EMUL; return ReturnLspToken( EMUL ); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 188 "TmcParLexer.L"
+#line 188 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = MUL; return ReturnLspToken( MUL ); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 189 "TmcParLexer.L"
+#line 189 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = BOOL_AND; return ReturnLspToken( BOOL_AND ); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 190 "TmcParLexer.L"
+#line 190 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = BOOL_OR; return ReturnLspToken( BOOL_OR ); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 191 "TmcParLexer.L"
+#line 191 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = AND; return ReturnLspToken( AND ); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 192 "TmcParLexer.L"
+#line 192 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = OR; return ReturnLspToken( OR ); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 193 "TmcParLexer.L"
+#line 193 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = EDIV; return ReturnLspToken( EDIV ); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 194 "TmcParLexer.L"
+#line 194 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = DIV; return ReturnLspToken( DIV ); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 195 "TmcParLexer.L"
+#line 195 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = EPOW; return ReturnLspToken( EPOW ); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 196 "TmcParLexer.L"
+#line 196 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = POW; return ReturnLspToken( POW ); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 197 "TmcParLexer.L"
+#line 197 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = ELDIV; return ReturnLspToken( ELDIV ); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 198 "TmcParLexer.L"
+#line 198 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = LDIV; return ReturnLspToken( LDIV ); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 199 "TmcParLexer.L"
+#line 199 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = GE; return ReturnLspToken( GE ); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 200 "TmcParLexer.L"
+#line 200 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = LE; return ReturnLspToken( LE ); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 201 "TmcParLexer.L"
+#line 201 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = EQL; return ReturnLspToken( EQL ); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 202 "TmcParLexer.L"
+#line 202 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = NE; return ReturnLspToken( NE ); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 203 "TmcParLexer.L"
+#line 203 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = LT; return ReturnLspToken( LT ); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 204 "TmcParLexer.L"
+#line 204 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = GT; return ReturnLspToken( GT ); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 206 "TmcParLexer.L"
+#line 206 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = NOT; return ReturnLspToken( NOT ); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 207 "TmcParLexer.L"
+#line 207 "TmcParLexer.l"
 {BEGIN(INITIAL); tmcpar_lval.int_value = ASG; return ReturnLspToken( ASG ); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 208 "TmcParLexer.L"
+#line 208 "TmcParLexer.l"
 {BEGIN(INITIAL); return ReturnLspToken( LPAREN ); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 209 "TmcParLexer.L"
+#line 209 "TmcParLexer.l"
 { BEGIN(ExpectQuoteAsCTRANSPOSE); 
 					return ReturnLspToken( RPAREN ); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 211 "TmcParLexer.L"
+#line 211 "TmcParLexer.l"
 {BEGIN(INITIAL); return ReturnLspToken( LC ); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 212 "TmcParLexer.L"
+#line 212 "TmcParLexer.l"
 { BEGIN(ExpectQuoteAsCTRANSPOSE);
 				    return ReturnLspToken( RC ); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 214 "TmcParLexer.L"
+#line 214 "TmcParLexer.l"
 {BEGIN(INITIAL); return ReturnLspToken( LBRA ); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 215 "TmcParLexer.L"
+#line 215 "TmcParLexer.l"
 { BEGIN(ExpectQuoteAsCTRANSPOSE);
 				    return ReturnLspToken( RBRA ); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 217 "TmcParLexer.L"
+#line 217 "TmcParLexer.l"
 { BEGIN(INITIAL);return ReturnLspToken( CM ); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 218 "TmcParLexer.L"
+#line 218 "TmcParLexer.l"
 { BEGIN(INITIAL);return ReturnLspToken( SM ); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 219 "TmcParLexer.L"
+#line 219 "TmcParLexer.l"
 {BEGIN(INITIAL); return ReturnLspToken( COMAT ); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 220 "TmcParLexer.L"
+#line 220 "TmcParLexer.l"
 {BEGIN(INITIAL); return ReturnLspToken( COLON ); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 221 "TmcParLexer.L"
+#line 221 "TmcParLexer.l"
 { return ReturnLspToken( ELLIP ); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 223 "TmcParLexer.L"
+#line 223 "TmcParLexer.l"
 { return ReturnLspToken( LEXERROR ); }
 	YY_BREAK
 case 62:
 /* rule 62 can match eol */
 YY_RULE_SETUP
-#line 226 "TmcParLexer.L"
+#line 226 "TmcParLexer.l"
 {BEGIN(INITIAL);
  return ReturnLspToken( LINE ); }
 	YY_BREAK
 case 63:
 /* rule 63 can match eol */
 YY_RULE_SETUP
-#line 229 "TmcParLexer.L"
+#line 229 "TmcParLexer.l"
 { BEGIN(INITIAL);
 return ReturnLspToken( LINE ); }
 	YY_BREAK
 case 64:
 /* rule 64 can match eol */
 YY_RULE_SETUP
-#line 233 "TmcParLexer.L"
+#line 233 "TmcParLexer.l"
 {}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ExpectQuoteAsCTRANSPOSE):
-#line 234 "TmcParLexer.L"
+#line 234 "TmcParLexer.l"
 {
   // add a LINE at the end of the file to avoid commands without delimiter
   if (lexer_at_end_file)
@@ -1351,12 +1351,12 @@ case YY_STATE_EOF(ExpectQuoteAsCTRANSPOSE):
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 244 "TmcParLexer.L"
+#line 244 "TmcParLexer.l"
 {}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 245 "TmcParLexer.L"
+#line 245 "TmcParLexer.l"
 ECHO;
 	YY_BREAK
 #line 1363 "lex.tmcpar_.cpp"
@@ -2364,7 +2364,7 @@ void tmcpar_free (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 244 "TmcParLexer.L"
+#line 244 "TmcParLexer.l"
 
 
 
@@ -2578,7 +2578,7 @@ int tmcpar_wrap (void)
 }
 void dbgPrintLspToken(long TokVal)
 {
-	fprintf(stderr,"%Tok=%d, l=%d,c=%d,int_value=%d ",TokVal,(int)tmcpar_lineno,0,tmcpar_lval.int_value);
+	fprintf(stderr,"Tok=%d, l=%d,c=%d,int_value=%d ",TokVal,(int)tmcpar_lineno,0,tmcpar_lval.int_value);
 	if (TokVal==STRING)
 		fprintf(stderr,"%s\n",tmcpar_lval.str);
 	else if (TokVal==IDENT)

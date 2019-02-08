@@ -1,0 +1,3 @@
+lapackutils_qd.o
+tmcmath_qd.o
+

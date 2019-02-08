@@ -1,0 +1,13 @@
+	EXPORTS
+	tmcsvd_qd
+	tmcroots_qd
+;	_tmcRealLeftDiv _tmcRealLeftDiv_qd
+;	_tmcComplexLeftDiv _tmcComplexLeftDiv_qd
+	tmceig_qd
+;	tmcfft_qd
+	tmcqr_qd
+	tmcdet_qd
+	tmcconv_qd
+	tmcleftdivide_qd
+	tmcpolyval_qd
+	;LIBCMTD.lib;

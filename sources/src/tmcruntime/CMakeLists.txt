@@ -1,0 +1,567 @@
+cmake_minimum_required(VERSION 2.8)
+project (tmcruntime)
+
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/../../../bin)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+include_directories("${PROJECT_SOURCE_DIR}")
+
+set(tmclib_SRCS
+ tmclib/cmatrix.c
+ tmclib/tmcmstruct.c
+ tmclib/tmcmath.c
+ tmclib/graphic_stubs.c
+ tmclib/lapackutils.c
+ tmclib/tmc_unsupported.c
+ tmclib/tmccell.c
+ tmclib/tmcexcpt.c 
+	tmclib/tmclib.c
+	tmclib/tmcstringhash.c
+	tmclib/tmcio.c
+	tmclib/tmcdebugger.c
+)
+set(FDLIBM_SRCS
+    fdlibm/k_standard.c
+	fdlibm/k_rem_pio2.c 
+	fdlibm/k_cos.c
+	fdlibm/k_sin.c
+	fdlibm/k_tan.c 
+	fdlibm/e_acos.c
+	fdlibm/e_acosh.c
+	fdlibm/e_asin.c
+	fdlibm/e_atan2.c 
+	fdlibm/e_atanh.c
+	fdlibm/e_cosh.c
+	fdlibm/e_exp.c
+	fdlibm/e_fmod.c 
+	fdlibm/e_gamma.c
+	fdlibm/e_gamma_r.c
+	fdlibm/e_hypot.c
+	fdlibm/e_j0.c 
+	fdlibm/e_j1.c
+	fdlibm/e_jn.c
+	fdlibm/e_lgamma.c
+	fdlibm/e_lgamma_r.c 
+	fdlibm/e_log.c
+	fdlibm/e_log10.c
+	fdlibm/e_pow.c
+	fdlibm/e_rem_pio2.c
+	fdlibm/e_remainder.c  
+	fdlibm/e_scalb.c
+	fdlibm/e_sinh.c
+	fdlibm/e_sqrt.c 
+	fdlibm/w_acos.c
+	fdlibm/w_acosh.c
+	fdlibm/w_asin.c
+	fdlibm/w_atan2.c 
+	fdlibm/w_atanh.c
+	fdlibm/w_cosh.c
+	fdlibm/w_exp.c
+	fdlibm/w_fmod.c 
+	fdlibm/w_gamma.c
+	fdlibm/w_gamma_r.c
+	fdlibm/w_hypot.c
+	fdlibm/w_j0.c 
+	fdlibm/w_j1.c
+	fdlibm/w_jn.c
+	fdlibm/w_lgamma.c
+	fdlibm/w_lgamma_r.c 
+	fdlibm/w_log.c
+	fdlibm/w_log10.c
+	fdlibm/w_pow.c
+	fdlibm/w_remainder.c 
+	fdlibm/w_scalb.c
+	fdlibm/w_sinh.c
+	fdlibm/w_sqrt.c 
+	fdlibm/s_asinh.c
+	fdlibm/s_atan.c
+	fdlibm/s_cbrt.c
+	fdlibm/s_ceil.c
+	fdlibm/s_copysign.c 
+	fdlibm/s_cos.c
+	fdlibm/s_erf.c
+	fdlibm/s_expm1.c
+	fdlibm/s_fabs.c
+	fdlibm/s_finite.c
+	fdlibm/s_frexp.c
+	fdlibm/s_ilogb.c
+	fdlibm/s_isnan.c
+	fdlibm/s_ldexp.c
+	fdlibm/s_lib_version.c 
+	fdlibm/s_log1p.c
+	fdlibm/s_logb.c
+	fdlibm/s_matherr.c
+	fdlibm/s_modf.c
+	fdlibm/s_nextafter.c 
+	fdlibm/s_rint.c
+	fdlibm/s_scalbn.c
+	fdlibm/s_signgam.c
+	fdlibm/s_significand.c
+	fdlibm/s_sin.c 
+	fdlibm/s_tan.c
+	fdlibm/s_tanh.c
+)
+
+set(LAPACK_SRCS
+lapack_lib/SRC/dbdsqr.c
+lapack_lib/SRC/dgebak.c
+lapack_lib/SRC/dgebal.c
+lapack_lib/SRC/dgebd2.c
+lapack_lib/SRC/dgebrd.c
+lapack_lib/SRC/dgeevx.c
+lapack_lib/SRC/dgehd2.c
+lapack_lib/SRC/dgehrd.c
+lapack_lib/SRC/dgelq2.c
+lapack_lib/SRC/dgelqf.c
+lapack_lib/SRC/dgels.c
+lapack_lib/SRC/dgeqr2.c
+lapack_lib/SRC/dgeqrf.c
+lapack_lib/SRC/dgesvd.c
+lapack_lib/SRC/dgetf2.c
+lapack_lib/SRC/dgetrf.c
+lapack_lib/SRC/dhseqr.c
+lapack_lib/SRC/dlabad.c
+lapack_lib/SRC/dlabrd.c
+lapack_lib/SRC/dlacn2.c
+lapack_lib/SRC/dlacpy.c
+lapack_lib/SRC/dladiv.c
+lapack_lib/SRC/dlaexc.c
+lapack_lib/SRC/dlahqr.c
+lapack_lib/SRC/dlahr2.c
+lapack_lib/SRC/dlaln2.c
+lapack_lib/SRC/dlamch.c
+lapack_lib/SRC/dlange.c
+lapack_lib/SRC/dlanv2.c
+lapack_lib/SRC/dlapy2.c
+lapack_lib/SRC/dlapy3.c
+lapack_lib/SRC/dlaqr0.c
+lapack_lib/SRC/dlaqr1.c
+lapack_lib/SRC/dlaqr2.c
+lapack_lib/SRC/dlaqr3.c
+lapack_lib/SRC/dlaqr4.c
+lapack_lib/SRC/dlaqr5.c
+lapack_lib/SRC/dlaqtr.c
+lapack_lib/SRC/dlarf.c
+lapack_lib/SRC/dlarfb.c
+lapack_lib/SRC/dlarfg.c
+lapack_lib/SRC/dlarft.c
+lapack_lib/SRC/dlarfx.c
+lapack_lib/SRC/dlartg.c
+lapack_lib/SRC/dlas2.c
+lapack_lib/SRC/dlascl.c
+lapack_lib/SRC/dlaset.c
+lapack_lib/SRC/dlasq1.c
+lapack_lib/SRC/dlasq2.c
+lapack_lib/SRC/dlasq4.c
+lapack_lib/SRC/dlasq5.c
+lapack_lib/SRC/dlasq6.c
+lapack_lib/SRC/dlasr.c
+lapack_lib/SRC/dlasrt.c
+lapack_lib/SRC/dlassq.c
+lapack_lib/SRC/dlasv2.c
+lapack_lib/SRC/dlaswp.c
+lapack_lib/SRC/dlasy2.c
+lapack_lib/SRC/dlazq3.c
+lapack_lib/SRC/dlazq4.c
+lapack_lib/SRC/dorg2l.c
+lapack_lib/SRC/dorg2r.c
+lapack_lib/SRC/dorgbr.c
+lapack_lib/SRC/dorghr.c
+lapack_lib/SRC/dorgl2.c
+lapack_lib/SRC/dorglq.c
+lapack_lib/SRC/dorgql.c
+lapack_lib/SRC/dorgqr.c
+lapack_lib/SRC/dorm2l.c
+lapack_lib/SRC/dorm2r.c
+lapack_lib/SRC/dormbr.c
+lapack_lib/SRC/dorml2.c
+lapack_lib/SRC/dormlq.c
+lapack_lib/SRC/dormqr.c
+lapack_lib/SRC/dtrevc.c
+lapack_lib/SRC/dtrexc.c
+lapack_lib/SRC/dtrsna.c
+lapack_lib/SRC/dtrtrs.c
+lapack_lib/SRC/dzsum1.c
+lapack_lib/SRC/ieeeck.c
+lapack_lib/SRC/ilaenv.c
+lapack_lib/SRC/iparmq.c
+lapack_lib/SRC/izmax1.c
+lapack_lib/SRC/lsame.c
+lapack_lib/SRC/xerbla.c
+lapack_lib/SRC/zbdsqr.c
+lapack_lib/SRC/zdrscl.c
+lapack_lib/SRC/zgebak.c
+lapack_lib/SRC/zgebal.c
+lapack_lib/SRC/zgebd2.c
+lapack_lib/SRC/zgebrd.c
+lapack_lib/SRC/zgeevx.c
+lapack_lib/SRC/zgehd2.c
+lapack_lib/SRC/zgehrd.c
+lapack_lib/SRC/zgelq2.c
+lapack_lib/SRC/zgelqf.c
+lapack_lib/SRC/zgels.c
+lapack_lib/SRC/zgeqr2.c
+lapack_lib/SRC/zgeqrf.c
+lapack_lib/SRC/zgesvd.c
+lapack_lib/SRC/zgetf2.c
+lapack_lib/SRC/zgetrf.c
+lapack_lib/SRC/zhseqr.c
+lapack_lib/SRC/zlabrd.c
+lapack_lib/SRC/zlacgv.c
+lapack_lib/SRC/zlacn2.c
+lapack_lib/SRC/zlacpy.c
+lapack_lib/SRC/zladiv.c
+lapack_lib/SRC/zlahqr.c
+lapack_lib/SRC/zlahr2.c
+lapack_lib/SRC/zlange.c
+lapack_lib/SRC/zlaqr0.c
+lapack_lib/SRC/zlaqr1.c
+lapack_lib/SRC/zlaqr2.c
+lapack_lib/SRC/zlaqr3.c
+lapack_lib/SRC/zlaqr4.c
+lapack_lib/SRC/zlaqr5.c
+lapack_lib/SRC/zlarf.c
+lapack_lib/SRC/zlarfb.c
+lapack_lib/SRC/zlarfg.c
+lapack_lib/SRC/zlarft.c
+lapack_lib/SRC/zlartg.c
+lapack_lib/SRC/zlascl.c
+lapack_lib/SRC/zlaset.c
+lapack_lib/SRC/zlasr.c
+lapack_lib/SRC/zlassq.c
+lapack_lib/SRC/zlaswp.c
+lapack_lib/SRC/zlatrs.c
+lapack_lib/SRC/zrot.c
+lapack_lib/SRC/ztrevc.c
+lapack_lib/SRC/ztrexc.c
+lapack_lib/SRC/ztrsna.c
+lapack_lib/SRC/ztrtrs.c
+lapack_lib/SRC/zung2r.c
+lapack_lib/SRC/zungbr.c
+lapack_lib/SRC/zunghr.c
+lapack_lib/SRC/zungl2.c
+lapack_lib/SRC/zunglq.c
+lapack_lib/SRC/zungqr.c
+lapack_lib/SRC/zunm2r.c
+lapack_lib/SRC/zunmbr.c
+lapack_lib/SRC/zunml2.c
+lapack_lib/SRC/zunmlq.c
+lapack_lib/SRC/zunmqr.c
+)
+set (BLAS_SRCS
+lapack_lib/SRC_BLAS/caxpy.c
+lapack_lib/SRC_BLAS/ccopy.c
+lapack_lib/SRC_BLAS/cdotc.c
+lapack_lib/SRC_BLAS/cdotu.c
+lapack_lib/SRC_BLAS/cgbmv.c
+lapack_lib/SRC_BLAS/cgemm.c
+lapack_lib/SRC_BLAS/cgemv.c
+lapack_lib/SRC_BLAS/cgerc.c
+lapack_lib/SRC_BLAS/cgeru.c
+lapack_lib/SRC_BLAS/chbmv.c
+lapack_lib/SRC_BLAS/chemm.c
+lapack_lib/SRC_BLAS/chemv.c
+lapack_lib/SRC_BLAS/cher.c
+lapack_lib/SRC_BLAS/cher2.c
+lapack_lib/SRC_BLAS/cher2k.c
+lapack_lib/SRC_BLAS/cherk.c
+lapack_lib/SRC_BLAS/chpmv.c
+lapack_lib/SRC_BLAS/chpr.c
+lapack_lib/SRC_BLAS/chpr2.c
+lapack_lib/SRC_BLAS/crotg.c
+lapack_lib/SRC_BLAS/cscal.c
+lapack_lib/SRC_BLAS/csrot.c
+lapack_lib/SRC_BLAS/csscal.c
+lapack_lib/SRC_BLAS/cswap.c
+lapack_lib/SRC_BLAS/csymm.c
+lapack_lib/SRC_BLAS/csyr2k.c
+lapack_lib/SRC_BLAS/csyrk.c
+lapack_lib/SRC_BLAS/ctbmv.c
+lapack_lib/SRC_BLAS/ctbsv.c
+lapack_lib/SRC_BLAS/ctpmv.c
+lapack_lib/SRC_BLAS/ctpsv.c
+lapack_lib/SRC_BLAS/ctrmm.c
+lapack_lib/SRC_BLAS/ctrmv.c
+lapack_lib/SRC_BLAS/ctrsm.c
+lapack_lib/SRC_BLAS/ctrsv.c
+lapack_lib/SRC_BLAS/dasum.c
+lapack_lib/SRC_BLAS/daxpy.c
+lapack_lib/SRC_BLAS/dcabs1.c
+lapack_lib/SRC_BLAS/dcopy.c
+lapack_lib/SRC_BLAS/ddot.c
+lapack_lib/SRC_BLAS/dgbmv.c
+lapack_lib/SRC_BLAS/dgemm.c
+lapack_lib/SRC_BLAS/dgemv.c
+lapack_lib/SRC_BLAS/dger.c
+lapack_lib/SRC_BLAS/dnrm2.c
+lapack_lib/SRC_BLAS/drot.c
+lapack_lib/SRC_BLAS/drotg.c
+lapack_lib/SRC_BLAS/drotm.c
+lapack_lib/SRC_BLAS/drotmg.c
+lapack_lib/SRC_BLAS/dsbmv.c
+lapack_lib/SRC_BLAS/dscal.c
+lapack_lib/SRC_BLAS/dsdot.c
+lapack_lib/SRC_BLAS/dspmv.c
+lapack_lib/SRC_BLAS/dspr.c
+lapack_lib/SRC_BLAS/dspr2.c
+lapack_lib/SRC_BLAS/dswap.c
+lapack_lib/SRC_BLAS/dsymm.c
+lapack_lib/SRC_BLAS/dsymv.c
+lapack_lib/SRC_BLAS/dsyr.c
+lapack_lib/SRC_BLAS/dsyr2.c
+lapack_lib/SRC_BLAS/dsyr2k.c
+lapack_lib/SRC_BLAS/dsyrk.c
+lapack_lib/SRC_BLAS/dtbmv.c
+lapack_lib/SRC_BLAS/dtbsv.c
+lapack_lib/SRC_BLAS/dtpmv.c
+lapack_lib/SRC_BLAS/dtpsv.c
+lapack_lib/SRC_BLAS/dtrmm.c
+lapack_lib/SRC_BLAS/dtrmv.c
+lapack_lib/SRC_BLAS/dtrsm.c
+lapack_lib/SRC_BLAS/dtrsv.c
+lapack_lib/SRC_BLAS/dzasum.c
+lapack_lib/SRC_BLAS/dznrm2.c
+lapack_lib/SRC_BLAS/icamax.c
+lapack_lib/SRC_BLAS/idamax.c
+lapack_lib/SRC_BLAS/isamax.c
+lapack_lib/SRC_BLAS/izamax.c
+lapack_lib/SRC_BLAS/sasum.c
+lapack_lib/SRC_BLAS/saxpy.c
+lapack_lib/SRC_BLAS/scabs1.c
+lapack_lib/SRC_BLAS/scasum.c
+lapack_lib/SRC_BLAS/scnrm2.c
+lapack_lib/SRC_BLAS/scopy.c
+lapack_lib/SRC_BLAS/sdot.c
+lapack_lib/SRC_BLAS/sdsdot.c
+lapack_lib/SRC_BLAS/sgbmv.c
+lapack_lib/SRC_BLAS/sgemm.c
+lapack_lib/SRC_BLAS/sgemv.c
+lapack_lib/SRC_BLAS/sger.c
+lapack_lib/SRC_BLAS/snrm2.c
+lapack_lib/SRC_BLAS/srot.c
+lapack_lib/SRC_BLAS/srotg.c
+lapack_lib/SRC_BLAS/srotm.c
+lapack_lib/SRC_BLAS/srotmg.c
+lapack_lib/SRC_BLAS/ssbmv.c
+lapack_lib/SRC_BLAS/sscal.c
+lapack_lib/SRC_BLAS/sspmv.c
+lapack_lib/SRC_BLAS/sspr.c
+lapack_lib/SRC_BLAS/sspr2.c
+lapack_lib/SRC_BLAS/sswap.c
+lapack_lib/SRC_BLAS/ssymm.c
+lapack_lib/SRC_BLAS/ssymv.c
+lapack_lib/SRC_BLAS/ssyr.c
+lapack_lib/SRC_BLAS/ssyr2.c
+lapack_lib/SRC_BLAS/ssyr2k.c
+lapack_lib/SRC_BLAS/ssyrk.c
+lapack_lib/SRC_BLAS/stbmv.c
+lapack_lib/SRC_BLAS/stbsv.c
+lapack_lib/SRC_BLAS/stpmv.c
+lapack_lib/SRC_BLAS/stpsv.c
+lapack_lib/SRC_BLAS/strmm.c
+lapack_lib/SRC_BLAS/strmv.c
+lapack_lib/SRC_BLAS/strsm.c
+lapack_lib/SRC_BLAS/strsv.c
+lapack_lib/SRC_BLAS/zaxpy.c
+lapack_lib/SRC_BLAS/zcopy.c
+lapack_lib/SRC_BLAS/zdotc.c
+lapack_lib/SRC_BLAS/zdotu.c
+lapack_lib/SRC_BLAS/zdrot.c
+lapack_lib/SRC_BLAS/zdscal.c
+lapack_lib/SRC_BLAS/zgbmv.c
+lapack_lib/SRC_BLAS/zgemm.c
+lapack_lib/SRC_BLAS/zgemv.c
+lapack_lib/SRC_BLAS/zgerc.c
+lapack_lib/SRC_BLAS/zgeru.c
+lapack_lib/SRC_BLAS/zhbmv.c
+lapack_lib/SRC_BLAS/zhemm.c
+lapack_lib/SRC_BLAS/zhemv.c
+lapack_lib/SRC_BLAS/zher.c
+lapack_lib/SRC_BLAS/zher2.c
+lapack_lib/SRC_BLAS/zher2k.c
+lapack_lib/SRC_BLAS/zherk.c
+lapack_lib/SRC_BLAS/zhpmv.c
+lapack_lib/SRC_BLAS/zhpr.c
+lapack_lib/SRC_BLAS/zhpr2.c
+lapack_lib/SRC_BLAS/zrotg.c
+lapack_lib/SRC_BLAS/zscal.c
+lapack_lib/SRC_BLAS/zswap.c
+lapack_lib/SRC_BLAS/zsymm.c
+lapack_lib/SRC_BLAS/zsyr2k.c
+lapack_lib/SRC_BLAS/zsyrk.c
+lapack_lib/SRC_BLAS/ztbmv.c
+lapack_lib/SRC_BLAS/ztbsv.c
+lapack_lib/SRC_BLAS/ztpmv.c
+lapack_lib/SRC_BLAS/ztpsv.c
+lapack_lib/SRC_BLAS/ztrmm.c
+lapack_lib/SRC_BLAS/ztrmv.c
+lapack_lib/SRC_BLAS/ztrsm.c
+lapack_lib/SRC_BLAS/ztrsv.c
+)
+set (F2C_SRCS
+lapack_lib/SRC_F2C/abort_.c
+lapack_lib/SRC_F2C/cabs.c
+lapack_lib/SRC_F2C/c_abs.c
+lapack_lib/SRC_F2C/c_cos.c
+lapack_lib/SRC_F2C/c_div.c
+lapack_lib/SRC_F2C/c_exp.c
+lapack_lib/SRC_F2C/c_log.c
+lapack_lib/SRC_F2C/c_sin.c
+lapack_lib/SRC_F2C/c_sqrt.c
+lapack_lib/SRC_F2C/derfc_.c
+lapack_lib/SRC_F2C/derf_.c
+lapack_lib/SRC_F2C/dtime_.c
+lapack_lib/SRC_F2C/d_abs.c
+lapack_lib/SRC_F2C/d_acos.c
+lapack_lib/SRC_F2C/d_asin.c
+lapack_lib/SRC_F2C/d_atan.c
+lapack_lib/SRC_F2C/d_atn2.c
+lapack_lib/SRC_F2C/d_cnjg.c
+lapack_lib/SRC_F2C/d_cos.c
+lapack_lib/SRC_F2C/d_cosh.c
+lapack_lib/SRC_F2C/d_dim.c
+lapack_lib/SRC_F2C/d_exp.c
+lapack_lib/SRC_F2C/d_imag.c
+lapack_lib/SRC_F2C/d_int.c
+lapack_lib/SRC_F2C/d_lg10.c
+lapack_lib/SRC_F2C/d_log.c
+lapack_lib/SRC_F2C/d_mod.c
+lapack_lib/SRC_F2C/d_nint.c
+lapack_lib/SRC_F2C/d_prod.c
+lapack_lib/SRC_F2C/d_sign.c
+lapack_lib/SRC_F2C/d_sin.c
+lapack_lib/SRC_F2C/d_sinh.c
+lapack_lib/SRC_F2C/d_sqrt.c
+lapack_lib/SRC_F2C/d_tan.c
+lapack_lib/SRC_F2C/d_tanh.c
+lapack_lib/SRC_F2C/ef1asc_.c
+lapack_lib/SRC_F2C/ef1cmc_.c
+lapack_lib/SRC_F2C/erfc_.c
+lapack_lib/SRC_F2C/erf_.c
+lapack_lib/SRC_F2C/etime_.c
+lapack_lib/SRC_F2C/exit_.c
+lapack_lib/SRC_F2C/f77vers.c
+lapack_lib/SRC_F2C/f77_aloc.c
+lapack_lib/SRC_F2C/fmtlib.c
+lapack_lib/SRC_F2C/getenv_.c
+lapack_lib/SRC_F2C/hl_ge.c
+lapack_lib/SRC_F2C/hl_gt.c
+lapack_lib/SRC_F2C/hl_le.c
+lapack_lib/SRC_F2C/hl_lt.c
+lapack_lib/SRC_F2C/h_abs.c
+lapack_lib/SRC_F2C/h_dim.c
+lapack_lib/SRC_F2C/h_dnnt.c
+lapack_lib/SRC_F2C/h_indx.c
+lapack_lib/SRC_F2C/h_len.c
+lapack_lib/SRC_F2C/h_mod.c
+lapack_lib/SRC_F2C/h_nint.c
+lapack_lib/SRC_F2C/h_sign.c
+lapack_lib/SRC_F2C/i_abs.c
+lapack_lib/SRC_F2C/i_dim.c
+lapack_lib/SRC_F2C/i_dnnt.c
+lapack_lib/SRC_F2C/i_indx.c
+lapack_lib/SRC_F2C/i_len.c
+lapack_lib/SRC_F2C/i_mod.c
+lapack_lib/SRC_F2C/i_nint.c
+lapack_lib/SRC_F2C/i_sign.c
+lapack_lib/SRC_F2C/lbitbits.c
+lapack_lib/SRC_F2C/lbitshft.c
+lapack_lib/SRC_F2C/l_ge.c
+lapack_lib/SRC_F2C/l_gt.c
+lapack_lib/SRC_F2C/l_le.c
+lapack_lib/SRC_F2C/l_lt.c
+lapack_lib/SRC_F2C/pow_ci.c
+lapack_lib/SRC_F2C/pow_dd.c
+lapack_lib/SRC_F2C/pow_di.c
+lapack_lib/SRC_F2C/pow_hh.c
+lapack_lib/SRC_F2C/pow_ii.c
+lapack_lib/SRC_F2C/pow_ri.c
+lapack_lib/SRC_F2C/pow_zi.c
+lapack_lib/SRC_F2C/pow_zz.c
+lapack_lib/SRC_F2C/r_abs.c
+lapack_lib/SRC_F2C/r_acos.c
+lapack_lib/SRC_F2C/r_asin.c
+lapack_lib/SRC_F2C/r_atan.c
+lapack_lib/SRC_F2C/r_atn2.c
+lapack_lib/SRC_F2C/r_cnjg.c
+lapack_lib/SRC_F2C/r_cos.c
+lapack_lib/SRC_F2C/r_cosh.c
+lapack_lib/SRC_F2C/r_dim.c
+lapack_lib/SRC_F2C/r_exp.c
+lapack_lib/SRC_F2C/r_imag.c
+lapack_lib/SRC_F2C/r_int.c
+lapack_lib/SRC_F2C/r_lg10.c
+lapack_lib/SRC_F2C/r_log.c
+lapack_lib/SRC_F2C/r_mod.c
+lapack_lib/SRC_F2C/r_nint.c
+lapack_lib/SRC_F2C/r_sign.c
+lapack_lib/SRC_F2C/r_sin.c
+lapack_lib/SRC_F2C/r_sinh.c
+lapack_lib/SRC_F2C/r_sqrt.c
+lapack_lib/SRC_F2C/r_tan.c
+lapack_lib/SRC_F2C/r_tanh.c
+lapack_lib/SRC_F2C/signal_.c
+lapack_lib/SRC_F2C/signbit.c
+lapack_lib/SRC_F2C/sig_die.c
+lapack_lib/SRC_F2C/system_.c
+lapack_lib/SRC_F2C/s_cat.c
+lapack_lib/SRC_F2C/s_cmp.c
+lapack_lib/SRC_F2C/s_copy.c
+lapack_lib/SRC_F2C/s_rnge.c
+lapack_lib/SRC_F2C/s_stop.c
+lapack_lib/SRC_F2C/typesize.c
+lapack_lib/SRC_F2C/z_abs.c
+lapack_lib/SRC_F2C/z_cos.c
+lapack_lib/SRC_F2C/z_div.c
+lapack_lib/SRC_F2C/z_exp.c
+lapack_lib/SRC_F2C/z_log.c
+lapack_lib/SRC_F2C/z_sin.c
+lapack_lib/SRC_F2C/z_sqrt.c
+)
+
+set (FFTLIB_SRCS
+fftlib/zfftb.c
+fftlib/zfftb1.c
+fftlib/zfftf.c
+fftlib/zfftf1.c
+fftlib/zffti.c
+fftlib/zffti1.c
+fftlib/zpassb.c
+fftlib/zpassb2.c
+fftlib/zpassb3.c
+fftlib/zpassb4.c
+fftlib/zpassb5.c
+fftlib/zpassf.c
+fftlib/zpassf2.c
+fftlib/zpassf3.c
+fftlib/zpassf4.c
+fftlib/zpassf5.c
+)
+
+set (MLAPACK_SRCS
+lapack_lib/MyFunc.c
+tmclib/tmcrt_vc.def
+)
+if(MSVC)
+  add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
+  add_definitions(-DUNICODE)
+  add_definitions(-DMSDOS)
+  add_definitions(-D_TMCRTVC6_)
+  add_definitions(-DWIN32)
+  add_definitions(-D_WINDOWS)
+  add_definitions(-DTMCRTVC6_EXPORTS)
+
+  add_definitions(-DNO_BLAS_WRAP)
+  
+  SET(MY_LINK_FLAGS    "-DEF:tmclib/tmcrt_vc.def")
+
+##  SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${MY_COMPILE_FLAGS}" )
+  SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${MY_LINK_FLAGS}" )
+
+endif()
+
+
+
+add_library(tmcruntime SHARED ${MLAPACK_SRCS} ${tmclib_SRCS} ${FDLIBM_SRCS} ${LAPACK_SRCS} ${BLAS_SRCS} ${F2C_SRCS} ${FFTLIB_SRCS} )
+
+
+

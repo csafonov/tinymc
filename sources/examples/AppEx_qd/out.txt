@@ -1,0 +1,3 @@
+./MatSRC/myeq.m(6) : error P0001: fatal syntax error
+./Stubs/TestO.m(56) : error P0001: fatal syntax error
+./Stubs/TestO.m(56) : error P0001: fatal syntax error

@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    
+    
+  		<Button
+        android:onClick="prevcrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/prevcrl_button_label" />
+        
+		<Button
+        android:onClick="redraw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/redraw_button_label" />
+
+		<Button
+        android:onClick="nextcrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nextcrl_button_label" />
+		
+		<SeekBar
+            android:id="@+id/seek1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:progress="20"
+            android:secondaryProgress="20" />
+    <TextView
+		android:id="@+id/text1"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
+    <view
+        class="com.tmc.tunerdemo.CtmcFigureView"
+        android:id="@+id/drawing_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

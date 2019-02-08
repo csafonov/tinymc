@@ -1,0 +1,7 @@
+	EXPORTS
+	Init_funcs_table
+	tmcTestO
+        tmcTestO_ex
+	FiltFreqResp
+	InitDLL
+	UnInitDLL

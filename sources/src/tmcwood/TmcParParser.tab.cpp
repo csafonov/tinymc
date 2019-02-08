@@ -70,7 +70,7 @@
 
 /* Copy the first part of user declarations.  */
 /* Line 371 of yacc.c  */
-#line 1 "TmcParParser.Y"
+#line 1 "TmcParParser.y"
 
 //! Gramma for m-file parser
 
@@ -198,7 +198,7 @@ extern int tmcpar_debug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 24 "TmcParParser.Y"
+#line 24 "TmcParParser.y"
 
 	char   *str;
 	double num;
@@ -1836,7 +1836,7 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 220 "TmcParParser.Y"
+#line 220 "TmcParParser.y"
     {
 			(yyval.lsp_L_stmnt_gen_val)=(yyvsp[(2) - (3)].lsp_L_stmnt_gen_val);
 			tmcpar_parsing_module = (yyval.lsp_L_stmnt_gen_val);
@@ -1846,7 +1846,7 @@ yyreduce:
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 229 "TmcParParser.Y"
+#line 229 "TmcParParser.y"
     {
             (yyval.lsp_L_stmnt_gen_val) = create_module((yyvsp[(1) - (1)].lsp_T_func_hdr_val));
         }
@@ -1854,7 +1854,7 @@ yyreduce:
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 233 "TmcParParser.Y"
+#line 233 "TmcParParser.y"
     {
             (yyval.lsp_L_stmnt_gen_val) = append_to_module((yyvsp[(1) - (2)].lsp_L_stmnt_gen_val),(yyvsp[(2) - (2)].lsp_T_func_hdr_val));
         }
@@ -1862,7 +1862,7 @@ yyreduce:
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 252 "TmcParParser.Y"
+#line 252 "TmcParParser.y"
     {
 			(yyval.lsp_T_func_hdr_val)=(yyvsp[(1) - (1)].lsp_T_func_hdr_val);
 	}
@@ -1870,7 +1870,7 @@ yyreduce:
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 265 "TmcParParser.Y"
+#line 265 "TmcParParser.y"
     {
 							(yyval.lsp_T_func_hdr_val) = create_func_def_statement((yyvsp[(1) - (1)].lsp_T_func_block_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 					}
@@ -1878,7 +1878,7 @@ yyreduce:
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 274 "TmcParParser.Y"
+#line 274 "TmcParParser.y"
     { // fnc name, inpars,outpars,stms
 						 (yyval.lsp_T_func_block_val) = create_func_body((yyvsp[(4) - (6)].ident),(yyvsp[(5) - (6)].lsp_L_vardecl_val),(yyvsp[(2) - (6)].lsp_L_vardecl_val),(yyvsp[(6) - (6)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 					}
@@ -1886,7 +1886,7 @@ yyreduce:
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 278 "TmcParParser.Y"
+#line 278 "TmcParParser.y"
     {
 						 (yyval.lsp_T_func_block_val) = create_func_body((yyvsp[(2) - (4)].ident),(yyvsp[(3) - (4)].lsp_L_vardecl_val),0,(yyvsp[(4) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 					}
@@ -1894,7 +1894,7 @@ yyreduce:
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 284 "TmcParParser.Y"
+#line 284 "TmcParParser.y"
     {
                    (yyval.lsp_L_stmnt_gen_val) = (yyvsp[(2) - (2)].lsp_L_stmnt_gen_val);
                    }
@@ -1902,7 +1902,7 @@ yyreduce:
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 288 "TmcParParser.Y"
+#line 288 "TmcParParser.y"
     {
                    (yyval.lsp_L_stmnt_gen_val) = create_statement_list_empty();
                    }
@@ -1910,7 +1910,7 @@ yyreduce:
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 294 "TmcParParser.Y"
+#line 294 "TmcParParser.y"
     {
 					(yyval.lsp_L_stmnt_gen_val) = (yyvsp[(1) - (1)].lsp_L_stmnt_gen_val);
                    }
@@ -1918,7 +1918,7 @@ yyreduce:
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 298 "TmcParParser.Y"
+#line 298 "TmcParParser.y"
     {
 				     (yyval.lsp_L_stmnt_gen_val) = (yyvsp[(1) - (1)].lsp_L_stmnt_gen_val);
 				   }
@@ -1926,7 +1926,7 @@ yyreduce:
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 306 "TmcParParser.Y"
+#line 306 "TmcParParser.y"
     {
                     (yyval.lsp_statement_val) = create_expression((yyvsp[(1) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
                    }
@@ -1934,7 +1934,7 @@ yyreduce:
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 310 "TmcParParser.Y"
+#line 310 "TmcParParser.y"
     {
                     (yyval.lsp_statement_val) = create_command((yyvsp[(1) - (2)].lsp_command_val),(int)tmcpar_lineno,(int)tmcpar_colno);
                    }
@@ -1942,7 +1942,7 @@ yyreduce:
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 317 "TmcParParser.Y"
+#line 317 "TmcParParser.y"
     {
 				//$$=$1;
 				(yyval.lsp_expression_val) = try_to_colon_expression((yyvsp[(1) - (1)].lsp_expression_val));
@@ -1952,7 +1952,7 @@ yyreduce:
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 325 "TmcParParser.Y"
+#line 325 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_ident_val));
 					}
@@ -1960,7 +1960,7 @@ yyreduce:
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 329 "TmcParParser.Y"
+#line 329 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_constant_val));
 					}
@@ -1968,7 +1968,7 @@ yyreduce:
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 333 "TmcParParser.Y"
+#line 333 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_ident_val));
 				}
@@ -1976,7 +1976,7 @@ yyreduce:
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 337 "TmcParParser.Y"
+#line 337 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_unary_expression_val));
 					}
@@ -1984,7 +1984,7 @@ yyreduce:
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 342 "TmcParParser.Y"
+#line 342 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)(yyvsp[(1) - (1)].lsp_colon_expression_val);
 				}
@@ -1992,7 +1992,7 @@ yyreduce:
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 347 "TmcParParser.Y"
+#line 347 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_simple_assignment_val));
 				}
@@ -2000,7 +2000,7 @@ yyreduce:
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 352 "TmcParParser.Y"
+#line 352 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_index_expression_val));
 					}
@@ -2008,7 +2008,7 @@ yyreduce:
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 357 "TmcParParser.Y"
+#line 357 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_binary_expression_val));
 					}
@@ -2016,7 +2016,7 @@ yyreduce:
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 361 "TmcParParser.Y"
+#line 361 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_boolean_expression_val));
 					}
@@ -2024,7 +2024,7 @@ yyreduce:
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 365 "TmcParParser.Y"
+#line 365 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=simplify_empty_matrix((yyvsp[(1) - (1)].lsp_cell_val));
 					}
@@ -2032,7 +2032,7 @@ yyreduce:
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 370 "TmcParParser.Y"
+#line 370 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=simplify_empty_matrix((yyvsp[(1) - (1)].lsp_list_of_argument_list_val));
 					}
@@ -2040,7 +2040,7 @@ yyreduce:
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 376 "TmcParParser.Y"
+#line 376 "TmcParParser.y"
     {
 					(yyval.lsp_expression_val)=(T_expr_gen*)((yyvsp[(1) - (1)].lsp_fcn_handle_val));
 					}
@@ -2048,7 +2048,7 @@ yyreduce:
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 381 "TmcParParser.Y"
+#line 381 "TmcParParser.y"
     {
                                  BracketDelimiter = (yyvsp[(2) - (3)].lsp_delimiter);
                                 }
@@ -2056,7 +2056,7 @@ yyreduce:
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 384 "TmcParParser.Y"
+#line 384 "TmcParParser.y"
     {
 				         yyinsert_comma_in_input(RPAREN);
 					(yyval.lsp_expression_val) = (yyvsp[(3) - (5)].lsp_expression_val);
@@ -2065,7 +2065,7 @@ yyreduce:
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 391 "TmcParParser.Y"
+#line 391 "TmcParParser.y"
     {
                                 (yyval.lsp_delimiter) = BracketDelimiter;
                                 BracketDelimiter = LPAREN;
@@ -2074,7 +2074,7 @@ yyreduce:
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 401 "TmcParParser.Y"
+#line 401 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_return_command_val);
 					}
@@ -2082,7 +2082,7 @@ yyreduce:
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 405 "TmcParParser.Y"
+#line 405 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_cmd_decl_gen_val);
 					}
@@ -2090,7 +2090,7 @@ yyreduce:
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 409 "TmcParParser.Y"
+#line 409 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_if_val);
 					}
@@ -2098,7 +2098,7 @@ yyreduce:
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 413 "TmcParParser.Y"
+#line 413 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_while_val);
 					}
@@ -2106,7 +2106,7 @@ yyreduce:
 
   case 38:
 /* Line 1792 of yacc.c  */
-#line 418 "TmcParParser.Y"
+#line 418 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_continue_val);
 					}
@@ -2114,7 +2114,7 @@ yyreduce:
 
   case 39:
 /* Line 1792 of yacc.c  */
-#line 422 "TmcParParser.Y"
+#line 422 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_break_val);
 					}
@@ -2122,7 +2122,7 @@ yyreduce:
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 427 "TmcParParser.Y"
+#line 427 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_switch_val);
 					}
@@ -2130,7 +2130,7 @@ yyreduce:
 
   case 41:
 /* Line 1792 of yacc.c  */
-#line 432 "TmcParParser.Y"
+#line 432 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_T_ctrl_cmd_for_val);
 					}
@@ -2138,7 +2138,7 @@ yyreduce:
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 438 "TmcParParser.Y"
+#line 438 "TmcParParser.y"
     {
 					(yyval.lsp_command_val)=(T_cmd_gen*)(yyvsp[(1) - (1)].lsp_tree_try_command_val);
 					}
@@ -2146,7 +2146,7 @@ yyreduce:
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 444 "TmcParParser.Y"
+#line 444 "TmcParParser.y"
     {
 				  (yyval.lsp_command_val) = (T_cmd_gen*)create_ref_index("M",(yyvsp[(2) - (2)].lsp_argument_list_val),create_identifier((yyvsp[(1) - (2)].ident),(int)tmcpar_lineno,(int)tmcpar_colno),(int)tmcpar_lineno,(int)tmcpar_colno);
 				  }
@@ -2154,7 +2154,7 @@ yyreduce:
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 450 "TmcParParser.Y"
+#line 450 "TmcParParser.y"
     {
 					(yyval.lsp_argument_list_val) = create_argument_list((T_expr_gen*)create_constant((CONST_VAL_TYPES)0,make_string((yyvsp[(1) - (1)].ident)),(int)tmcpar_lineno,(int)tmcpar_colno) );
 					}
@@ -2162,7 +2162,7 @@ yyreduce:
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 454 "TmcParParser.Y"
+#line 454 "TmcParParser.y"
     {
 					(yyval.lsp_argument_list_val) = append_to_argument_list((yyvsp[(1) - (2)].lsp_argument_list_val),(T_expr_gen*)create_constant((CONST_VAL_TYPES)0,make_string((yyvsp[(2) - (2)].ident)),(int)tmcpar_lineno,(int)tmcpar_colno) );
 					}
@@ -2170,7 +2170,7 @@ yyreduce:
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 460 "TmcParParser.Y"
+#line 460 "TmcParParser.y"
     {
 					(yyval.lsp_L_vardecl_val)=(yyvsp[(2) - (3)].lsp_L_vardecl_val);
 					}
@@ -2178,7 +2178,7 @@ yyreduce:
 
   case 47:
 /* Line 1792 of yacc.c  */
-#line 464 "TmcParParser.Y"
+#line 464 "TmcParParser.y"
     {
 					(yyval.lsp_L_vardecl_val)=create_list_ident((yyvsp[(1) - (1)].lsp_ident_val));
 					}
@@ -2186,7 +2186,7 @@ yyreduce:
 
   case 48:
 /* Line 1792 of yacc.c  */
-#line 470 "TmcParParser.Y"
+#line 470 "TmcParParser.y"
     {
 					(yyval.lsp_L_vardecl_val)=(yyvsp[(2) - (3)].lsp_L_vardecl_val);
 					}
@@ -2194,7 +2194,7 @@ yyreduce:
 
   case 49:
 /* Line 1792 of yacc.c  */
-#line 474 "TmcParParser.Y"
+#line 474 "TmcParParser.y"
     {
 					(yyval.lsp_L_vardecl_val)=create_list_ident_empty();
 					}
@@ -2202,7 +2202,7 @@ yyreduce:
 
   case 50:
 /* Line 1792 of yacc.c  */
-#line 481 "TmcParParser.Y"
+#line 481 "TmcParParser.y"
     {
 					(yyval.lsp_L_vardecl_val) = create_list_ident((yyvsp[(1) - (1)].lsp_ident_val));
 					}
@@ -2210,7 +2210,7 @@ yyreduce:
 
   case 51:
 /* Line 1792 of yacc.c  */
-#line 485 "TmcParParser.Y"
+#line 485 "TmcParParser.y"
     {
                    	(yyval.lsp_L_vardecl_val) = append_to_list_ident((yyvsp[(1) - (3)].lsp_L_vardecl_val),(yyvsp[(3) - (3)].lsp_ident_val));
 					}
@@ -2218,7 +2218,7 @@ yyreduce:
 
   case 52:
 /* Line 1792 of yacc.c  */
-#line 491 "TmcParParser.Y"
+#line 491 "TmcParParser.y"
     {
                    (yyval.lsp_L_stmnt_gen_val) = create_statement_list((yyvsp[(1) - (1)].lsp_statement_val));
                    }
@@ -2226,7 +2226,7 @@ yyreduce:
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 495 "TmcParParser.Y"
+#line 495 "TmcParParser.y"
     {
                    (yyval.lsp_L_stmnt_gen_val) = append_to_statement_list((yyvsp[(1) - (2)].lsp_L_stmnt_gen_val),(yyvsp[(2) - (2)].lsp_statement_val));
                    }
@@ -2234,7 +2234,7 @@ yyreduce:
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 501 "TmcParParser.Y"
+#line 501 "TmcParParser.y"
     {
 					 (yyval.lsp_ident_val) = create_identifier((yyvsp[(1) - (1)].ident),(int)tmcpar_lineno,(int)tmcpar_colno);
 					 }
@@ -2242,7 +2242,7 @@ yyreduce:
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 507 "TmcParParser.Y"
+#line 507 "TmcParParser.y"
     {
 						 (yyval.lsp_ident_val) = create_identifier("__end__",(int)tmcpar_lineno,(int)tmcpar_colno);
 					}
@@ -2250,7 +2250,7 @@ yyreduce:
 
   case 56:
 /* Line 1792 of yacc.c  */
-#line 512 "TmcParParser.Y"
+#line 512 "TmcParParser.y"
     {
 					 (yyval.lsp_constant_val) = create_constant((enum CONST_VAL_TYPES)0,(yyvsp[(1) - (1)].lsp_const_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 					}
@@ -2258,7 +2258,7 @@ yyreduce:
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 517 "TmcParParser.Y"
+#line 517 "TmcParParser.y"
     {
 					 (yyval.lsp_const_val) = make_number((yyvsp[(1) - (1)].num),0,const_val_real);
 					}
@@ -2266,7 +2266,7 @@ yyreduce:
 
   case 58:
 /* Line 1792 of yacc.c  */
-#line 521 "TmcParParser.Y"
+#line 521 "TmcParParser.y"
     {
                      (yyval.lsp_const_val) = make_number(0,(yyvsp[(1) - (1)].num),const_val_complex);
                    }
@@ -2274,7 +2274,7 @@ yyreduce:
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 526 "TmcParParser.Y"
+#line 526 "TmcParParser.y"
     {
 					 (yyval.lsp_const_val) = make_string((yyvsp[(1) - (1)].str));
                    }
@@ -2282,7 +2282,7 @@ yyreduce:
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 534 "TmcParParser.Y"
+#line 534 "TmcParParser.y"
     {
 			(yyval.lsp_L_vardecl_val) = create_list_ident((yyvsp[(1) - (1)].lsp_ident_val));
 		}
@@ -2290,7 +2290,7 @@ yyreduce:
 
   case 61:
 /* Line 1792 of yacc.c  */
-#line 538 "TmcParParser.Y"
+#line 538 "TmcParParser.y"
     {
                      (yyval.lsp_L_vardecl_val) = append_to_list_ident((yyvsp[(1) - (2)].lsp_L_vardecl_val),(yyvsp[(2) - (2)].lsp_ident_val));
                 }
@@ -2298,7 +2298,7 @@ yyreduce:
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 544 "TmcParParser.Y"
+#line 544 "TmcParParser.y"
     {
 	 (yyval.lsp_simple_assignment_val) = create_s_assignment_expression(0,0,(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2306,7 +2306,7 @@ yyreduce:
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 553 "TmcParParser.Y"
+#line 553 "TmcParParser.y"
     {
            (yyval.lsp_colon_expression_val) = append_colon_expression((yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
           }
@@ -2314,7 +2314,7 @@ yyreduce:
 
   case 64:
 /* Line 1792 of yacc.c  */
-#line 564 "TmcParParser.Y"
+#line 564 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) =  create_argument_list( create_constant((enum CONST_VAL_TYPES)0,make_magic_col(),(int)tmcpar_lineno,(int)tmcpar_colno) );
         }
@@ -2322,7 +2322,7 @@ yyreduce:
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 568 "TmcParParser.Y"
+#line 568 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) =  create_argument_list( (yyvsp[(1) - (1)].lsp_expression_val));
         }
@@ -2330,7 +2330,7 @@ yyreduce:
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 572 "TmcParParser.Y"
+#line 572 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) = insert_head_to_argument_list((yyvsp[(3) - (3)].lsp_argument_list_val),create_constant((enum CONST_VAL_TYPES)0,make_magic_col(),(int)tmcpar_lineno,(int)tmcpar_colno));
         }
@@ -2338,7 +2338,7 @@ yyreduce:
 
   case 67:
 /* Line 1792 of yacc.c  */
-#line 576 "TmcParParser.Y"
+#line 576 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) = insert_head_to_argument_list((yyvsp[(3) - (3)].lsp_argument_list_val),(yyvsp[(1) - (3)].lsp_expression_val));
         }
@@ -2346,13 +2346,13 @@ yyreduce:
 
   case 68:
 /* Line 1792 of yacc.c  */
-#line 582 "TmcParParser.Y"
+#line 582 "TmcParParser.y"
     { indexdeep(1); }
     break;
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 583 "TmcParParser.Y"
+#line 583 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(4) - (5)].lsp_delimiter);
         }
@@ -2360,7 +2360,7 @@ yyreduce:
 
   case 70:
 /* Line 1792 of yacc.c  */
-#line 586 "TmcParParser.Y"
+#line 586 "TmcParParser.y"
     {
            (yyval.lsp_index_expression_val) = create_ref_index("M",(yyvsp[(5) - (7)].lsp_argument_list_val),create_identifier((yyvsp[(1) - (7)].ident),(int)tmcpar_lineno,(int)tmcpar_colno),(int)tmcpar_lineno,(int)tmcpar_colno);
         yyinsert_comma_in_input(RPAREN);indexdeep(-1);
@@ -2369,13 +2369,13 @@ yyreduce:
 
   case 71:
 /* Line 1792 of yacc.c  */
-#line 590 "TmcParParser.Y"
+#line 590 "TmcParParser.y"
     {indexdeep(1);}
     break;
 
   case 72:
 /* Line 1792 of yacc.c  */
-#line 591 "TmcParParser.Y"
+#line 591 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(4) - (5)].lsp_delimiter);
         }
@@ -2383,7 +2383,7 @@ yyreduce:
 
   case 73:
 /* Line 1792 of yacc.c  */
-#line 594 "TmcParParser.Y"
+#line 594 "TmcParParser.y"
     {
            (yyval.lsp_index_expression_val) = create_ref_index("M",(yyvsp[(5) - (7)].lsp_argument_list_val),(yyvsp[(1) - (7)].lsp_index_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
         yyinsert_comma_in_input(RPAREN);indexdeep(-1);
@@ -2392,13 +2392,13 @@ yyreduce:
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 601 "TmcParParser.Y"
+#line 601 "TmcParParser.y"
     {indexdeep(1);}
     break;
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 602 "TmcParParser.Y"
+#line 602 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(4) - (5)].lsp_delimiter);
         }
@@ -2406,7 +2406,7 @@ yyreduce:
 
   case 76:
 /* Line 1792 of yacc.c  */
-#line 605 "TmcParParser.Y"
+#line 605 "TmcParParser.y"
     {
            (yyval.lsp_index_expression_val) = create_ref_index("C",(yyvsp[(5) - (7)].lsp_argument_list_val),create_identifier((yyvsp[(1) - (7)].ident),(int)tmcpar_lineno,(int)tmcpar_colno),(int)tmcpar_lineno,(int)tmcpar_colno);
         yyinsert_comma_in_input(RC);indexdeep(-1);
@@ -2415,13 +2415,13 @@ yyreduce:
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 609 "TmcParParser.Y"
+#line 609 "TmcParParser.y"
     {indexdeep(1);}
     break;
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 610 "TmcParParser.Y"
+#line 610 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(4) - (5)].lsp_delimiter);
         }
@@ -2429,7 +2429,7 @@ yyreduce:
 
   case 79:
 /* Line 1792 of yacc.c  */
-#line 613 "TmcParParser.Y"
+#line 613 "TmcParParser.y"
     {
            (yyval.lsp_index_expression_val) = create_ref_index("C",(yyvsp[(5) - (7)].lsp_argument_list_val),(yyvsp[(1) - (7)].lsp_index_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
         yyinsert_comma_in_input(RC);indexdeep(-1);
@@ -2438,7 +2438,7 @@ yyreduce:
 
   case 80:
 /* Line 1792 of yacc.c  */
-#line 620 "TmcParParser.Y"
+#line 620 "TmcParParser.y"
     {
             (yyval.lsp_index_expression_val) = create_ref_field("F",(yyvsp[(3) - (3)].ident),create_identifier((yyvsp[(1) - (3)].ident),(int)tmcpar_lineno,(int)tmcpar_colno),(int)tmcpar_lineno,(int)tmcpar_colno);
          yyinsert_comma_in_input(ELLIP);
@@ -2447,7 +2447,7 @@ yyreduce:
 
   case 81:
 /* Line 1792 of yacc.c  */
-#line 625 "TmcParParser.Y"
+#line 625 "TmcParParser.y"
     {
             (yyval.lsp_index_expression_val) = create_ref_field("F",(yyvsp[(3) - (3)].ident),(yyvsp[(1) - (3)].lsp_index_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
         yyinsert_comma_in_input(ELLIP);
@@ -2456,7 +2456,7 @@ yyreduce:
 
   case 82:
 /* Line 1792 of yacc.c  */
-#line 636 "TmcParParser.Y"
+#line 636 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("+",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2464,7 +2464,7 @@ yyreduce:
 
   case 83:
 /* Line 1792 of yacc.c  */
-#line 640 "TmcParParser.Y"
+#line 640 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("-",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2472,7 +2472,7 @@ yyreduce:
 
   case 84:
 /* Line 1792 of yacc.c  */
-#line 644 "TmcParParser.Y"
+#line 644 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("*",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2480,7 +2480,7 @@ yyreduce:
 
   case 85:
 /* Line 1792 of yacc.c  */
-#line 648 "TmcParParser.Y"
+#line 648 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression(".*",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2488,7 +2488,7 @@ yyreduce:
 
   case 86:
 /* Line 1792 of yacc.c  */
-#line 653 "TmcParParser.Y"
+#line 653 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("&",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2496,7 +2496,7 @@ yyreduce:
 
   case 87:
 /* Line 1792 of yacc.c  */
-#line 657 "TmcParParser.Y"
+#line 657 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("|",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2504,7 +2504,7 @@ yyreduce:
 
   case 88:
 /* Line 1792 of yacc.c  */
-#line 663 "TmcParParser.Y"
+#line 663 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("/",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2512,7 +2512,7 @@ yyreduce:
 
   case 89:
 /* Line 1792 of yacc.c  */
-#line 667 "TmcParParser.Y"
+#line 667 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("./",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2520,7 +2520,7 @@ yyreduce:
 
   case 90:
 /* Line 1792 of yacc.c  */
-#line 672 "TmcParParser.Y"
+#line 672 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("^",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2528,7 +2528,7 @@ yyreduce:
 
   case 91:
 /* Line 1792 of yacc.c  */
-#line 676 "TmcParParser.Y"
+#line 676 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression(".^",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2536,7 +2536,7 @@ yyreduce:
 
   case 92:
 /* Line 1792 of yacc.c  */
-#line 681 "TmcParParser.Y"
+#line 681 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("\\",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2544,7 +2544,7 @@ yyreduce:
 
   case 93:
 /* Line 1792 of yacc.c  */
-#line 685 "TmcParParser.Y"
+#line 685 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression(".\\",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2552,7 +2552,7 @@ yyreduce:
 
   case 94:
 /* Line 1792 of yacc.c  */
-#line 690 "TmcParParser.Y"
+#line 690 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("<=",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2560,7 +2560,7 @@ yyreduce:
 
   case 95:
 /* Line 1792 of yacc.c  */
-#line 694 "TmcParParser.Y"
+#line 694 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("<",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2568,7 +2568,7 @@ yyreduce:
 
   case 96:
 /* Line 1792 of yacc.c  */
-#line 699 "TmcParParser.Y"
+#line 699 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression(">=",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2576,7 +2576,7 @@ yyreduce:
 
   case 97:
 /* Line 1792 of yacc.c  */
-#line 703 "TmcParParser.Y"
+#line 703 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression(">",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2584,7 +2584,7 @@ yyreduce:
 
   case 98:
 /* Line 1792 of yacc.c  */
-#line 708 "TmcParParser.Y"
+#line 708 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("!=",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);//legacy
 		}
@@ -2592,7 +2592,7 @@ yyreduce:
 
   case 99:
 /* Line 1792 of yacc.c  */
-#line 712 "TmcParParser.Y"
+#line 712 "TmcParParser.y"
     {
 			(yyval.lsp_binary_expression_val) = create_binary_expression("==",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2600,7 +2600,7 @@ yyreduce:
 
   case 100:
 /* Line 1792 of yacc.c  */
-#line 718 "TmcParParser.Y"
+#line 718 "TmcParParser.y"
     {
 			(yyval.lsp_boolean_expression_val) = create_boolean_expression("&&",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2608,7 +2608,7 @@ yyreduce:
 
   case 101:
 /* Line 1792 of yacc.c  */
-#line 722 "TmcParParser.Y"
+#line 722 "TmcParParser.y"
     {
 			(yyval.lsp_boolean_expression_val) = create_boolean_expression("||",(yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(3) - (3)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2616,7 +2616,7 @@ yyreduce:
 
   case 102:
 /* Line 1792 of yacc.c  */
-#line 729 "TmcParParser.Y"
+#line 729 "TmcParParser.y"
     {
 			(yyval.lsp_unary_expression_val) = create_unary_expression("+",(yyvsp[(2) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2624,7 +2624,7 @@ yyreduce:
 
   case 103:
 /* Line 1792 of yacc.c  */
-#line 733 "TmcParParser.Y"
+#line 733 "TmcParParser.y"
     {
 			(yyval.lsp_unary_expression_val) = create_unary_expression("-",(yyvsp[(2) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2632,7 +2632,7 @@ yyreduce:
 
   case 104:
 /* Line 1792 of yacc.c  */
-#line 737 "TmcParParser.Y"
+#line 737 "TmcParParser.y"
     {
 			(yyval.lsp_unary_expression_val) = create_unary_expression("!",(yyvsp[(2) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);//legacy
 		}
@@ -2640,7 +2640,7 @@ yyreduce:
 
   case 105:
 /* Line 1792 of yacc.c  */
-#line 742 "TmcParParser.Y"
+#line 742 "TmcParParser.y"
     {
 			(yyval.lsp_unary_expression_val) = create_unary_expression(".'",(yyvsp[(1) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 			yyinsert_comma_in_input(TRANSPOSE);
@@ -2649,7 +2649,7 @@ yyreduce:
 
   case 106:
 /* Line 1792 of yacc.c  */
-#line 747 "TmcParParser.Y"
+#line 747 "TmcParParser.y"
     {
 			(yyval.lsp_unary_expression_val) = create_unary_expression("'",(yyvsp[(1) - (2)].lsp_expression_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 			yyinsert_comma_in_input(CTRANSPOSE);
@@ -2658,7 +2658,7 @@ yyreduce:
 
   case 107:
 /* Line 1792 of yacc.c  */
-#line 755 "TmcParParser.Y"
+#line 755 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(2) - (3)].lsp_delimiter);
         }
@@ -2666,7 +2666,7 @@ yyreduce:
 
   case 108:
 /* Line 1792 of yacc.c  */
-#line 758 "TmcParParser.Y"
+#line 758 "TmcParParser.y"
     {
         yyinsert_comma_in_input(RC);
          (yyval.lsp_cell_val) = create_cell_array((yyvsp[(3) - (5)].lsp_list_of_argument_list_val));// convert matrix to cell array
@@ -2675,7 +2675,7 @@ yyreduce:
 
   case 109:
 /* Line 1792 of yacc.c  */
-#line 765 "TmcParParser.Y"
+#line 765 "TmcParParser.y"
     {
         (yyval.lsp_delimiter) = BracketDelimiter;
         BracketDelimiter = LC;
@@ -2684,7 +2684,7 @@ yyreduce:
 
   case 110:
 /* Line 1792 of yacc.c  */
-#line 774 "TmcParParser.Y"
+#line 774 "TmcParParser.y"
     {
         BracketDelimiter = (yyvsp[(2) - (3)].lsp_delimiter);
         }
@@ -2692,7 +2692,7 @@ yyreduce:
 
   case 111:
 /* Line 1792 of yacc.c  */
-#line 777 "TmcParParser.Y"
+#line 777 "TmcParParser.y"
     {
         yyinsert_comma_in_input(RBRA);
          (yyval.lsp_list_of_argument_list_val) = (yyvsp[(3) - (5)].lsp_list_of_argument_list_val);
@@ -2701,7 +2701,7 @@ yyreduce:
 
   case 112:
 /* Line 1792 of yacc.c  */
-#line 784 "TmcParParser.Y"
+#line 784 "TmcParParser.y"
     {
         (yyval.lsp_delimiter) = BracketDelimiter;
         BracketDelimiter = LBRA;
@@ -2710,7 +2710,7 @@ yyreduce:
 
   case 113:
 /* Line 1792 of yacc.c  */
-#line 792 "TmcParParser.Y"
+#line 792 "TmcParParser.y"
     {
                          (yyval.lsp_list_of_argument_list_val) = create_empty_matrix();
         }
@@ -2718,7 +2718,7 @@ yyreduce:
 
   case 114:
 /* Line 1792 of yacc.c  */
-#line 796 "TmcParParser.Y"
+#line 796 "TmcParParser.y"
     {
                          (yyval.lsp_list_of_argument_list_val) = create_matrix((yyvsp[(1) - (1)].lsp_argument_list_val));
         }
@@ -2726,7 +2726,7 @@ yyreduce:
 
   case 115:
 /* Line 1792 of yacc.c  */
-#line 800 "TmcParParser.Y"
+#line 800 "TmcParParser.y"
     {
          (yyval.lsp_list_of_argument_list_val)=(yyvsp[(1) - (2)].lsp_list_of_argument_list_val);
         }
@@ -2734,7 +2734,7 @@ yyreduce:
 
   case 116:
 /* Line 1792 of yacc.c  */
-#line 804 "TmcParParser.Y"
+#line 804 "TmcParParser.y"
     {
                          (yyval.lsp_list_of_argument_list_val) = add_row_to_matrix((yyvsp[(1) - (3)].lsp_list_of_argument_list_val),(yyvsp[(3) - (3)].lsp_argument_list_val));
         }
@@ -2742,7 +2742,7 @@ yyreduce:
 
   case 117:
 /* Line 1792 of yacc.c  */
-#line 808 "TmcParParser.Y"
+#line 808 "TmcParParser.y"
     {
                          (yyval.lsp_list_of_argument_list_val)=(yyvsp[(1) - (2)].lsp_list_of_argument_list_val);
         }
@@ -2750,7 +2750,7 @@ yyreduce:
 
   case 118:
 /* Line 1792 of yacc.c  */
-#line 812 "TmcParParser.Y"
+#line 812 "TmcParParser.y"
     {
                     (yyval.lsp_list_of_argument_list_val) = add_row_to_matrix((yyvsp[(1) - (3)].lsp_list_of_argument_list_val),(yyvsp[(3) - (3)].lsp_argument_list_val));
         }
@@ -2758,7 +2758,7 @@ yyreduce:
 
   case 119:
 /* Line 1792 of yacc.c  */
-#line 819 "TmcParParser.Y"
+#line 819 "TmcParParser.y"
     {
                     (yyval.lsp_argument_list_val) = create_argument_list((yyvsp[(1) - (1)].lsp_expression_val));
         }
@@ -2766,7 +2766,7 @@ yyreduce:
 
   case 120:
 /* Line 1792 of yacc.c  */
-#line 823 "TmcParParser.Y"
+#line 823 "TmcParParser.y"
     {
                     (yyval.lsp_argument_list_val) = (yyvsp[(1) - (1)].lsp_argument_list_val);
         }
@@ -2774,7 +2774,7 @@ yyreduce:
 
   case 121:
 /* Line 1792 of yacc.c  */
-#line 827 "TmcParParser.Y"
+#line 827 "TmcParParser.y"
     {
                     (yyval.lsp_argument_list_val) = append_to_argument_list((yyvsp[(1) - (2)].lsp_argument_list_val),(yyvsp[(2) - (2)].lsp_expression_val));
         }
@@ -2782,7 +2782,7 @@ yyreduce:
 
   case 122:
 /* Line 1792 of yacc.c  */
-#line 834 "TmcParParser.Y"
+#line 834 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) = create_argument_list((yyvsp[(1) - (2)].lsp_expression_val));
         }
@@ -2790,7 +2790,7 @@ yyreduce:
 
   case 123:
 /* Line 1792 of yacc.c  */
-#line 838 "TmcParParser.Y"
+#line 838 "TmcParParser.y"
     {
           (yyval.lsp_argument_list_val) = append_to_argument_list((yyvsp[(1) - (3)].lsp_argument_list_val),(yyvsp[(2) - (3)].lsp_expression_val));
         }
@@ -2798,7 +2798,7 @@ yyreduce:
 
   case 124:
 /* Line 1792 of yacc.c  */
-#line 846 "TmcParParser.Y"
+#line 846 "TmcParParser.y"
     {
 			(yyval.lsp_fcn_handle_val) = create_fcn_handle((yyvsp[(2) - (2)].ident),(int)tmcpar_lineno,(int)tmcpar_colno);
 		}
@@ -2806,7 +2806,7 @@ yyreduce:
 
   case 125:
 /* Line 1792 of yacc.c  */
-#line 855 "TmcParParser.Y"
+#line 855 "TmcParParser.y"
     {
 		(yyval.lsp_return_command_val)=create_return((int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2814,7 +2814,7 @@ yyreduce:
 
   case 126:
 /* Line 1792 of yacc.c  */
-#line 860 "TmcParParser.Y"
+#line 860 "TmcParParser.y"
     {
 		(yyval.lsp_T_ctrl_cmd_break_val)=create_break((int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2822,7 +2822,7 @@ yyreduce:
 
   case 127:
 /* Line 1792 of yacc.c  */
-#line 865 "TmcParParser.Y"
+#line 865 "TmcParParser.y"
     {
 		(yyval.lsp_T_ctrl_cmd_continue_val)=create_continue((int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2830,7 +2830,7 @@ yyreduce:
 
   case 128:
 /* Line 1792 of yacc.c  */
-#line 871 "TmcParParser.Y"
+#line 871 "TmcParParser.y"
     {
 		(yyval.lsp_T_cmd_decl_gen_val)=create_declaration("global",(yyvsp[(2) - (2)].lsp_L_vardecl_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2838,7 +2838,7 @@ yyreduce:
 
   case 129:
 /* Line 1792 of yacc.c  */
-#line 880 "TmcParParser.Y"
+#line 880 "TmcParParser.y"
     {
 
 		(yyval.lsp_T_ctrl_cmd_if_val) = create_if_statement((yyvsp[(1) - (1)].lsp_LT_if_blocks_val),(int)tmcpar_lineno,(int)tmcpar_colno);
@@ -2847,7 +2847,7 @@ yyreduce:
 
   case 130:
 /* Line 1792 of yacc.c  */
-#line 886 "TmcParParser.Y"
+#line 886 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val)=(yyvsp[(1) - (1)].lsp_LT_if_blocks_val);
 	}
@@ -2855,7 +2855,7 @@ yyreduce:
 
   case 131:
 /* Line 1792 of yacc.c  */
-#line 895 "TmcParParser.Y"
+#line 895 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = create_if_clause_list(create_if_clause((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2863,7 +2863,7 @@ yyreduce:
 
   case 132:
 /* Line 1792 of yacc.c  */
-#line 899 "TmcParParser.Y"
+#line 899 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(4) - (4)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2871,7 +2871,7 @@ yyreduce:
 
   case 133:
 /* Line 1792 of yacc.c  */
-#line 903 "TmcParParser.Y"
+#line 903 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(4) - (4)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2879,7 +2879,7 @@ yyreduce:
 
   case 134:
 /* Line 1792 of yacc.c  */
-#line 910 "TmcParParser.Y"
+#line 910 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = create_if_clause_list(create_if_clause((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2887,7 +2887,7 @@ yyreduce:
 
   case 135:
 /* Line 1792 of yacc.c  */
-#line 914 "TmcParParser.Y"
+#line 914 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(5) - (5)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(2) - (5)].lsp_expression_val),(yyvsp[(3) - (5)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2895,7 +2895,7 @@ yyreduce:
 
   case 136:
 /* Line 1792 of yacc.c  */
-#line 921 "TmcParParser.Y"
+#line 921 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = create_if_clause_list(create_if_clause((yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(2) - (3)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2903,7 +2903,7 @@ yyreduce:
 
   case 137:
 /* Line 1792 of yacc.c  */
-#line 925 "TmcParParser.Y"
+#line 925 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(4) - (4)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(1) - (4)].lsp_expression_val),(yyvsp[(2) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2911,7 +2911,7 @@ yyreduce:
 
   case 138:
 /* Line 1792 of yacc.c  */
-#line 932 "TmcParParser.Y"
+#line 932 "TmcParParser.y"
     {
 	  (yyval.lsp_LT_if_blocks_val) = create_if_clause_list(create_if_clause(0,(yyvsp[(2) - (3)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2919,7 +2919,7 @@ yyreduce:
 
   case 139:
 /* Line 1792 of yacc.c  */
-#line 936 "TmcParParser.Y"
+#line 936 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = append_to_if_clause_list(
 		create_if_clause_list(create_if_clause((yyvsp[(2) - (6)].lsp_expression_val),(yyvsp[(3) - (6)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno)),
@@ -2930,7 +2930,7 @@ yyreduce:
 
   case 140:
 /* Line 1792 of yacc.c  */
-#line 943 "TmcParParser.Y"
+#line 943 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(5) - (5)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(2) - (5)].lsp_expression_val),(yyvsp[(3) - (5)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2938,7 +2938,7 @@ yyreduce:
 
   case 141:
 /* Line 1792 of yacc.c  */
-#line 949 "TmcParParser.Y"
+#line 949 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = append_to_if_clause_list(
 		create_if_clause_list(create_if_clause((yyvsp[(1) - (5)].lsp_expression_val),(yyvsp[(2) - (5)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno)),
@@ -2949,7 +2949,7 @@ yyreduce:
 
   case 142:
 /* Line 1792 of yacc.c  */
-#line 956 "TmcParParser.Y"
+#line 956 "TmcParParser.y"
     {
 		(yyval.lsp_LT_if_blocks_val) = insert_head_to_if_clause_list((yyvsp[(4) - (4)].lsp_LT_if_blocks_val),create_if_clause((yyvsp[(1) - (4)].lsp_expression_val),(yyvsp[(2) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2957,7 +2957,7 @@ yyreduce:
 
   case 143:
 /* Line 1792 of yacc.c  */
-#line 962 "TmcParParser.Y"
+#line 962 "TmcParParser.y"
     {
 				(yyval.lsp_T_ctrl_cmd_while_val)=create_while_command((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 			//	yyinsert_comma_in_input(END);
@@ -2966,7 +2966,7 @@ yyreduce:
 
   case 144:
 /* Line 1792 of yacc.c  */
-#line 971 "TmcParParser.Y"
+#line 971 "TmcParParser.y"
     {
 		(yyval.lsp_T_ctrl_cmd_switch_val) =create_switch_command((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(4) - (4)].lsp_LT_sw_cases_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 	}
@@ -2974,7 +2974,7 @@ yyreduce:
 
   case 145:
 /* Line 1792 of yacc.c  */
-#line 978 "TmcParParser.Y"
+#line 978 "TmcParParser.y"
     {
 	 	(yyval.lsp_LT_sw_cases_val) = create_switch_cases_list(create_switch_case((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2982,7 +2982,7 @@ yyreduce:
 
   case 146:
 /* Line 1792 of yacc.c  */
-#line 982 "TmcParParser.Y"
+#line 982 "TmcParParser.y"
     {
 	 	(yyval.lsp_LT_sw_cases_val) = append_to_switch_cases_list((yyvsp[(2) - (5)].lsp_LT_sw_cases_val),create_switch_case((yyvsp[(3) - (5)].lsp_expression_val),(yyvsp[(4) - (5)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -2990,7 +2990,7 @@ yyreduce:
 
   case 147:
 /* Line 1792 of yacc.c  */
-#line 986 "TmcParParser.Y"
+#line 986 "TmcParParser.y"
     {
 	 	(yyval.lsp_LT_sw_cases_val) = append_to_switch_cases_list(create_switch_cases_list(create_switch_case((yyvsp[(2) - (6)].lsp_expression_val),(yyvsp[(3) - (6)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno)),
                  create_switch_case(0,(yyvsp[(5) - (6)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
@@ -2999,7 +2999,7 @@ yyreduce:
 
   case 148:
 /* Line 1792 of yacc.c  */
-#line 991 "TmcParParser.Y"
+#line 991 "TmcParParser.y"
     {
 	 	(yyval.lsp_LT_sw_cases_val) =append_to_switch_cases_list(
                     append_to_switch_cases_list((yyvsp[(2) - (7)].lsp_LT_sw_cases_val),create_switch_case((yyvsp[(3) - (7)].lsp_expression_val),(yyvsp[(4) - (7)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno)),
@@ -3010,7 +3010,7 @@ yyreduce:
 
   case 149:
 /* Line 1792 of yacc.c  */
-#line 998 "TmcParParser.Y"
+#line 998 "TmcParParser.y"
     {
 	 	(yyval.lsp_LT_sw_cases_val) = create_switch_cases_list(create_switch_case(0,(yyvsp[(2) - (3)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -3018,7 +3018,7 @@ yyreduce:
 
   case 150:
 /* Line 1792 of yacc.c  */
-#line 1005 "TmcParParser.Y"
+#line 1005 "TmcParParser.y"
     {
 		(yyval.lsp_LT_sw_cases_val) = create_switch_cases_list(create_switch_case((yyvsp[(1) - (3)].lsp_expression_val),(yyvsp[(2) - (3)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -3026,7 +3026,7 @@ yyreduce:
 
   case 151:
 /* Line 1792 of yacc.c  */
-#line 1009 "TmcParParser.Y"
+#line 1009 "TmcParParser.y"
     {
 		(yyval.lsp_LT_sw_cases_val) = append_to_switch_cases_list((yyvsp[(1) - (4)].lsp_LT_sw_cases_val),create_switch_case((yyvsp[(2) - (4)].lsp_expression_val),(yyvsp[(3) - (4)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno));
 	}
@@ -3034,7 +3034,7 @@ yyreduce:
 
   case 152:
 /* Line 1792 of yacc.c  */
-#line 1017 "TmcParParser.Y"
+#line 1017 "TmcParParser.y"
     {
 				(yyval.lsp_T_ctrl_cmd_for_val)=create_for_statement(/*convert_to_colon_expression*/((yyvsp[(2) - (6)].lsp_ident_val)),(yyvsp[(4) - (6)].lsp_expression_val),(yyvsp[(5) - (6)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 				}
@@ -3042,7 +3042,7 @@ yyreduce:
 
   case 153:
 /* Line 1792 of yacc.c  */
-#line 1028 "TmcParParser.Y"
+#line 1028 "TmcParParser.y"
     {
 				(yyval.lsp_tree_try_command_val)=create_try_catch_statement((yyvsp[(2) - (5)].lsp_L_stmnt_gen_val),(yyvsp[(4) - (5)].lsp_L_stmnt_gen_val),(int)tmcpar_lineno,(int)tmcpar_colno);
 				}
@@ -3050,7 +3050,7 @@ yyreduce:
 
   case 154:
 /* Line 1792 of yacc.c  */
-#line 1032 "TmcParParser.Y"
+#line 1032 "TmcParParser.y"
     {
 				(yyval.lsp_tree_try_command_val)=create_try_catch_statement((yyvsp[(2) - (3)].lsp_L_stmnt_gen_val),0,(int)tmcpar_lineno,(int)tmcpar_colno);
 				}
@@ -3290,7 +3290,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 1062 "TmcParParser.Y"
+#line 1062 "TmcParParser.y"
 
 
 

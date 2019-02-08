@@ -202,7 +202,7 @@ void reset_lsp_lexer()
 }
 void dbgPrintLspToken(long TokVal)
 {
-	fprintf(stderr,"%Tok=%d, l=%d,c=%d ",TokVal,(int)tmclsp_lineno,0);
+	fprintf(stderr,"Tok=%d, l=%d,c=%d ",TokVal,(int)tmclsp_lineno,0);
 	if (TokVal==STRING)
 		fprintf(stderr,"%s\n",tmclsp_lval.str);
 	else if (TokVal==IDENT)

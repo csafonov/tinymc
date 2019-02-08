@@ -1,0 +1,13 @@
+EXPORTS
+	dgels
+	zgels
+	dgesvd
+	zgesvd
+	zffti
+	zfftf
+	dgeevx 
+	zgeevx
+	dgeqrf
+	zgeqrf
+	dgetrf
+	zgetrf

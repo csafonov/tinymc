@@ -1,0 +1,4 @@
+-i .\Stubs\
+-i .\Src\
+-s .\Stubs\
+-s .\Src\

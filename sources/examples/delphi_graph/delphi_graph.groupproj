@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{81D4216B-A2E7-483A-929D-E7A9045893DD}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="nicplot\prjNicPlot.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="plotdll\borland\plotdll.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="prjNicPlot">
+        <MSBuild Projects="nicplot\prjNicPlot.dproj"/>
+    </Target>
+    <Target Name="prjNicPlot:Clean">
+        <MSBuild Projects="nicplot\prjNicPlot.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="prjNicPlot:Make">
+        <MSBuild Projects="nicplot\prjNicPlot.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="plotdll">
+        <MSBuild Projects="plotdll\borland\plotdll.cbproj"/>
+    </Target>
+    <Target Name="plotdll:Clean">
+        <MSBuild Projects="plotdll\borland\plotdll.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="plotdll:Make">
+        <MSBuild Projects="plotdll\borland\plotdll.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="prjNicPlot;plotdll"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="prjNicPlot:Clean;plotdll:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="prjNicPlot:Make;plotdll:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

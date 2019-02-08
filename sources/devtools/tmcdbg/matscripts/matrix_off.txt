@@ -1,0 +1,13 @@
+szDouble=8;
+szAddr=4;
+szTmcMat=32;
+ofs_m_type=0;
+ofs_m_nRows=8;
+ofs_m_nCols=12;
+ofs_rData=16;
+ofs_iData=20;
+ofs_m_modifier=4;
+ofs_m_cells=16;
+ofs_m_nFields=24;
+ofs_hcFields=16;
+ofs_m_fields=20;

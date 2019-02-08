@@ -1,0 +1,16 @@
+.\Stubs\TestO.m
+../multroot/backsub.m
+../multroot/cauchymt.m
+../multroot/forsub.m
+../multroot/gcdgn.m
+../multroot/gcdroot.m
+../multroot/hessqr.m
+../multroot/hqrt.m
+../multroot/multroot.m
+../multroot/pejroot.m
+../multroot/polyder.m
+../multroot/polyr2p.m
+../multroot/scalsq.m
+../multroot/sylmat.m
+../multroot/sylves.m
+../multroot/zminsv.m

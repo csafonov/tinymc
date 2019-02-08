@@ -1,0 +1,3 @@
+	cmatrix.c tmcmstruct.c tmcmath.c graphic_stubs.c lapackutils.c 
+	tmc_unsupported.c tmccell.c tmcexcpt.c 
+	tmclib.c  tmcstringhash.c tmcio.c tmcdebugger.c

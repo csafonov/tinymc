@@ -1,0 +1,12 @@
+
+
+tmclib.lib: cmatrix.obj tmcmstruct.obj tmcmath.obj graphic_stubs.obj lapackutils.obj \
+	tmc_unsupported.obj tmccell.obj tmcexcpt.obj \
+	tmclib.obj  tmcstringhash.obj tmcio.obj 
+	tlib  tmclib.lib +cmatrix.obj +tmcmstruct.obj +tmcmath.obj +graphic_stubs.obj +lapackutils.obj \
+	+tmc_unsupported.obj +tmccell.obj +tmcexcpt.obj \
+	+tmclib.obj  +tmcstringhash.obj +tmcio.obj
+
+.c.obj:
+
+    bcc32 -D_BCC55_ -c -w-8057 -w-8010  $<

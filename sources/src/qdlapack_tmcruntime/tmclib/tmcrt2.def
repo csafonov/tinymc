@@ -1,0 +1,172 @@
+	EXPORTS
+	_tmcInitLib = _tmcInitLib
+	_tmcFreeLib = _tmcFreeLib
+	_tmcReallocRegister = _tmcReallocRegister
+	_tmcFreeLocalVar	= _tmcFreeLocalVar
+	_tmcFreeRegFrame	= _tmcFreeRegFrame
+	_tmcIsFieldHcode	= _tmcIsFieldHcode
+	_tmcGetByIndex	= _tmcGetByIndex
+	_tmcGetRefByIndex	= _tmcGetRefByIndex
+	_tmcGetByIndexCell	= _tmcGetByIndexCell
+	_tmcGetRefByIndexCell	= _tmcGetRefByIndexCell
+	_tmcCollectColumns	= _tmcCollectColumns
+	_tmcCollectRows	= _tmcCollectRows
+	_tmcCollectCellColumns	= _tmcCollectCellColumns
+	_tmcCollectCellRows	= _tmcCollectCellRows
+	_tmcGetByFieldHcode	= _tmcGetByFieldHcode
+	_tmcGetRefByFieldHcode	= _tmcGetRefByFieldHcode
+	_tmcCreateColonBaseIncLimit	= _tmcCreateColonBaseIncLimit
+	_tmcCreateColonBaseLimit	= _tmcCreateColonBaseLimit
+	_tmcAssign	= _tmcAssign
+	_tmcAssignBool	= _tmcAssignBool
+	_tmcCopyMat	= _tmcCopyMat
+	_tmcGetEnd	= _tmcGetEnd
+	_tmcNot	= _tmcNot
+	_tmcNeg	= _tmcNeg
+	_tmcTranspose	= _tmcTranspose
+	_tmcTransposeScalar	= _tmcTransposeScalar
+	_tmcAdd	= _tmcAdd
+	_tmcSub	= _tmcSub
+	_tmcMul	= _tmcMul
+	_tmcDiv	= _tmcDiv
+	_tmcPower	= _tmcPower
+	_tmcLeftDiv	= _tmcLeftDiv
+	_tmcLt	= _tmcLt
+	_tmcLe	= _tmcLe
+	_tmcEq	= _tmcEq
+	_tmcGe	= _tmcGe
+	_tmcGt	= _tmcGt
+	_tmcNe	= _tmcNe
+	_tmcIsFalse = _tmcIsFalse
+	_tmcMulScalar	= _tmcMulScalar
+	_tmcDivScalar	= _tmcDivScalar
+	_tmcPowerScalar	= _tmcPowerScalar
+	_tmcAndScalar	= _tmcAndScalar
+	_tmcOrScalar	= _tmcOrScalar
+	_tmcAndBoolean	= _tmcAndBoolean
+	_tmcOrBoolean	= _tmcOrBoolean
+	_tmcScalar	= _tmcScalar
+	_tmcComplexScalar	= _tmcComplexScalar
+	_tmcCreateCellEmpty	= _tmcCreateCellEmpty
+	_tmcCreateMatrixEmpty	= _tmcCreateMatrixEmpty
+	_tmcCreateString	= _tmcCreateString
+	_tmcFncHandle	= _tmcFncHandle
+	_tmcCreateMagicColon	= _tmcCreateMagicColon
+	_tmcForIterInit	= _tmcForIterInit
+	_tmcForIterNext	= _tmcForIterNext
+	_tmcCalcSwitchExpVal	= _tmcCalcSwitchExpVal
+	_tmcNotCase	= _tmcNotCase
+	_tmcIsCaseString	= _tmcIsCaseString
+	_tmcIsCaseDouble	= _tmcIsCaseDouble
+	_tmcSyntaxError	= _tmcSyntaxError
+	_tmcCreateRegFrame	= _tmcCreateRegFrame
+	___tmcNewMatrix	= ___tmcNewMatrix
+	__tmcCreateMatrix	 = __tmcCreateMatrix
+	__tmcMat2String = __tmcMat2String
+	_mmy_free = _mmy_free
+	_tmcDisplayMat=_tmcDisplayMat
+	__tmcRaiseException=__tmcRaiseException
+
+	_tmchold 
+	_tmcgrid 
+	_tmcfigure 
+	_tmcplot 
+	_tmcsubplot 
+	_tmcaxis 
+	_tmcset
+	_tmcgca 
+	_tmctitle 
+	_tmcxlabel 
+	_tmcylabel 
+	_tmctext 
+	_tmclasterr 
+	_tmcdisp 
+	_tmcfind 
+	_tmcsort 
+	_tmcsetdiff 
+	_tmcnum2str 
+	_tmcfprintf 
+	_tmcsprintf 
+	_tmcfprintf 
+	_tmcerror 
+	_tmcinterp1 
+	_tmcfliplr 
+	_tmcintersect 
+	_tmcisempty 
+	_tmcsize 
+	_tmcones 
+	_tmczeros 
+	_tmclength 
+	_tmcisfield 
+	_tmcrmfield 
+	_tmcmin 
+	_tmcmax 
+	_tmcstrcmp 
+	_tmcmod 
+	_tmcsin 
+	_tmccos 
+	_tmctan 
+	_tmcacos 
+	_tmcasin 
+	_tmcexp 
+	_tmcabs 
+	_tmcreal 
+	_tmcimag 
+	_tmcsqrt 
+	_tmclog10 
+	_tmcunwrap 
+	_tmcangle 
+	_tmcatan2 
+	_tmcfloor 
+	_tmcround 
+	_tmcceil 
+	_tmclog 
+	_tmclinspace 
+	_tmclogspace 
+	_tmcsum 
+	_tmcprod 
+	_tmcsvd 
+	_tmceig 
+	_tmcfft 
+	_tmcroots 
+	_tmcpolyval 
+	_tmcstruct 
+	_tmciscell 
+	_tmcfieldnames 
+	_tmcdiff 
+	_tmcssdata 
+	_tmcss2tf 
+	_tmctf 
+	_tmcdeconv 
+	_tmcisstruct 
+	_tmcconj 
+	_tmcisscalar 
+	_tmcisvector 
+	_tmcunique 
+	_tmcdiag 
+	_tmcinv 
+	_tmcisnan 
+	_tmcwaitbar 
+	_tmcclose 
+	_tmcnargchk 
+	_tmccumprod 
+	_tmcany 
+	_tmcall 
+	_tmcsqueeze 
+	_tmcisnumeric 
+	_tmcsign 
+	_tmcisreal 
+	_tmcfill 
+	_tmcatan 
+	_tmcisfinite 
+	_tmcgetfield 
+	_tmcget 
+	_tmceval 
+	_tmcfeval 
+	_tmcischar 
+	_tmccell 
+	_tmcfindstr 
+	_tmcstr2num 
+	_tmchex2dec 
+	_tmcload 
+	_tmcsave 

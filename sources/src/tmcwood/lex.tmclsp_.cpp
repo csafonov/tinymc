@@ -694,8 +694,8 @@ int tmclsp__flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *tmclsp_text;
-#line 1 "TmcLspLexer.L"
-#line 7 "TmcLspLexer.L"
+#line 1 "TmcLspLexer.l"
+#line 7 "TmcLspLexer.l"
 //! SCanner for lsp-file parser
 /******************************************************************************
  * Copyright (c) 2009-2015 by Shmuel Safonov.
@@ -908,7 +908,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 50 "TmcLspLexer.L"
+#line 50 "TmcLspLexer.l"
 
 #line 914 "lex.tmclsp_.cpp"
 
@@ -1001,424 +1001,424 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 51 "TmcLspLexer.L"
+#line 51 "TmcLspLexer.l"
 {  tmclsp_lval.num=atof(tmclsp_text); return ReturnLspToken( NUMBER);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 52 "TmcLspLexer.L"
+#line 52 "TmcLspLexer.l"
 {
 			tmclsp_lval.str=get_string(0); return ReturnLspToken( STRING);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 54 "TmcLspLexer.L"
+#line 54 "TmcLspLexer.l"
 {
 			strcpy(tmclsp_lval.ident,get_string(1)); return ReturnLspToken( IDENT);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 57 "TmcLspLexer.L"
+#line 57 "TmcLspLexer.l"
 { return ReturnLspToken( NIL);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 58 "TmcLspLexer.L"
+#line 58 "TmcLspLexer.l"
 { return ReturnLspToken( TCONST);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 59 "TmcLspLexer.L"
+#line 59 "TmcLspLexer.l"
 { return ReturnLspToken( COL);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 60 "TmcLspLexer.L"
+#line 60 "TmcLspLexer.l"
 { return ReturnLspToken( LINE);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 61 "TmcLspLexer.L"
+#line 61 "TmcLspLexer.l"
 { return ReturnLspToken( TYPE);}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 62 "TmcLspLexer.L"
+#line 62 "TmcLspLexer.l"
 { return ReturnLspToken( STATEMENT);}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 63 "TmcLspLexer.L"
+#line 63 "TmcLspLexer.l"
 { return ReturnLspToken( FUNC);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 64 "TmcLspLexer.L"
+#line 64 "TmcLspLexer.l"
 { return ReturnLspToken( PARAMS);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 65 "TmcLspLexer.L"
+#line 65 "TmcLspLexer.l"
 { return ReturnLspToken( TREE);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 66 "TmcLspLexer.L"
+#line 66 "TmcLspLexer.l"
 { return ReturnLspToken( STATEMENTS);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 67 "TmcLspLexer.L"
+#line 67 "TmcLspLexer.l"
 { return ReturnLspToken( USR_FUNC);}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 68 "TmcLspLexer.L"
+#line 68 "TmcLspLexer.l"
 { return ReturnLspToken( TIDENT);}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 69 "TmcLspLexer.L"
+#line 69 "TmcLspLexer.l"
 { return ReturnLspToken( FNC_DEF);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 70 "TmcLspLexer.L"
+#line 70 "TmcLspLexer.l"
 { return ReturnLspToken( RESULTS);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 71 "TmcLspLexer.L"
+#line 71 "TmcLspLexer.l"
 { return ReturnLspToken( NAME);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 72 "TmcLspLexer.L"
+#line 72 "TmcLspLexer.l"
 { return ReturnLspToken( STMNT);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 73 "TmcLspLexer.L"
+#line 73 "TmcLspLexer.l"
 { return ReturnLspToken( VAL);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 74 "TmcLspLexer.L"
+#line 74 "TmcLspLexer.l"
 { return ReturnLspToken( LIST);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 75 "TmcLspLexer.L"
+#line 75 "TmcLspLexer.l"
 { return ReturnLspToken( PAR);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 76 "TmcLspLexer.L"
+#line 76 "TmcLspLexer.l"
 { return ReturnLspToken( NO_OP_CMD);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 77 "TmcLspLexer.L"
+#line 77 "TmcLspLexer.l"
 { return ReturnLspToken( CMD);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 78 "TmcLspLexer.L"
+#line 78 "TmcLspLexer.l"
 { return ReturnLspToken( DECL_CMD);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 79 "TmcLspLexer.L"
+#line 79 "TmcLspLexer.l"
 { return ReturnLspToken( DECL);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 80 "TmcLspLexer.L"
+#line 80 "TmcLspLexer.l"
 { return ReturnLspToken( DECLARS);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 82 "TmcLspLexer.L"
+#line 82 "TmcLspLexer.l"
 { return ReturnLspToken( OP);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 83 "TmcLspLexer.L"
+#line 83 "TmcLspLexer.l"
 { return ReturnLspToken( S_ASSIGN);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 84 "TmcLspLexer.L"
+#line 84 "TmcLspLexer.l"
 { return ReturnLspToken( LHS);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 85 "TmcLspLexer.L"
+#line 85 "TmcLspLexer.l"
 { return ReturnLspToken( RHS);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 86 "TmcLspLexer.L"
+#line 86 "TmcLspLexer.l"
 { return ReturnLspToken( COLON_EXPR);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 87 "TmcLspLexer.L"
+#line 87 "TmcLspLexer.l"
 { return ReturnLspToken( BASE);}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 88 "TmcLspLexer.L"
+#line 88 "TmcLspLexer.l"
 { return ReturnLspToken( LIM);}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 89 "TmcLspLexer.L"
+#line 89 "TmcLspLexer.l"
 { return ReturnLspToken( INC);}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 90 "TmcLspLexer.L"
+#line 90 "TmcLspLexer.l"
 {; return ReturnLspToken( INDX_EXPR);}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 91 "TmcLspLexer.L"
+#line 91 "TmcLspLexer.l"
 { return ReturnLspToken( FN_EXPR);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 94 "TmcLspLexer.L"
+#line 94 "TmcLspLexer.l"
 { return ReturnLspToken( ARGS);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 95 "TmcLspLexer.L"
+#line 95 "TmcLspLexer.l"
 { return ReturnLspToken( INDEXED_EXPR);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 97 "TmcLspLexer.L"
+#line 97 "TmcLspLexer.l"
 { return ReturnLspToken( ARGUMENT);}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 98 "TmcLspLexer.L"
+#line 98 "TmcLspLexer.l"
 { return ReturnLspToken( FIELD);}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 99 "TmcLspLexer.L"
+#line 99 "TmcLspLexer.l"
 { return ReturnLspToken( BIN_EXPR);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 100 "TmcLspLexer.L"
+#line 100 "TmcLspLexer.l"
 { return ReturnLspToken( BOOL_EXPR);}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 101 "TmcLspLexer.L"
+#line 101 "TmcLspLexer.l"
 { return ReturnLspToken( RETURN);}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 102 "TmcLspLexer.L"
+#line 102 "TmcLspLexer.l"
 { return ReturnLspToken( IF_CLAUSE);}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 103 "TmcLspLexer.L"
+#line 103 "TmcLspLexer.l"
 { return ReturnLspToken( IF_CMDS);}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 104 "TmcLspLexer.L"
+#line 104 "TmcLspLexer.l"
 { return ReturnLspToken( IF_EXP);}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 105 "TmcLspLexer.L"
+#line 105 "TmcLspLexer.l"
 { return ReturnLspToken( IF);}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 106 "TmcLspLexer.L"
+#line 106 "TmcLspLexer.l"
 { return ReturnLspToken( BREAK);}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 107 "TmcLspLexer.L"
+#line 107 "TmcLspLexer.l"
 { return ReturnLspToken( CONTINUE);}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 108 "TmcLspLexer.L"
+#line 108 "TmcLspLexer.l"
 { return ReturnLspToken( WHILE);}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 109 "TmcLspLexer.L"
+#line 109 "TmcLspLexer.l"
 { return ReturnLspToken( W_EXP);}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 110 "TmcLspLexer.L"
+#line 110 "TmcLspLexer.l"
 { return ReturnLspToken( SW_EXP);}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 111 "TmcLspLexer.L"
+#line 111 "TmcLspLexer.l"
 {return ReturnLspToken( SWITCH);}
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 112 "TmcLspLexer.L"
+#line 112 "TmcLspLexer.l"
 { return ReturnLspToken( SW_CASES);}
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 113 "TmcLspLexer.L"
+#line 113 "TmcLspLexer.l"
 { return ReturnLspToken( SW_CASE);}
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 114 "TmcLspLexer.L"
+#line 114 "TmcLspLexer.l"
 { return ReturnLspToken( CASE_LABEL);}
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 115 "TmcLspLexer.L"
+#line 115 "TmcLspLexer.l"
 { return ReturnLspToken( CELL);}
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 116 "TmcLspLexer.L"
+#line 116 "TmcLspLexer.l"
 { return ReturnLspToken( MATRIX);}
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 117 "TmcLspLexer.L"
+#line 117 "TmcLspLexer.l"
 { return ReturnLspToken( ROWS);}
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 118 "TmcLspLexer.L"
+#line 118 "TmcLspLexer.l"
 { return ReturnLspToken( ARGUMENT_LIST);}
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 119 "TmcLspLexer.L"
+#line 119 "TmcLspLexer.l"
 { return ReturnLspToken( ARGUMENTS);}
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 120 "TmcLspLexer.L"
+#line 120 "TmcLspLexer.l"
 { return ReturnLspToken( LMODIFY_EXP);}
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 121 "TmcLspLexer.L"
+#line 121 "TmcLspLexer.l"
 { return ReturnLspToken( REVAL_EXP);}
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 122 "TmcLspLexer.L"
+#line 122 "TmcLspLexer.l"
 { return ReturnLspToken( FOR);}
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 123 "TmcLspLexer.L"
+#line 123 "TmcLspLexer.l"
 { return ReturnLspToken( PFOR);}
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 124 "TmcLspLexer.L"
+#line 124 "TmcLspLexer.l"
 { return ReturnLspToken( OPERAND);}
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 125 "TmcLspLexer.L"
+#line 125 "TmcLspLexer.l"
 { return ReturnLspToken( UN_EXPR);}
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 126 "TmcLspLexer.L"
+#line 126 "TmcLspLexer.l"
 { return ReturnLspToken( FUNC_HANDLE);}
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 127 "TmcLspLexer.L"
+#line 127 "TmcLspLexer.l"
 { return ReturnLspToken( MULTI_ASSIGN);}
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 128 "TmcLspLexer.L"
+#line 128 "TmcLspLexer.l"
 { return ReturnLspToken( TRY);}
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 129 "TmcLspLexer.L"
+#line 129 "TmcLspLexer.l"
 { return ReturnLspToken( TRYCODE);}
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 130 "TmcLspLexer.L"
+#line 130 "TmcLspLexer.l"
 { return ReturnLspToken( CATCHCODE);}
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 131 "TmcLspLexer.L"
+#line 131 "TmcLspLexer.l"
 { return ReturnLspToken( UNTIL);}
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 132 "TmcLspLexer.L"
+#line 132 "TmcLspLexer.l"
 { return ReturnLspToken( U_EXP);}
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 134 "TmcLspLexer.L"
+#line 134 "TmcLspLexer.l"
 { return ReturnLspToken( MAGIC_COL);}
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 138 "TmcLspLexer.L"
+#line 138 "TmcLspLexer.l"
 {  return ReturnLspToken( LPAREN); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 139 "TmcLspLexer.L"
+#line 139 "TmcLspLexer.l"
 {  return ReturnLspToken( RPAREN); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 140 "TmcLspLexer.L"
+#line 140 "TmcLspLexer.l"
 { return ReturnLspToken( EQ);};
 	YY_BREAK
 case 80:
 /* rule 80 can match eol */
 YY_RULE_SETUP
-#line 141 "TmcLspLexer.L"
+#line 141 "TmcLspLexer.l"
 {}
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 142 "TmcLspLexer.L"
+#line 142 "TmcLspLexer.l"
 {  return ReturnLspToken( END_OF_INPUT);}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 143 "TmcLspLexer.L"
+#line 143 "TmcLspLexer.l"
 {  return ReturnLspToken( END_OF_INPUT);}
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 144 "TmcLspLexer.L"
+#line 144 "TmcLspLexer.l"
 {}
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 145 "TmcLspLexer.L"
+#line 145 "TmcLspLexer.l"
 ECHO;
 	YY_BREAK
 #line 1425 "lex.tmclsp_.cpp"
@@ -2426,7 +2426,7 @@ void tmclsp_free (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 144 "TmcLspLexer.L"
+#line 144 "TmcLspLexer.l"
 
 
 static char str_buffer[MAX_SRC_STRING];
@@ -2488,7 +2488,7 @@ void reset_lsp_lexer()
 }
 void dbgPrintLspToken(long TokVal)
 {
-	fprintf(stderr,"%Tok=%d, l=%d,c=%d ",TokVal,(int)tmclsp_lineno,0);
+	fprintf(stderr,"Tok=%d, l=%d,c=%d ",TokVal,(int)tmclsp_lineno,0);
 	if (TokVal==STRING)
 		fprintf(stderr,"%s\n",tmclsp_lval.str);
 	else if (TokVal==IDENT)

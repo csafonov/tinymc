@@ -1,0 +1,65 @@
+
+------------- PASS1 BEGIN FILE: ./Stubs/TestO.m-----------
+ 
+------------- PASS1 END FILE: ./Stubs/TestO.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/multroot.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/multroot.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/pejroot.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/pejroot.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/polyr2p.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/polyr2p.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/gcdroot.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/gcdroot.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/gcdgn.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/gcdgn.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/sylmat.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/sylmat.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/scalsq.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/scalsq.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/forsub.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/forsub.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/backsub.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/backsub.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/cauchymt.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/cauchymt.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/zminsv.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/zminsv.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/hqrt.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/hqrt.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/hessqr.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/hessqr.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/sylves.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/sylves.m-----------
+ 
+------------- PASS1 BEGIN FILE: ../multroot/polyder.m-----------
+ 
+------------- PASS1 END FILE: ../multroot/polyder.m-----------
+ ========== Finished generating code: 16 succeeded, 0 failed, 16 processed, 0 error(s), 0 warning(s), ==========

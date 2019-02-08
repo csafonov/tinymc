@@ -1,0 +1,5 @@
+INDEX VERSION 1.126+D:\Data_D\HSKOST\TMC\rel_sourceforge\tmc_src-1.01\examples\Simo_ADT\Simo_ADT_ws\.metadata\.plugins\org.eclipse.jdt.core
+3006383357.index
+3694801986.index
+2273099757.index
+702795862.index

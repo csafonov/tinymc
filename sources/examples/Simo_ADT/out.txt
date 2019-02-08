@@ -1,0 +1,1 @@
+./MatSRC/findcompensator.m(16) : error P0001: fatal syntax error

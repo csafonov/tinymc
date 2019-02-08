@@ -1,0 +1,1 @@
+.\Stubs\TestO.m(26) : error P0001: fatal syntax error

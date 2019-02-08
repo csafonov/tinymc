@@ -1,0 +1,23 @@
+GNU gdb (GDB) 7.6.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "mingw32".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from D:\Data_D\HSKOST\TMC\qd_tmc\tmc_src-1.02\examples\AppEx\bin\Ex1_w32_shared.exe...done.
+(gdb) (gdb) (gdb) Breakpoint 1 at 0x402180: file TestO.c, line 21.
+(gdb) Starting program: D:\Data_D\HSKOST\TMC\qd_tmc\tmc_src-1.02\examples\AppEx/.\bin\Ex1_w32_shared.exe 
+[New Thread 8056.0xb90]
+
+Breakpoint 1, tmcTestO (nargout=1, nargin=1, y=0x6d1e40, 
+    x__input__tmc=0x6d1e00) at TestO.c:21
+21	,tmsMatrix *x__input__tmc) {
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 8056] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]

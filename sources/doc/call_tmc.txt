@@ -1,0 +1,8 @@
+.m-->.lsp:
+
+-P -L -w TestO  -r ./Stubs/TestO.m -h ..\..\include/ -l ./OutL/testO.lsp.txt -@ woo1_rsp.txt  -o ./OutL/ >>out.txt
+
+.m-->.c
+
+-c -L -C   -d -q  -g2  -w TestO  -r .\Stubs\TestO.m -l .\OutC\testO2.err.log -@ woo2_rsp2.txt  -o .\OutC\ >outC2.txt
+

@@ -134,7 +134,7 @@ extern int tmclsp_debug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 31 "TmcLspParser.Y"
+#line 31 "TmcLspParser.y"
 
 	char   *str;
 	double num;

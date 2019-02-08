@@ -1,0 +1,5 @@
+-i ./MatSRC/
+-s ./MatSRC/
+-s ./Stubs/
+-i ../multroot/
+-s ../multroot/

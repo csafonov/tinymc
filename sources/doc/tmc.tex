@@ -1,0 +1,3300 @@
+\input texinfo
+@setfilename tmc.info
+@include version.texi
+@settitle  TMC Compiler (tiny M-to-C converter)  @value{VERSION}
+@synindex tp fn
+
+
+
+
+@set AUTHORS  by Shmuel Safonov
+
+@copying
+This manual is for TMC Compiler, Tiny m-to-C , an open-source tool for conversion MALTAB @footnote{MATLAB is a registered trademark of Mathworks Inc.}
+ language-written projects into C-code for compiling it into a stand-alone executable or shared library.
+
+version @value{VERSION} of @value{UPDATED-MONTH}.
+
+Copyright @copyright{} 2009-2016, PhD Shmuel Safonov
+
+@c  The following two commands
+@c  start the copyright page.
+
+
+@quotation
+This document is redistributable under the license given in the file "LICENSES" distributed in the TMC Compiler
+archive.
+@c Permission is granted to copy, distribute and/or modify this document
+@c under the terms of the GNU Free Documentation License, Version 1.3 or
+@c any later version published by the Free Software Foundation or
+@c  A copy of the license is included in the section entitled ``GNU Free Documentation License.''
+@end quotation
+@end copying
+
+@iftex
+@afourpaper
+@end iftex
+@tex
+\global\parindent=0pt
+\global\parskip=8pt
+\global\baselineskip=13pt
+@end tex
+
+@dircategory Software Developement
+@direntry
+* TMC Compiler:  (tmc)Tiny m-to-C converter.
+@end direntry
+
+
+@titlepage
+@title  TMC Compiler (tiny M-to-C converter)
+@subtitle The   TMC Compiler (tiny M-to-C converter)
+@subtitle Edition @value{VERSION}
+@subtitle @value{UPDATED-MONTH}
+@author @value{AUTHORS}
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top  TMC Compiler
+
+This manual documents how to install and use the TMC Compiler, version @value{VERSION}
+@end ifnottex
+
+@menu
+* Copying::                    TMC Compiler Copying Conditions.
+* Reporting Bugs::              How to usefully report bugs.
+* Introduction to TMC Compiler::         Brief introduction to TMC Compiler.
+* Installing TMC Compiler::              How to install TMC Compiler and compile its run-time library if needed.
+* Getting started with TMC Compiler::         Compiling your first project.
+* TMC m-to-C converter::           TMC m-to-C converter utility reference.
+* TMC run-time library::           TMC run-time library reference and supported Build-in Functions.
+* Supported source language::  MATLAB language subset supported by TMC Compiler
+@c * References::
+* Concept Index::
+* Function Index::
+@c * GNU Free Documentation License::
+@end menu
+
+@c  @times{} made available as a "x" in info and html  (already works in tex).
+@ifnottex
+@macro times
+x
+@end macro
+@end ifnottex
+
+
+@node Copying
+@unnumbered TMC Compiler Copying Conditions
+@cindex Copying conditions
+@cindex Conditions for copying TMC Compiler
+
+@b{TMC Compiler consists of TMC Converter tool and TMC Run-time library.}
+
+@b{TMC Converter is covered by GPL license:}
+
+TMC Converter is free software; you can redistribute it and/or modify it under
+the terms of the GNU  General Public License as published by the
+Free Software Foundation; either version 3 of the License, or (at your
+option) any later version.
+
+TMC Compiler is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see @uref{http://www.gnu.org/licenses/}.
+
+
+@b{TMC Compiler Runtime library is covered by simplified BSD 2-Clause license:}
+
+
+Copyright (c) 2016, Shmuel Safonov
+ All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided
+that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions
+ and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation and/or other materials
+ provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+ BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+@b{The following third-party software are used by TMC runtime library with their own license terms:}
+
+@enumerate
+
+@item LAPACK (ver. 3.1)
+
+Copyright (c) 1992-2008 The University of Tennessee.  All rights reserved. @*
+
+Additional copyrights may follow @*
+
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met: @*
+
+- Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer. 
+  
+- Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer listed
+  in this license in the documentation and/or other materials
+  provided with the distribution.
+  
+- Neither the name of the copyright holders nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission. @*
+  
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT  
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT  
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+
+@item FDLIBM
+
+Copyright (C) 2004 by Sun Microsystems, Inc. All rights reserved.
+
+FDLIBM (Freely Distributable LIBM) is a C math library for supporting IEEE 754
+-floating-point arithmetic.
+
+@item FFTPACK
+
+FFTPACK is a package of Fortran subroutines for the fast Fourier transform. It includes complex, real, sine, cosine, and quarter-wave transforms. It was developed by Paul Swarztrauber of the National Center for Atmospheric Research.
+Public domain
+
+@item F2C LIBS
+
+
+Copyright 1990 - 1997 by AT&T, Lucent Technologies and Bellcore.
+
+Permission to use, copy, modify, and distribute this software
+and its documentation for any purpose and without fee is hereby
+granted, provided that the above copyright notice appear in all
+copies and that both that the copyright notice and this
+permission notice and warranty disclaimer appear in supporting
+documentation, and that the names of AT&T, Bell Laboratories,
+Lucent or Bellcore or any of their entities not be used in
+advertising or publicity pertaining to distribution of the
+software without specific, written prior permission.
+
+AT&T, Lucent and Bellcore disclaim all warranties with regard to
+this software, including all implied warranties of
+merchantability and fitness.  In no event shall AT&T, Lucent or
+Bellcore be liable for any special, indirect or consequential
+damages or any damages whatsoever resulting from loss of use,
+data or profits, whether in an action of contract, negligence or
+other tortious action, arising out of or in connection with the
+use or performance of this software.
+
+
+@end enumerate
+
+
+
+
+@node Reporting Bugs
+@unnumbered Reporting Bugs
+@cindex Reporting Bugs
+
+Any feedback may be send by the mailing list:
+
+@file{https://sourceforge.net/p/tmc-m-files-to-c-compiler/mailman/search/?mail_list=tmc-m-files-to-c-compiler-tmccompiler}
+
+or directly to athors's e-mail: @file{csafonov@@gmail.com}
+
+@section How to use this Manual
+
+First read @ref{Installing TMC Compiler} in order to install the software. Then read @ref{Getting started with TMC Compiler} chapter that guides you through compiling your first project.
+
+The chapter @ref{TMC run-time library} is recommended for reference of supported build-in functions. 
+
+A user is assumed to have a knowledge of MATLAB language. 
+
+
+Refer to @ref{Supported source language} for details which features of MATLAB are actually supported.
+The knowledge of C is not mandatory or needed very little. 
+
+The remainder of the manual can be used for later reference.  
+
+
+
+
+@node Introduction to TMC Compiler
+@chapter Introduction to TMC Compiler
+
+TMC Compiler is a package for conversion MATLAB-written projects to  C code. It consists of TMC Converter, a command-line utility, and TMC Library, a run-time support library . 
+
+This software may help to migrate from the prototype stage of the algorithm development  to the final implementation. TMC Compiler provides the maximal portability and minimal dependencies on third-party software libraries.
+The generated C-code can be compiled together with slightly modified C code of existing MEX-files. User may extend or add it's own implementation to the set of build-in functions. The run-time support library may be linked statically or dynamically. Yet the syntax is a bit restricted the basics is provided:  it supports cell arrays, structures, 2D matrixes.
+
+TMC Library contains a small number of  in-build functions that user can extend according to its own needs.
+The user functions may be written in C and linked with the application. 
+
+
+@node Installing TMC Compiler
+@chapter Installing TMC Compiler
+@cindex Installation
+
+TMC Compiler contains from TMC Converter tool @samp{tmcco} and TMC Library, support run-time libraries built for different
+target platforms. 
+
+To build TMC, you need a C compiler;
+GCC version 4.8 or higher is recommended. And you need a
+standard Linux @samp{make} program, plus some other standard Linux utility
+programs. For recompiling of the conversion tool @samp{tmcco} you need  @samp{BISON} and  @samp{FLEX} programs installed.
+
+Here are the steps needed to install the library on Linux systems:
+
+@enumerate
+@item
+@samp{unzip xzf tmc_src-@value{VERSION}.zip}
+
+@item
+@samp{cd tmc_src-@value{VERSION}\src\tmcwood}
+
+@item
+@samp{./make}
+
+This compiles @samp{tmcco} in the working directory. It should be copied to @file{tmc_src-@value{VERSION}\bin}
+
+@item
+@samp{cd tmc_src-@value{VERSION}\src\tmcruntime}
+
+@item
+@samp{./make}
+
+This compiles run-time library (static) in the working directory and put it in @file{tmc_src-@value{VERSION}\lib}
+
+Note: you need write permissions on these directories.
+
+@end enumerate
+
+Here are the steps needed to install the library on Windows systems (MINGW):
+@enumerate
+@item
+@samp{unzip xzf tmc_src-@value{VERSION}.zip}
+
+@item
+@samp{cd tmc_src-@value{VERSION}\src\tmcwood}
+
+@item
+@samp{tmcco_gcc.bat}
+
+This compiles @samp{tmcco} in the working directory and copies it to @file{tmc_src-@value{VERSION}\bin}
+
+@item
+@samp{cd tmc_src-@value{VERSION}\src\tmcruntime}
+
+@item
+@samp{maketmcruntime_mingw.bat}
+
+This compiles run-time library (static and shared) in the working directory and put it in @file{tmc_src-@value{VERSION}\lib}
+
+@item
+@samp{cd tmc_src-@value{VERSION}\src\qdlapack_tmcruntime}
+
+@item
+@samp{make_qdlapack_mingw.bat}
+
+This compiles 128bit-quad precision run-time library for  @samp{roots_qd}  function (static and shared) in the working directory and put it in @file{tmc_src-@value{VERSION}\lib}. This step is optional if you are not intended to use this feature.
+
+Note: you need write permissions on these directories.
+
+@end enumerate
+
+
+@node Getting started with TMC Compiler
+@chapter Getting started with TMC Compiler
+
+The installed package consists of the following directories:
+
+@file{tmc_src-@value{VERSION}\bin} -Converter tool binaries @*
+@file{tmc_src-@value{VERSION}\doc} - Manuals and documentation @*
+@file{tmc_src-@value{VERSION}\examples} -Usage examples @*
+@file{tmc_src-@value{VERSION}\include} - Include files @*
+@file{tmc_src-@value{VERSION}\lib} - Support run-time libraries (static and shared binaries) @*
+@file{tmc_src-@value{VERSION}\src} - Sources @*
+
+The best Getting Started for a new user is to compiler the attached examples using batch file @samp{MakeEx1_minigw.bat} or @samp{makefile} that are present in the example directories. 
+
+@cindex @file{tmc.h}
+@cindex @file{root function}
+TMC Compiler processes a single @dfn{root function}  and generates C-code for it. 
+All declarations needed to interface with the code generated by TMC Compiler  are collected in the include file
+@file{tmc.h}.  It is designed to work with  C   compiler.
+You should include that file in any program calling the generated code 
+by adding the line
+@example
+   #include "tmc.h"
+@end example
+
+@section  Types
+
+@cindex tmsMatrix
+
+
+@tindex @code{tmsMatrix}
+@noindent
+Any  variable or @dfn{ matrix } in TMC Language is represented by a single C data type 
+@code{tmsMatrix}. This type is implemented as a structure and may represent a real or complex matrix, cell array or a structure. 
+The matrix values are double precision numbers. Any function parameter or result of operation has this type. Thus subsets of cell arrays or multi-dimension matrix are not supported. Integer and logical types are not suported also.
+
+@section Initializing run-time library
+
+Before calling any function the run-time library should be intialized:
+@example
+#include "tmc.h"
+// for MSVC: #define EXT_LINKAGE __declspec(dllimport) if calling DLL
+extern EXT_LINKAGE const struct CInit_funcs_table Init_funcs_table ; 
+@dots{}
+tmcInitLib(&Init_funcs_table); // initialization
+@dots{}
+// calling tmc functions
+@dots{}
+tmcFreeLib(); // finalization
+@end example
+
+
+
+
+@node Calling root function
+@section Calling root function
+
+The externally called @dfn{root function}  as well as in-build and user-defined functions have the single prototype like:
+
+@deftypefun void tmcFunc (int @var{nargout}, int  @var{ nargin}, tmsMatrix *  @var{Output1}, @dots{}  tmsMatrix *  @var{OutputM}, tmsMatrix *  @var{Input1}, @dots{}  tmsMatrix *  @var{InputN} )
+@end  deftypefun
+
+The used input and output arguments passed to a function should be initialized to empty matrix. 
+Unused arguments are passed by caller as NULLs. 
+
+Example:  @file{TestO.m} contains
+@example
+	function y=TestO(x)
+	@dots{}
+	end
+@end example
+that is compiled to 
+@deftypefun  void tmcTestO (int  @var{nargout}, int  @var{nargin},tmsMatrix * @var{y},tmsMatrix * @var{x});
+@end  deftypefun
+
+The call sequence should be as
+@example
+@{
+x = tmcNewMatrix();
+y = tmcNewMatrix();
+tmcScalar(x,100); // x=100
+tmcTestO(1, 1,y,x);
+d = y->m_rData[0]; // getting result d = y(1) to double variable
+tmcFreeLocalVar(y);
+tmcFreeLocalVar(x);
+@}
+@end example
+
+The following may be a more safe way of getting results: 
+@example
+@{
+ d = tmcMatrixValRe(y,m,n); // assign result element d = y(m,n) to double variable
+@}
+@end example
+
+
+If the returned variable @var{y} is a structure that has a field @code{P1} then the field can be assigned to a matrix @var{p} as following:
+@example
+p = tmcNewMatrix();
+tmcGetByFieldHcode(p,y,0x09e10000);/* P1 */
+@end example
+This is a bit advanced technique that requires from user to find the hash-code @code{0x09e10000} of the string @samp{P1}. The hash-code is found in the file
+@file{TestO.hash_init.dat}:
+@smallexample
+...
+"P1",0x09e10000,
+...
+@end smallexample
+provided that the field @samp{P1} is explicitly reference somewhere in the processed source code.
+
+
+@section User-defined C-functions
+
+The set of in-build functions may be extended by user.  To perfom it, the function implementation should be written with prototype described in  @ref{Calling root function} and
+it must be available to converted by putting the function @dfn{signature} to @dfn{symbol definition file}. Each row of the file should have format as
+@example
+ @dfn{name},@dfn{maximal_number_of_inputs},@dfn{maximal_number_of_outputs},x;
+@end example
+
+The function names in C-code must begin with @code{tmc}. 
+
+
+
+@node TMC Converter
+@chapter TMC Converter
+@cindex TMC Converter
+
+TMC Converter is a command-line tool that  should be run in two-passes:
+
+@enumerate
+@item Preparing actual source files list and common project symbol file
+@item Generartion C-code from the source files using the symbol file
+@end enumerate
+
+The pass 1 is needed to buid the symbol file that contains the signature definitions of all the functions that are referenced in the project. The compiler parses the referenced files starting from the root file,
+ using the project specific @file{external_fnc.sym.dat} file together with the TMC library @file{buildin_fnc.sym.dat} file and generates the output common project symbol file. 
+
+Before calling TMC Compiler  @file{external_fnc.sym.dat} file should be copied from the source to output directory:
+@smallexample
+  type .\Stubs\external_fnc.sym.dat > .\OutL\external_fnc.sym.dat (Windows)
+@end smallexample
+or
+@smallexample
+  cp ./Stubs/external_fnc.sym.dat  ./OutL/external_fnc.sym.dat (Linux)
+@end smallexample
+
+@node TMC Converter Command-line switches
+@section TMC Converter Command-line switches
+@cindex TMC Converter Command-line switches
+
+@table @asis
+
+@item Mode switches:
+@table @option
+@item -L
+Parse m-files, generate symbol table (1st pass)
+@item -g2
+Generate C-code from m-files using the symbol table (2nd pass)
+@end table
+
+@item Input source switches:
+@table @option
+@item -r @var{name}
+Defines  the file @var{name} with root function definition.
+@item -i @var{path} 
+Include the directory @var{path} in the input files search. Multiple @option{-i} switches may be given. The switch may be put in a response file.
+@item -s @var{path}
+Include the directory @var{path} in the sources files search for source-comment generation. Multiple @option{-i} switches may be given. The switch may be put in a response file.
+@item -@@ @var{response file}
+Response file with @option{-i} and @option{-s} options
+@item -h @var{path}
+Path to TMC library includes directory that conatains @file{buildin_fnc.sym.dat} file
+@end table
+
+@item Output destination switches:
+@table @option
+@item -w @var{name}
+Workspace name
+@item -o  @var{path}
+Output directory name
+@end table
+
+@item Code generation control switches:
+@table @option
+@item -c
+ Generate C-code
+@item -S
+ Generate x86 assembler code
+@item -A
+ Parse all the files (ignore dependencies)
+@item -P
+ Generate lsp-output (1st pass)
+@end table
+
+@item Debugging switches:
+@table @option
+@item -d
+@cindex  Debugging features
+ Include debugging support code.
+@item -C
+ Include m-code as comments in generated C-code
+@item -q
+ Quite mode, minimal display
+@item -f @var{name}
+ Generate C - code for a single file
+@item -l @var{name}
+ Listing filename
+@end table
+@end table
+
+
+Invoking examples:
+@enumerate
+@item Symbol table generation from m-files (1st pass)
+@smallexample
+@command{mkdir} .\OutL
+@command{mkdir} .\OutC
+@command{type}  @file{.\Stubs\external_fnc.sym.dat} > @file{.\OutL\external_fnc.sym.dat}
+
+@command{tmcco}  -L -w TestO  -r ./Stubs/TestO.m -h ..\..\include/ -l ./OutL/testO.lsp.txt
+ -@@ woo1_rsp.txt  -o ./OutL/ > out.txt
+@end smallexample
+
+@*
+@file{woo1_rsp.txt}:
+@smallexample
+-i ./MatSRC/
+-i ./Utils/
+@end smallexample
+
+@item C-code generation from m-files and the symbol table (2nd pass):
+@smallexample
+@command{copy} 	.\OutL\TestO.sym.dat .\Stubs\
+@command{tmcco} -c -C   -d -q  -g2  -w TestO  -r .\Stubs\TestO.m -l .\OutC\testO2.err.log
+ -@@ woo2_rsp2.txt  -o .\OutC\ > outC2.txt
+@end smallexample
+
+@*
+@file{woo2_rsp2.txt}:
+@smallexample
+-i ./MatSRC/
+-s ./MatSRC/
+-s ./Stubs/
+@end smallexample
+
+@item  Symbol table and lsp-files generation from m-fies (1st pass):
+@smallexample
+@command{type}  @file{.\Stubs\external_fnc.sym.dat} > @file{.\OutL\external_fnc.sym.dat}
+@command{tmcco} -L -P -w TestO  -r ./Stubs/TestO.m -h ..\..\include/  -l ./OutL/testO.lsp.txt
+ -@@ woo1_rsp.txt -o ./OutL
+@end smallexample
+
+@item  C-code generation from lsp-files and the symbol table (2nd pass):
+@smallexample
+@command{copy} 	.\OutL\TestO.sym.dat .\Stubs\
+@command{tmcco}  -c -C -d -g2 -w TestO -r ./Stubs/TestO.lsp -l -l ./OutL/testO.lsp.txt
+-@@ woo2_rsp3 -o .\OutC\ 
+@end smallexample
+
+@*
+@file{woo2_rsp3.txt}:
+@smallexample
+-s ./MatSRC/
+-s ./Stubs/
+@end smallexample
+
+@end enumerate
+
+@c The command line looks like:
+@c tmcco  -L -w TestO  -r ./Stubs/TestO.m -h ..\..\include/ -l ./OutL/testO.lsp.txt -@ woo1_rsp.txt  -o ./OutL/ >>out.txt
+@c The switch meanings are:
+@c  -L : means that pass 1 is perfomed to generate the symbol file 
+@c -w TestO : defines the workspace name that is attached for output files
+@c  -r ./Stubs/TestO.m : defines the file with root function definition.
+@c  -h  ..\..\include/ : define the directory for the library buildin_fnc.sym.dat file with build-in functions definitions
+@c  -l ./OutL/testO.lsp.txt : define the file for the compilation listing information
+@c  -o ./OutL/ : define the output directory definition.
+@c   -@ woo1_rsp.txt : define the file with additional switch commands. This file may contain the list of directories that contains the source m-files: 
+@c   -i ./MatSRC/  : search directory for source m-files. Multiple -i<path> switches may be given.
+
+
+@node Supported source language
+@chapter Supported source language
+@cindex Supported source language
+
+  This chapter describes the MATLAB language subset supported by TMC Compiler. 
+The following list summarizes some differences   from MATLAB(TM) language :
+
+@itemize @bullet
+
+@item
+ No graphics and GUI support. The generated code is suggested to be a library used by an application that provides its own GUI. However for debugging purpose code that may call user-provided graphics may be generated.
+@item Only functions are compiled, not scripts; each file may contain a single function only with the same name as the fie itself, case-sensitive. 
+@item The usage of @code{end} keyword has some restrictions. The simple matrixes are supported but not expressions like @code{strct.fld(end)}
+@item The expression of @code{if} command should be separated from instructions body by ',' or newline separator.
+@item Only 2D matrixes are supported; the 3D matrixes may be supported in future.
+@item Structure arrays are not supported. User is recommended to use cell arrays to replace them.
+@item Cell arrays may be indexed only by simple scalar index: e.g S@{n@} where n is a number, not array.
+@item Logical variables are not supported. E.g.:
+@example
+ x =[1,2,3]
+@end example
+     Expression
+@example
+ x(x>1) 
+@end example
+that in MATLAB results in [2,3] in TMC language is equal to x([0,1,1]) and produces an error. User should
+      replace the code by 
+@example
+x(find(x>1)).
+@end example
+@item No classes support
+@item  @code{try/catch}  are supported by the host platform and C compiler: this works with MS VC, Borland C Builder but doesn't work with Android/Linux GNU C.
+@item Symbols detected as functions (in-build functions e.g.) and reserved symbols @code{for j=i=sqrt(-1)} may not be re-assigned to become variables. Thus @code{j} and @code{i} may not be used as variables! 
+
+@end itemize
+
+@node Data initialization
+@section Data initialization
+
+Matrix and arrays are initialized like
+@example
+ X =  [value1, value2, @dots{}  ]
+@end example
+where separator  @samp{,} can be ommited but is recommended. 
+
+String array is initialized as
+@example
+ s = 'character string'
+@end example
+
+Cell arrays are initialized like
+@example
+ C =  @{value1, value2, @dots{}  @}
+@end example
+or by an assignment like
+@example
+ C@{k@} = value1
+@end example
+
+Complex numbers are assigned as
+@example
+x = 1 + j
+@end example
+or
+@example
+x = 1 + i
+@end example
+@cindex Imaginal unit symbols @code{i} and @code{j} 
+Note, that imaginal unit symbols symbols @code{i} and @code{j} are always reserved and @b{may not be   overridden} and used as variables or function names !!!
+
+Structures are initialized like
+@example
+ S =  struct('fn1', value1,  @dots{})
+@end example
+or by an assignment like
+@example
+ S.fn1= value1
+@end example
+
+Function handles are initialized and used like
+@example
+FH = @@sin   % assign function handle of sunction sin(x) to variable FH 
+Y=FH(X) % call sin(X) through the handle FH
+@end example
+Only handles to functions with a single argument   are supported by TMC Library.
+
+
+
+@cindex  @code{global}
+A global scope variable is declared as
+@example
+ global X
+@end example
+
+@section @code{end} symbol for last index
+@cindex  @code{end} symbol for last index
+
+Special symbol @code{end} is supported for last index.
+The value of @code{end} when it states in k-th dimension  index position is size(X,k).
+This syntax is implemented in expressions like
+@example
+ X(1:end-4)
+@end example
+
+
+
+@section Control Flow  constructions
+
+@subsection Loop @code{for}
+@cindex  @code{for}
+For loop is defined  like
+@example
+	@b{for} var=expression
+		<instruction block>
+	@b{end}
+@end example
+
+@subsection Loop @code{while}
+@cindex  @code{while}
+@code{while} loop is defined  like
+@example
+	@b{while} expression
+		<instruction block>
+	@b{end}
+@end example
+
+@subsection Block @code{if}
+@cindex  @code{if}
+@cindex  @code{elseif}
+@cindex  @code{else}
+
+Block @code{if} is defined  like
+@example
+@group
+	@b{if} expression1
+		<instruction block1>
+	@b{elseif} expression2
+		<instruction block2>
+	...
+	@b{else}
+		<instruction block >
+	@b{end}
+@end group
+@end example
+A separator like @samp{,} or newline must present between condition a expression and the corresponding instruction block.
+
+@subsection Block @code{switch}
+@cindex  @code{switch}
+@cindex  @code{case}
+@cindex  @code{otherwise}
+Block @code{switch} is defined  like
+@example
+@group
+	@b{switch} expression1
+	@b{case} value-list1
+		<instruction block1>
+	@b{case} value-list2
+		<instruction block2>
+	...
+	@b{otherwise}
+		<instruction block >
+	@b{end}
+@end group
+@end example
+
+@subsection Block @code{try/catch}
+@cindex  @code{try}
+@cindex  @code{catch}
+Block @code{try/catch} is defined  like
+@example
+@group
+	@b{try}  
+ 		<instruction block1>
+	@b{catch}
+		<instruction block2 >
+	@b{end}
+@end group
+@end example
+
+The @code{try/catch} functionaly is supported only if the C-compiler supports SEH exception handling (e.g. MSVC, C-Builder).
+If @code{try/catch} is not supported then the generated C-code should be compiled with the command options that define the corrsponding  symbols as folowing:
+@smallexample
+-DTMC_NO_SEH=";"  -DTRY=";" -DCATCH=";" -DENDCATCH=";" -DFINALLY=";"  -DENDFINALLY=";"
+@end smallexample
+
+@subsection Special commands
+@cindex  @code{break}
+@cindex  @code{continue}
+@cindex  @code{return}
+
+@itemize @bullet
+@item @code{break}
+Branch out of @code{for} or @code{while} loop.
+@item @code{continue}
+Branch to the next iteration of @code{for} or @code{while} loop.
+@item @code{return}
+Return from the function
+@end itemize
+
+
+
+
+@node TMC run-time library
+@chapter TMC run-time library
+@cindex TMC run-time library
+
+The TMC run-time library provides:
+
+@itemize
+@item External API:
+Functions for the code initialization, passing data to compiled code and  retrieving results. 
+
+@item Internal support for basic operations
+
+@item Build-in functions implementation
+@end itemize
+
+@menu
+*  Initialization functions::
+* Data Assigning functions::
+* Internal functions::
+* Build-in MATLAB functions support::
+@end menu
+
+@node Initialization functions
+@section  Initialization functions
+
+The code calling the TMC-generated function should be initialized and finally un-initialized. Functions @code{tmcInitLib} and @code{tmcFreeLib} are used for this purpose:
+
+short tmcInitLib(const struct CInit_funcs_table *pInit_funcs_table);
+short tmcFreeLib(void);
+
+
+
+@deftypefun short tmcInitLib (const struct CInit_funcs_table *  @var{pInit_funcs_table})
+Initialize TMC run-time. Parameter @code{pInit_funcs_table}  should pass to the initialization function the pointer @code{&Init_funcs_table} to the global table that is generated by TMC compiler. 
+@end deftypefun
+
+
+@deftypefun short  tmcFreeLib (void)
+Free the resources occupied by the runtime.
+@end deftypefun
+
+Example:
+
+@example
+#include "tmc.h"
+int main()
+@{
+// for MSVC: #define EXT_LINKAGE __declspec(dllimport) if calling DLL
+extern EXT_LINKAGE const struct CInit_funcs_table Init_funcs_table ; 
+@dots{}
+tmcInitLib(&Init_funcs_table); // initialization
+@dots{}
+// calling tmc functions
+@dots{}
+tmcFreeLib(); // finalization
+@}
+@end example
+
+
+@node Data Assigning functions
+@section Data Assigning functions
+@cindex Data Assigning functions
+
+These functions initialize and assign new values to matrix.
+
+@deftypefun tmsMatrix tmcNewMatrix (void)
+Create new matrix. The matrix is initialized by empty value.
+
+Example:
+@example
+tmsMatrix *x = tmcNewMatrix(); // x = []
+@end example
+@end deftypefun
+
+
+
+@deftypefun void tmcFreeLocalVar (tmsMatrix * @var{src})
+Free local variable @var{src} at exit from a function.
+
+Example:
+@example
+tmsMatrix *x = tmcNewMatrix(); // x = []
+@dots{}
+tmcFreeLocalVar(x);
+@end example
+@end deftypefun
+
+@deftypefun void tmcScalar (tmsMatrix * @var{dest}, double x)
+Assign real value  @var{dest}=x
+@end deftypefun
+
+@deftypefun void tmcComplexScalar (tmsMatrix * @var{dest} ,double @var{xr} ,double @var{xi} )
+Assign complex value  @var{dest}=xr + j*xi
+@end deftypefun
+
+@node Build-in MATLAB functions support
+@section Build-in MATLAB functions support
+@cindex Build-in MATLAB functions support
+
+The section contains the list of supported build-in functions. Each function is listed with its C-code function prototype from TMC Library. As noted, the following naming convention takes place: each function call @code{foo} is compiled to @code{tmcfoo}. The parameters are passed in the following sequence: 
+@code{
+actual number of outputs, actual number of inputs, output parameters, input parameters
+}
+
+@*
+@findex  abs
+@code{ Y=abs( @var{X})}
+@deftypefun void tmcabs (long @var{nout}, long @var{ninput} , tmsMatrix *y,tmsMatrix *x)
+Returns matrix @var{Y} composed of the absolute values of @var{X}.
+@end deftypefun
+@*
+
+@findex  acos
+@code{ Y=acos( @var{X})}
+@deftypefun void tmcacos (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns matrix @var{Y}=acos( @var{X}). @*
+For complex argument @code{acos(z)=-i *  log(z+i *  sqrt(1-z^2))}
+@end deftypefun
+@*
+
+@findex  all
+@code{  Y=all( @var{X})}
+@deftypefun void tmcall (long nout,long ninput, tmsMatrix *y,tmsMatrix *x,tmsMatrix *dim_a)
+For vectors, all(X) is 1 if all X are non-zero @*
+For matrices, all(X) is a row vector with all() over each column.
+@end deftypefun
+@*
+
+@findex  angle
+@code{  Y=angle( @var{Z})}
+@deftypefun void tmcangle (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns matrix @code{Y=atan2(imag(Z), real(Z))}, that is argument @var{phi} of @code{ Z=|Z| * (cos (@var{phi}) + j * sin (@var{phi}))} in radians
+@end deftypefun
+@*
+
+@findex  any
+@code{  Y=any( @var{X})}
+@deftypefun void tmcany (long nout,long ninput, tmsMatrix *y,tmsMatrix *x,tmsMatrix *dim_a)
+For vectors, any(X) is 1 if any X are non-zero @*
+For matrices, any(X) is a row vector with any() over each column.
+@end deftypefun
+@*
+
+@findex  asin
+@code{  Y=asin( @var{X})}
+@deftypefun void tmcasin (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns matrix @var{Y}=asin( @var{X}). @*
+For complex argument @code{asin(z)=-i *  log(i*z +   sqrt(1-z^2))}
+@end deftypefun
+@*
+
+@findex  atan
+@code{  Y=atan( @var{X})}
+@deftypefun void tmcatan (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns matrix @var{Y}=atan( @var{X}). @*
+For complex argument @code{atan(z)=(i/2) *  log((i+z)/(i-z) )}
+@end deftypefun
+@*
+
+@findex  atan2
+@code{  Y=atan2( @var{Y},@var{X})}
+@deftypefun void tmcatan2 (long nout,long ninput, tmsMatrix *y,tmsMatrix *xs,tmsMatrix *xc)
+Returns matrix four-quadrant inverse tangent  of the real parts of Y and X. Imaginary parts are ignored. @*
+@end deftypefun
+@*
+
+@findex  axis
+@code{  Y=axis( @var{Y},@dots{})}
+@deftypefun void tmcaxis (long nout,long ninput,tmsMatrix *hand,@dots{})
+N/A, reserved. @*
+@end deftypefun
+@*
+
+@findex  bitand
+@code{  Y=bitand( @var{A},@var{B})}
+@deftypefun void tmcbitand (long nout,long ninput,tmsMatrix *y,tmsMatrix *a,tmsMatrix *b)
+Returns matrix @code{Y = A & B}  (bit-wise AND). Defined only for real arguments. @*
+@end deftypefun
+@*
+
+@findex  bitor
+@code{ Y=bitor( @var{A},@var{B})}
+@deftypefun void tmcbitor (long nout,long ninput,tmsMatrix *y,tmsMatrix *a,tmsMatrix *b)
+Returns matrix @code{Y = A | B}  (bit-wise OR). Defined only for real arguments. @*
+@end deftypefun
+@*
+
+@findex  bitshift
+@code{  Y=bitshift( @var{A},@var{K } [,@var{N}])}
+@deftypefun void tmcbitshift (long nout,long ninput,tmsMatrix *y,tmsMatrix *a,tmsMatrix *k,tmsMatrix *n)
+Returns @code{Y=A<<K, K>0 } or @code{Y=A>>(-K), K<0}. Only N bits are treated (default N=53). @*
+@var{A} must be real, @var{K},@var{N} must be scalars.
+@end deftypefun
+@*
+
+@findex  ceil
+@code{  Y=ceil( @var{X})}
+@deftypefun void tmcceil (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns a value representing the smallest integer that is greater than or equal to @var{X}. @*
+For complex @var{X} applied separately to real and imagine parts.
+@end deftypefun
+@*
+
+@findex  cell
+@code{ Y=cell( @var{N},[,@var{M}])}
+@deftypefun void tmccell (long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,@dots{});
+Returns empty cell array. Only one-dimention and two dimension cell arrays are supported.
+@end deftypefun
+@*
+
+@findex  cell2mat
+@code{  Y=cell2mat( @var{X})}
+@deftypefun void tmccell2mat (long nout,long ninput, tmsMatrix *y, tmsMatrix *x)
+N/A, reserved.
+@end deftypefun
+@*
+
+@findex  char
+@code{  Y=char( @var{X})}
+@deftypefun void tmcchar (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Convert real double array X to 16bit character string.
+@end deftypefun
+@*
+
+@findex  close
+@code{  Y=close( @var{H})}
+@deftypefun void tmcclose (long nout,long ninput,tmsMatrix *stat,tmsMatrix *hand)
+N/A, reserved.
+@end deftypefun
+@*
+
+@findex  cond
+@code{ Y=cond( @var{X},[,@var{p}])}
+@deftypefun void tmccond (long nout,long ninput,tmsMatrix *y,tmsMatrix *A,tmsMatrix *p)
+Calculate conditional number for matrix: @*
+ @code{ cond(X,2)=max(sigma (X))/min(sigma (X))} where @code{ sigma=svd(X)} is vector of singalar values of @var{X}. @*
+ @code{ cond(X )=cond(X,2)} @*
+@code{ cond(X,p)= norm(X,p) * norm(inv(X),p) } where @*
+
+@code{norm(A,1)} is largest column sum of A, @code{max(sum(abs(A))} @*
+@code{norm(A,Inf)} infinity norm, or largest row sum of A, @code{max(sum(abs(A')))} @*
+@code{norm(A,'fro')}   Frobenius-norm of matrix A, @code{sqrt(sum(diag(A'*A)))} @*
+
+The implementation uses LAPACK's @code{ZGESVD/DGESVD} functions.
+@end deftypefun
+@*
+
+@findex  conj
+@code{  Y=conj( @var{X})}
+@deftypefun void tmcconj (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Calculate complex conjugate for matrix:@*
+ @code{conj(X)=real(X)-j .* imag(X)}
+@end deftypefun
+@*
+
+@findex   conv
+@code{  C=conv( @var{A},@var{B})}
+@deftypefun void tmcconv (long nout,long ninput, tmsMatrix *C, tmsMatrix *A, tmsMatrix *B)
+Calculate convolution of two vectors: @*
+@code{C=(c(1), @dots{}, c(n_a+n_b-1) )} of  @code{A=(a(1),@dots{},a(n_a))} and @code{B=(b(1),..b(n_b)) }:@*
+@code{   c(k) = sum (for j=max(1,k+1-n_b)  to  min(k,n_a) of  a(j)* b(k+1-j) )} @*
+ The coefficients of two polynomials are the convolution of their coefficients. @*
+@end deftypefun
+@*
+
+@findex  cos
+@code{  Y=cos( @var{X})}
+@deftypefun void  tmccos (long nout,long ninput,tmsMatrix *matres,tmsMatrix *x)
+Calculate cosine of X. For complex argument z @*
+  @code{ cos(z)=(e ^a +e^( -a)) cos(b)/2  + i* ( e^ a -e ^(-a)) sin(b)/2   } @*
+where @code{a=-imag(z)} , @code{b= real(z)}.
+@end deftypefun
+@*
+
+@findex  cumprod
+@code{  Y=cumprod( @var{X} [,@var{dim}])}
+@deftypefun void tmccumprod (long nout,long ninput,tmsMatrix *y,tmsMatrix *x,tmsMatrix *dim)
+Calculate cumulative product of elements of @var{X}.
+@end deftypefun
+@*
+
+@findex  deal
+@code{  Y=deal( @var{X} [,@dots{}])}
+@deftypefun void tmcdeal (long nout,long ninput,tmsMatrix *y,@dots{} )
+@end deftypefun
+@*
+
+@findex  dec2hex
+@code{  Y=dec2hex( @var{X} [,@var{N}])}
+@deftypefun void tmcdec2hex (int nargout, int nargin,tmsMatrix *y,tmsMatrix *x,tmsMatrix *n)
+Convert decimal positive integer @var{X} to hexadecimal string @var{Y} with @var{N} hexadecimal digits.
+@end deftypefun
+@*
+
+@findex  deconv
+@code{  [Q,R]=deconv( @var{V}  ,@var{U})}
+@deftypefun void tmcdeconv (long nout,long ninput, tmsMatrix *q, tmsMatrix *r, tmsMatrix *v,tmsMatrix *u)
+Deconvolution and polynomial division V(z)/U(z): @code{V=Q*U+R} @*
+Assumed  @var{V}  ,@var{U} are vectors and @code{U(1)<>0}
+@end deftypefun
+@*
+
+@findex   det
+@code{  Y=det( @var{A})}
+@deftypefun void tmcdet (long nout,long ninput,tmsMatrix *y,tmsMatrix *A)
+Returns the determinant @var{Y}  of the square matrix @var{A} @*
+Uses LAPACK's  @code{ZGETRF/DGETRF} functions. 
+@end deftypefun
+@*
+
+@findex  diag
+@code{  Y=diag( @var{d})}
+@deftypefun void tmcdiag (long nout,long ninput,tmsMatrix *y,tmsMatrix *d)
+Returns diagonal matrix with diagonal  @var{d} @*
+@end deftypefun
+@*
+
+@findex  diff
+@code{  Y=diff( @var{X})}
+@deftypefun void tmcdiff (long nout,long ninput, tmsMatrix *dx,tmsMatrix *x)
+Returns difference: @*
+For a vector @var{X}, is [X(2)-X(1),  X(3)-X(2), @dots{}, X(n)-X(n-1)]. @*
+For a 2D matrix @var{X}, is the matrix of row differences:   [X(2:n,:) - X(1:n-1,:)] @*
+@end deftypefun
+@*
+
+@findex  disp
+@code{  Y=disp( @var{X})}
+@deftypefun void tmcdisp (long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *x)
+Display matrix @var{X}. @*
+Returns [] @*
+@end deftypefun
+@*
+
+@findex double
+@code{  Y=double( @var{X})}
+@deftypefun void tmcdouble (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Convert matrix or string @var{X} to doube numeric. Defined only for matrix or string ( not cells or structures). @*
+@end deftypefun
+@*
+
+@findex   eig
+@code{  Y=eig( @var{A})}
+@deftypefun void tmceig (long nout,long ninput,tmsMatrix *out1,tmsMatrix *out2,tmsMatrix *in1,tmsMatrix *in2,tmsMatrix *in3)
+Returns the determinant @var{Y}  of the square matrix @var{A} @*
+Uses LAPACK's @code{ZGEEVX/DGEEVX}  functions . 
+@end deftypefun
+@*
+
+
+@findex  eps
+@code{  Y=eps( [@var{R}])}
+@deftypefun void tmceps (long nout,long ninput,tmsMatrix *dest,tmsMatrix *R)
+Floating point relative accuracy.
+@code{Y=eps} : Returns distance from 1.0 to the next largest double-point number, actually  2^(-52) @*
+@code{Y=eps(R)} : if R<DBL_MIN=2.2250738585072014e-308, returns  2^(-1074) @*
+				     else  returns  2^(E-52), where E=floor(  log(x)/ log(2 ))  @*
+@end deftypefun
+@*
+
+@findex  error
+@code{  error(  @var{S} )}
+@deftypefun void tmcerror (long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *msg_string)
+Raise error with message given by string @var{S} .
+If the error is not catched the program execution terminates.
+@end deftypefun
+@*
+
+
+@findex  eval 
+@code{  Y=eval (  @var{S} )}
+@deftypefun void tmceval (long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *str)
+NA, not implemented, raises error. @*
+See also: @code{feval}.
+@end deftypefun
+@*
+
+@findex  exist 
+@code{  Y=exist (  @var{S} )}
+@deftypefun void tmcexist (long nout,long ninput,tmsMatrix *y,tmsMatrix *x,tmsMatrix *mtype)
+NA, not implemented, raises warning message. @*
+@end deftypefun
+@*
+
+@findex  exp 
+@code{  Y=exp (  @var{X} )}
+@deftypefun void tmcexp (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Return exponent of elements of matrix or vector @var{X}. @*
+@end deftypefun
+@*
+
+
+@findex  eye 
+@code{  Y=eye (  @var{M} [,@var{N}] )}
+@deftypefun void tmceye (long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2)
+Return 2D Identity matrix @var{Y} with dimensions given by M,N. Diagonal elements are 1, others are 0. @*
+@code{Y=eye(m)} has  dimensions (m,m) @*
+@code{Y=eye([m,n])=eye(m,n)} have dimensions (m,n)
+@end deftypefun
+@*
+
+@findex  fclose 
+@code{  Y=fclose (  @var{h}  )}
+@deftypefun void tmcfclose (long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *h)
+Close the file with handle @var{h}  that was open by @code{fopen} function. @*
+If @var{h} is invalid handle raises ae error.
+@end deftypefun
+@*
+
+@findex  feof 
+@code{  Y=feof (  @var{h}  )}
+@deftypefun void tmcfeof (long nout,long ninput,tmsMatrix *mIsEof,tmsMatrix *h)
+Return  1 if end-of-file condition is found for the file with handle @var{h} opened by @code{fopen}. @*
+Otherwise returns 0. @*
+If @var{h} is invalid handle raises ae error.
+@end deftypefun
+@*
+ 
+
+@findex  feval 
+@code{  Y=feval (  @var{fnch}  ,@var{x1}  )}
+@deftypefun void tmcfeval (long nout,long ninput,tmsMatrix *y, tmsMatrix *fnc_handle, tmsMatrix *x1, @dots{})
+ Calls function specified by the function handle @var{fnch} with argument @var{x1} . @*
+Example:
+@example
+FH = @@sin   % assign function handle of sunction sin(x) to variable FH 
+Y=FH(X) % call sin(X) through the handle FH
+@end example
+Only single argument @var{x1} is supported.
+@end deftypefun
+@*
+ 
+@findex  tmcfft 
+@code{  Y=tmcfft (  @var{X}    )}
+@deftypefun void tmcfft (long nout,long ninput,tmsMatrix *out,tmsMatrix *in)
+ Calculate FFT for vector @var{X}:  @*
+ @code{                            Y(k) =       sum for (n=1,..N): x(n)*exp(-j*2*pi*(k-1)*(n-1)/N), 1 <= k <= N } @*
+ Only one-dimensional vector @var{X}  is supported.
+@end deftypefun
+@*
+
+@findex  fgetl 
+@code{  Y=fgetl (  @var{h}    )}
+@deftypefun void tmcfgetl (long nout,long ninput,tmsMatrix *str, tmsMatrix *h)
+ Read a line from the file with handle  @var{h} that was open by @code{fopen}  @*
+The line terminator is NOT  included. If   an end-of-file is encountered then   return -1.
+@end deftypefun
+@*
+
+@findex  fieldnames 
+@code{  Y=fieldnames (  @var{S}    )}
+@deftypefun void tmcfieldnames (long nout,long ninput,tmsMatrix *flist,tmsMatrix *S)
+Return cell array @var{Y}  with field names of  structure @var{S}  @*
+@end deftypefun
+@*
+
+
+@findex  fields 
+@code{  Y=fields (  @var{S}    )}
+@deftypefun void tmcfields (long nout,long ninput,tmsMatrix *flist,tmsMatrix *S)
+Obsolete. The same as fieldnames.
+Return cell array @var{Y}  with field names of  structure @var{S}  @*
+@end deftypefun
+@*
+
+@findex  figure 
+@code{  Y=figure (  @var{n}    )}
+@deftypefun void tmcfigure (long nout,long ninput,tmsMatrix *fhand,tmsMatrix *fnum)
+Not suppored.  @*
+@end deftypefun
+@*
+
+@findex  fill 
+@code{  Y=fill (  @var{n}    )}
+@deftypefun void tmcfill (long nout,long ninput,tmsMatrix *hand, tmsMatrix *x, tmsMatrix *y, tmsMatrix *c)
+NA.  @*
+@end deftypefun
+@*
+
+
+@c node find
+@c unnumberedsubsec
+
+@findex  find 
+@code{ [I,J,V]=find (  @var{X} , [@var{Opt},@var{sOpt}]   )}
+@deftypefun void tmcfind (long nout,long ninput, tmsMatrix *I,tmsMatrix *J,tmsMatrix *V, tmsMatrix *x,tmsMatrix *Opt,tmsMatrix *sOpt)
+Find indexes if non-zero values of  matrix @var{X} @*
+@code{ [I,J,V]=find (  @var{X}) } return all rows @var{I}, columns @var{J} indexes and the values. @*
+@code{ I=find (  @var{X},@var{n} ) = find (  @var{X},@var{n},'first' )  }    return first @var{n} indexes @var{I} of non-zero elements of vector @var{X}. @*
+@code{ I=find (  @var{X},@var{n} ) = find (  @var{X},@var{n},'last' )  }    return last @var{n} indexes @var{I} of non-zero elements of vector @var{X}. @*
+
+Example:
+@example
+ x =[1,20,30]
+ I = find(x>1) % return I = [2,3]
+ Y = x(I) % return Y = [20,30]
+@end example
+Note, that expression 
+@code{ I = (x>1)} produces result @code{ [0,1,1]} and expression
+@example
+ x(x>1) 
+@end example
+that in MATLAB produces @code{[2,3]},  in TMC   is equivalent to @code{ x([0,1,1])} and raises  an error!  In TMC   user should
+always replace
+@example
+   x(x>1)  
+@end example
+by
+@example
+x(find(x>1)).
+@end example
+@end deftypefun
+@*
+See also: @code{isfinite, isnan}
+
+@findex  findstr 
+@code{  K=findstr (  @var{S1} ,  @var{S2} )}
+@deftypefun void tmcfindstr (long nout,long ninput,tmsMatrix *K,tmsMatrix *S1,tmsMatrix *S2)
+Returns the starting indices of any occurrences  of the shorter of the two strings @var{S1} ,  @var{S2} in the longer.  @*
+See also: @var{strfind}
+@end deftypefun
+@*
+
+@findex  fix 
+@code{  Y=fix (  @var{X} )}
+@deftypefun void tmcfix (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Rounds the values of @var{X} to the nearest integers  towards zero.
+@end deftypefun
+@*
+
+
+
+
+@findex  fliplr 
+@code{  Y=fliplr (  @var{X} )}
+@deftypefun void tmcfliplr (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns @var{X} with columns flipped in the left/right direction and rows preserved.
+@end deftypefun
+@*
+
+@findex  floor 
+@code{  Y=floor (  @var{X} )}
+@deftypefun void tmcfloor (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Rounds the values of @var{X} to the nearest integers  towards minus infinity.
+@end deftypefun
+@*
+
+@findex  fopen 
+@code{  Y=fopen (  @var{fname}, @var{permission} )}
+@deftypefun void tmcfopen (long nout,long ninput,tmsMatrix *h,tmsMatrix *fname,tmsMatrix *perm)
+Opens a file for formatted I/O with mode specified by string  @var{permission}. @*
+Actually calls standart C-library function @code{fopen}. @*
+Modes are: @*
+	@table @code
+       @item  'r' 
+        Opens a file for reading. The file must exist. @*
+       @item 'w'
+       write (create if necessary) @*
+				Creates an empty file for writing.
+				If a file with the same name already exists,
+				its content is erased and the file is considered as a new empty file.@*
+       @item  'a'
+     append (create if necessary) @*
+				Writing operations, append data at the end of the file.
+				The file is created if it does not exist. @*
+       @item  'r+'
+    read and write (do not create) @*
+				Opens a file to update both reading and writing. The file must exist. @*
+        @item 'w+'
+    truncate or create for read and write @*
+				Creates an empty file for both reading and writing.@*
+       @item  'a+'
+    read and append (create if necessary) @*
+				Opens a file for reading and appending.@*
+       @item  'W'
+     write without automatic flushing - not available @*
+        @item 'A'
+     append without automatic flushing  - not available @*
+	 @end table
+@end deftypefun
+@*
+
+@findex  fprintf
+@code{  fprintf (  @var{fm},@dots{} )}
+@deftypefun void tmcfprintf (long nout,long ninput, tmsMatrix *fm,@dots{})
+Print formatted string to the file opend by @code{fopen} function. Behavours like C-library @code{fprintf} but has some limitations.
+@end deftypefun
+@*
+
+
+@findex  frd
+@code{ Y=frd (  @var{Resp},@var{Freqs})}
+@deftypefun void tmcfrd (long nout,long ninput,tmsMatrix *y,tmsMatrix *Resp,tmsMatrix *Freqs)
+NA, raises   error
+@end deftypefun
+@*
+
+@findex  frdata
+@code{ [num,den,tsamp]=frdata (  @var{sys},@var{mopt})}
+@deftypefun void tmcfrdata (long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt)
+NA, raises   error
+@end deftypefun
+@*
+
+@findex  freqresp
+@code{ y=freqresp (  @var{sys},@var{w})}
+@deftypefun void tmcfreqresp (long nout,long ninput, tmsMatrix *y, tmsMatrix *sys,tmsMatrix *w)
+NA, raises  an error
+@end deftypefun
+@*
+
+@findex  gca
+@code{ hand=gca }
+@deftypefun void tmcgca (long nout,long ninput,tmsMatrix *hand)
+NA, produces a warning
+@end deftypefun
+@*
+
+@findex  gcf
+@code{ hand=gcf }
+@deftypefun void tmcgcf (long nout,long ninput , @dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+@findex  getfield
+@code{ Y=getfield (@var{S},  @var{ m_fn}) }
+@deftypefun void tmcgetfield (long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *m_fn)
+Returns   value of field with name @var{m_fn} from single element structure @var{S}. Available only when @code{length(S)=1}.
+@end deftypefun
+@*
+
+@findex  grid
+@code{ grid (onoff) }
+@deftypefun void tmcgrid (long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex  hex2dec
+@code{ Y = hex2dec (S) }
+@deftypefun void tmchex2dec (long nout,long ninput,tmsMatrix *y,tmsMatrix *S)
+Calculate integer value from hex-decimal string presentation @var{S}.
+@end deftypefun
+@*
+
+
+@findex  hold
+@code{ hold(onoff) }
+@deftypefun void tmchold (long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex  imag
+@code{ Y = imag(X) }
+@deftypefun void tmcimag (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Return imaginal part of complex number @var{X}.
+@end deftypefun
+@*
+
+@findex  interp1
+@code{ yi = interp1 (@var{x}, @var{y}, @var{xi} [,@var{typeinter} ,@var{typeextr}]) }
+@deftypefun void tmcinterp1 (long nout,long ninput, tmsMatrix *yi, tmsMatrix *x, tmsMatrix *y, tmsMatrix *xi,tmsMatrix *typeinter,tmsMatrix *typeextr)
+Calculate one-dimensional interpolation of function @code{y=y(x)} at the points @var{xi}.  @*
+Only linear interpolation is supported. @*
+Only real data is supported. @*
+Assumed that @var{x} is sorted. @*
+Parameters @var{typeinter} (interpolation method), @var{typeextr} (extraplation mode) are ignored. @*
+@end deftypefun
+@*
+
+@findex  intersect1
+@code{ [AB,IA]=intersect (A,B)  }
+@deftypefun void tmcintersect (long nout,long ninput, tmsMatrix *y, tmsMatrix *I,tmsMatrix *J,tmsMatrix *A,tmsMatrix *B)
+Intersect sets A and B: find the values @var{AB} of @var{A} that are present in @var{B} and their indexes @var{IA} .
+@end deftypefun
+@*
+
+@findex  inv
+@code{ Y=inv (X)  }
+@deftypefun void tmcinv (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Calculate inverse matrix for given square matrix @var{X}. Actually calculate such @code{Y=inv (X)=X\eye (n)} 
+that solves the equation @code{ X*Y=eye (n)}.
+Uses LAPACK's functions @code{ZGELS/DGELS}.
+@end deftypefun
+@*
+
+
+@findex  isa
+@code{y= isa (x) }
+@deftypefun void tmcisa (long nout,long ninput,tmsMatrix *y, tmsMatrix *x, tmsMatrix *str)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex  iscell
+@code{Y= iscell (X) }
+@deftypefun void tmciscell (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if @var{X} is a cell array, otherwise 0.
+@end deftypefun
+@*
+
+
+@findex  ischar
+@code{Y= ischar (X) }
+@deftypefun void tmcischar (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if @var{X} is a string  array, otherwise 0.
+@end deftypefun
+@*
+
+@findex  isempty
+@code{Y= isempty (X) }
+@deftypefun void tmcisempty (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if @var{X} is an empty matrix or empty structure; otherwise 0.
+@end deftypefun
+@*
+
+
+@findex  isequal
+@code{Y= isequal (X1,X2 [,X3,@dots{}]) }
+@deftypefun void tmcisequal (long nout,long ninput,tmsMatrix *res,tmsMatrix *x1,@dots{})
+Returns: 1 if all matrixes @code{X1,X2,@dots{}} are numerically equal; otherwise 0. @*
+Only vectors, matrixes and strings are supported. NAN and Inf are not equal.
+@end deftypefun
+@*
+
+@findex  isfield
+@code{Y= isfield (S,fn) }
+@deftypefun void tmcisfield (long nout,long ninput,tmsMatrix *y, tmsMatrix *S, tmsMatrix *m_fn)
+Returns: 1 if structure @var{S} has a field with names given by string @var{m_fn}; otherwise 0. @*
+@end deftypefun
+@*
+
+@findex  isfinite
+@code{Y= isfinite (X) }
+@deftypefun void tmcisfinite (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: matrix of the same dimension as @var{X}, where 1 mark finite elements and 0 mark infinite values. @*
+Note: since TMC does not support logicals, when indexing should decoreate @code{isinfinite (x)} by @code{find (isinfinite (x))}. See function @code{find}, an example.
+@end deftypefun
+@*
+
+@findex  ishold
+@code{Y= ishold (fhan) }
+@deftypefun void tmcishold  (long nout,long ninput,tmsMatrix *y,tmsMatrix *fhan)
+NA, produces a warning @*
+@end deftypefun
+@*
+
+@findex  ismember  
+@code{Y= ismember (Y,S) }
+@deftypefun void tmcismember  (long nout,long ninput, tmsMatrix *y, tmsMatrix *A,tmsMatrix *S)
+Not implemented in this version @*
+@end deftypefun
+@*
+
+@findex  isnan
+@code{Y= isnan (X) }
+@deftypefun void tmcisnan  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: matrix of the same dimension as @var{X}, where 0 mark finite elements and 1 mark NaNs. @*
+Note: since TMC does not support logicals, when indexing should decoreate @code{isnan (x)} by @code{find (isnan (x))}. See function @code{find}, an example. @*
+@end deftypefun
+@*
+
+@findex  isnumeric
+@code{Y= isnumeric (X) }
+@deftypefun void tmcisnumeric  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if  @var{X} is a   matrix, otherwise 0. @*
+@end deftypefun
+@*
+
+@findex  isreal
+@code{Y= isreal (X) }
+@deftypefun void tmcisreal  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if  @var{X} is  a  matrix with numbers that has not imagine parts , otherwise 0. @*
+For empty matrix also return 1.
+@end deftypefun
+@*
+
+@findex  isscalar
+@code{Y= isscalar (X) }
+@deftypefun void tmcisscalar  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if  @var{X} is  a matrix with dimentions @code{1x1} , otherwise 0. @*
+For empty matrix also return 1.
+@end deftypefun
+@*
+
+@findex  isstruct
+@code{Y= isstruct (X) }
+@deftypefun void tmcisstruct  (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if  @var{X} is  a struct @*
+@end deftypefun
+@*
+
+
+@findex  isvector
+@code{Y= isvector (X) }
+@deftypefun void tmcisvector  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Returns: 1 if 2D matrix @var{X} is  a vector or column, i.e. one of dimensions is 1. @*
+@end deftypefun
+@*
+
+
+@findex  lasterr
+@code{ Y=lasterr  ( X ) }
+@deftypefun void tmclasterr  (long nout,long ninput,tmsMatrix *msg_string_out, tmsMatrix *msg_string)
+@code{Y=lasterr} returns the message string of the last error raised by @code{error} function. @*
+@code{lasterr ([])} clears the message string of the last error raised by @code{error} function. @*
+The function is useful when working with @code{try/catch} blocks if they are supported by C-compiler. @*
+@end deftypefun
+@*
+
+
+@findex  length
+@code{ Y=length  ( X ) }
+@deftypefun void tmclength  (long nout,long ninput, tmsMatrix *len, tmsMatrix *X)
+Returns the length of vector @var{X} i.e. @code{max (size (@var{X}))}. @*
+@end deftypefun
+@*
+
+@findex  linspace
+@code{ Y=linspace  ( @var{X1}, @var{X2}[, @var{nP} ] ) }
+@deftypefun void tmclinspace (long nout,long ninput, tmsMatrix *y, tmsMatrix *x1, tmsMatrix *x2,tmsMatrix *nP)
+Returns vector  of @var{nP} lineary spaced points from @var{X1} to  @var{X2}. If ommited, @code{nP=100}.
+@end deftypefun
+@*
+
+@findex  load
+@code{ Y=load  ( @var{S} ) }
+@indent @deftypefun void tmcload (long nout,long ninput,tmsMatrix *W, tmsMatrix *fn, @dots{})
+Loads MAT-file with name @var{S}   into structure variable @var{Y}. Only MATLAB MAT-file  formats V4 or V5 are supported and only such objects may be loaded that are upported by TMC.
+@end deftypefun
+@*
+
+
+@findex   log
+@code{  Y=log  ( @var{x})}
+@deftypefun void tmclog  (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Calculate  natural logarithm @code{ln (X)} of @var{X}. For complex argument x @*
+  @code{ ln  (x ) = ln |x| + i * arg (x) } @*
+@end deftypefun
+
+
+@findex   log10
+@code{  Y=log10  ( @var{x})}
+@deftypefun void tmclog10  (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Calculate  decimal logarithm   of @var{X}. For complex argument x @*
+  @code{ log10  (x ) = log10 |x| + i * arg (x) } @*
+@end deftypefun
+
+
+@findex  logspace
+@code{ Y=logspace  ( @var{X1}, @var{X2}[, @var{nP} ] ) }
+@deftypefun void tmclogspace  (long nout,long ninput, tmsMatrix *y, tmsMatrix *x1, tmsMatrix *x2,tmsMatrix *nP)
+Returns vector  of @var{nP} decimal-logarithmically  spaced points from @code{10^X1} to  @code{10^X2}. If ommited, @code{nP=50}.
+@end deftypefun
+@*
+
+@findex  lower
+@code{ Y=lower  ( @var{S} ) }
+@deftypefun void tmclower  (long nout,long ninput,tmsMatrix *matres,tmsMatrix *src)
+Converts the string @var{S} characters to lower-case.
+@end deftypefun
+@*
+
+
+@findex max
+@code{[ Y,I]= max  ( @var{A} [,@var{B} ]) }
+@deftypefun void tmcmax  (long nout,long ninput, tmsMatrix *y1,tmsMatrix *y2,tmsMatrix *x1,tmsMatrix *x2,tmsMatrix *d)
+Find maximum:@*
+If  @var{A} is matrix, @code{[Y,I]=max (A)} returns row of maximums of each column, and their indexes. @*
+If  @var{A} is vector, @code{[Y,I]=max (A)} returns  maximal element and its index. @*
+If  @var{A}, @var{B } are matrixes of the same sizes or one of them scalar, @code{[Y,I]=max (A,B)} returns matrix of the same size 
+with elements that are maximum between @var{A} and @var{B}.
+@end deftypefun
+@*
+
+ @findex min
+@code{[ Y,I]= min  ( @var{A} [,@var{B} ]) }
+@deftypefun void tmcmin  (long nout,long ninput, tmsMatrix *y1,tmsMatrix *y2,tmsMatrix *x1,tmsMatrix *x2,tmsMatrix *d)
+Find minimum:@*
+If  @var{A} is matrix, @code{[Y,I]=max (A)} returns row of minimums of each column, and their indexes. @*
+If  @var{A} is vector, @code{[Y,I]=max (A)} returns  minimum element and its index. @*
+If  @var{A}, @var{B } are matrixes of the same sizes or one of them scalar, @code{[Y,I]=min (A,B)} returns matrix of the same size 
+with elements that are minimum between @var{A} and @var{B}.
+@end deftypefun
+@*
+
+ 
+@findex  mod
+@code{ Y=mod  ( @var{A}, @var{B} ) }
+@deftypefun void tmcmod  (long nout,long ninput,tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
+Return modulus after division @var{A} by @var{B}. @*
+Implemented as by-element @code{x-floor (x/y)*y}.  By convension, mod (A,0)=A. @*
+Result has the same size as B @*
+@end deftypefun
+@*
+
+
+
+@findex  nargchk
+@code{ Y=nargchk  ( @var{low}, @var{high},@var{n}) }
+@deftypefun void tmcnargchk  (long nout,long ninput, tmsMatrix *message, tmsMatrix *low, tmsMatrix *high,tmsMatrix *n)
+Validate that number of arguments @var{n} falls into the range of @code{ low  @dots{} high}.
+@end deftypefun
+@*
+
+
+@findex  ndims
+@code{ Y=ndims  ( @var{M} ) }
+@deftypefun void tmcndims  (long nout,long ninput, tmsMatrix *y, tmsMatrix *M)
+Returns number of dimensions of matrix @var{M}. For vectors and 2D matrixes it is 2.
+@end deftypefun
+@*
+
+
+@findex  nichols
+@code{ Y=nichols  (  @var{Sys},@var{mopt})}
+@deftypefun void tmcnichols  (long nout,long ninput,tmsMatrix *sys,tmsMatrix *mopt)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+
+@findex  norm
+@code{  Y=norm ( @var{X},[,@var{p}])}
+@deftypefun void tmcnorm (long nout,long ninput, tmsMatrix *y, tmsMatrix *X, tmsMatrix *n)
+Calculate norm for matrix: @*
+ 
+@code{norm (X,1)} is largest column sum of A, @code{max (sum (abs (X))} @*
+@code{norm (X,2)} is is largest singular value of @var{X} @*
+@code{norm (X,Inf)} infinity norm, or largest row sum of X, @code{max (sum (abs (X')))} @*
+@code{norm (X,'fro')}   Frobenius-norm of matrix X, @code{sqrt (sum (diag (X'*X)))} @*
+
+Calculate norm for vector: @*
+@code{norm (X,1)=  sum (abs (X))} @*
+@code{norm (X,2)=sum (abs (V).^2)^ (1/2)$ } @*
+@code{norm (X,Inf)= max (abs (V)) } @*
+@code{norm (X,-Inf)= min (abs (V)) } @*
+
+
+By default: @*
+@code{Y=norm ( @var{A} ) = norm ( @var{A},2 )}
+
+The implementation uses LAPACK's @code{svd} function.
+@end deftypefun
+
+
+@findex  num2str
+@code{ S=num2str  ( @var{X} [,@var{fm}]) }
+@deftypefun void tmcnum2str  (long nout,long ninput,tmsMatrix *sbuf, tmsMatrix *x, tmsMatrix *fm)
+Returns convert a number to string. @*
+@code{ S=num2str  ( @var{X}  ,@samp{format} ) } call standart C-function @code{sprintf (format,X)}. @*
+@code{ S=num2str  ( @var{X} [ , digits] ) } call @code{sprintf} using fixed format. @*
+Length of the output string @var{S} is limited  (@code{MAX_PRINTF_LEN= 5000}).
+@end deftypefun
+@*
+
+
+@findex  numel
+@code{ S=numel  ( @var{X} ) }
+@deftypefun void tmcnumel (long nout,long ninput, tmsMatrix *y, tmsMatrix *x)
+Returns number of elements in matrix or cell array X. @*
+@end deftypefun
+@*
+
+
+
+
+@findex ones 
+@code{  Y=ones  (  @var{M}  ,@var{N}  )}
+@deftypefun void tmcones  (long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2)
+Return 2D   matrix @var{Y} with dimensions given by M,N. All elements are 1. @*
+@code{Y=ones (m)} has  dimensions  (m,m) @*
+@code{Y=ones ([m,n])=ones (m,n)} have dimensions  (m,n)
+@end deftypefun
+@*
+
+
+
+@findex orderfields 
+@code{  [ne,pe]=orderfields  (  @var{S1}  ,@var{S2}  )}
+@deftypefun void tmcorderfields  (long nout,long ninput, tmsMatrix *ne, tmsMatrix *pe, tmsMatrix *S1,tmsMatrix *S2)
+NA, produces a warning
+@end deftypefun
+@*
+
+@findex pause 
+@code{   pause  (  @var{secTimeout}   )}
+@deftypefun void tmcpause (long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *d)
+Pauses the execution for @var{ secTimeout } seconds  (if supported  by host operation system). @*
+@end deftypefun
+@*
+
+
+@findex pi 
+@code{   Y=pi    }
+@deftypefun void tmcpi  (long nout,long ninput,tmsMatrix *dest)
+Return PI constant 3.1415926535897932384626433832795 @dots{}. @*
+@end deftypefun
+@*
+
+
+@findex  plot
+@code{ h=plot (x,y,c [, @dots{}]) }
+@deftypefun void tmcplot  (long nout,long ninput, tmsMatrix *hand, tmsMatrix *x, tmsMatrix *y, tmsMatrix *c,@dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex polyval
+@code{   Y=polyval (P,X)    }
+@deftypefun void tmcpolyval (long nout,long ninput,tmsMatrix *y,tmsMatrix *p,tmsMatrix *x)
+Evaluate a polynomial with coefficients @var{P} at argument @var{X}. @code{deg (P)=length (P)-1}. @*
+@end deftypefun
+@*
+
+
+
+@findex prod
+@code{   Y=prod (X)    }
+@deftypefun void tmcprod (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Calculate elements product: @*
+For vectors, @code{ prod (X)} is the product of the elements of @var{X}. @*
+For matrices, @code{ prod (X)} is a row vector with the product of each column elements.
+@end deftypefun
+@*
+
+
+@findex   qr
+@code{  [Q,R,E]=qr ( @var{A})}
+@deftypefun void tmcqr  (long nout,long ninput,tmsMatrix *Q,tmsMatrix *R,tmsMatrix *E,tmsMatrix *A,tmsMatrix *flg)
+computes a QR factorization of a    matrix     @var{A} @*
+Uses LAPACK's @code{ZGEQRF}  function . 
+@end deftypefun
+@*
+
+
+@findex  real
+@code{  [Y]=real  ( @var{X})}
+@deftypefun void tmcreal  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Get real part of complex matrix @var{X}. 
+@end deftypefun
+@*
+
+
+@findex  rem
+@code{ Y=rem  ( @var{A}, @var{B} ) }
+@deftypefun void tmcrem (long nout,long ninput,tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
+Return remainder after division @var{A} by @var{B}. @*
+The floating-point remainder Y of A / B is such that @code{A = q * B + Y} ,
+where @code{q} is an integer, @var{Y} has the same sign as @var{A}, and   @code{abs (Y)< abs (B)}.
+Implemented as by-element @code{x-fix (x/y)*y} by C-function @code{fmod}. @*
+By convension, @code{rem (A,0)=NaN}. @*
+Result has the same sign as @var{A} @*
+@end deftypefun
+@*
+
+
+@findex  rmfield
+@code{  [Y]=rmfield  ( @var{S}, @var{fn})}
+@deftypefun void tmcrmfield  (long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *m_fn)
+Remove field with name given by string @var{fn} from struct @var{S}. Returns the updated structure.
+@end deftypefun
+@*
+
+
+@findex   roots
+@code{  [R]=roots ( @var{P})}
+@deftypefun void tmcroots  (long nout,long ninput,tmsMatrix *r,tmsMatrix *p)
+Compute  roots of a the polynomial defined by its coefficients   @var{p} @*
+Uses LAPACK's @code{DGEEVX/ZGEEVX}  functions. 
+@end deftypefun
+@*
+
+@findex  round
+@code{  [Y]=round  ( @var{X})}
+@deftypefun void tmcround  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Round values of matrix @var{X}  to nearest integer.
+@end deftypefun
+@*
+
+@findex  save
+@code{ Y=save  ( @var{fn},@var{Mat1} [@dots{} ,@var{MatN}] ) }
+@deftypefun void tmcsave  (long nout,long ninput,tmsMatrix *filename,tmsMatrix *Mat1,char *varname1,@dots{})
+Save variables  @var{Mat1},  @dots{} ,@var{MatN} into   MAT-file with name @var{fn}.  Only MATLAB MAT-file  format V5 is supported. @*
+In C-function should pass also the names of the variables as character strings. @code{ninput} should be number of saved matrices plus one.
+@end deftypefun
+@*
+
+
+@findex  set
+@code{ s=set  (obj,pt,pv,@dots{}) }
+@deftypefun void tmcset  (long nout,long ninput,tmsMatrix *stat,tmsMatrix *obj,tmsMatrix *pt,tmsMatrix *pv, @dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex  setdiff
+@code{ [Y,I]=setdiff  (A,B [,rs]) }
+@deftypefun void tmcsetdiff  (long nout,long ninput, tmsMatrix *y, tmsMatrix *I,tmsMatrix *A,tmsMatrix *B,tmsMatrix *rs)
+Find elements in matrix @var{A}  than are not present in matrix @var{B}. The result is sorted. @*
+@end deftypefun
+@*
+
+
+@findex  setfield
+@code{  [Y]=setfield  ( @var{S}, @var{fn},@var{V})}
+@deftypefun void tmcsetfield (long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *m_fn,tmsMatrix *v)
+Assign for struct @var{S}  to the field with name given by string @var{fn} new value @var{V} . Returns the updated structure.
+@end deftypefun
+@*
+
+@findex  sign
+@code{  [Y]=sign  ( @var{X})}
+@deftypefun void tmcsign  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Return  sign  of values of struct @var{X}.
+@end deftypefun
+@*
+
+
+@findex   sin
+@code{  Y=sin ( @var{X})}
+@deftypefun void  tmcsin  (long nout,long ninput,tmsMatrix *matres,tmsMatrix *x)
+Calculate  sine of X. For complex argument z @*
+  @code{ sin (z)= (e ^a +e^ ( -a)) sin (b)/2  + i*  ( e^ (- a) -e ^a) cos (b)/2   } @*
+where @code{a=-imag (z)} , @code{b= real (z)}.
+@end deftypefun
+
+
+@findex  size
+@code{  [m,n,k,@dots{}]=size  ( @var{X}[,@var{dim}])}
+@deftypefun void tmcsize  (long nout,long ninput,tmsMatrix *out1,@dots{})
+Return size of variable @var{X} dimensions: @*
+@code{n=size (X)} returns vector of dimensions @*
+@code{n=size (X,dim)} returns size of dimension @var{dim} @*
+@code{[m,n]=size (X) } return sizes of 2D-matrix @*
+@code{[m,n,k]=size (X) } return sizes of 3D-matrix @*
+@end deftypefun
+@*
+
+
+@findex  sort
+@code{  [Y,I]=sort  ( @var{X}[,@var{c}])}
+@deftypefun void tmcsort  (long nout,long ninput, tmsMatrix *y1,tmsMatrix *y2,tmsMatrix *x,tmsMatrix *c)
+Sort vector @var{X} @*
+@code{ [Y,I]=sort  ( @var{X})} sorts ascending in  order @*
+@code{ [Y,I]=sort  ( @var{X},'descent')} sorts in descending order @*
+Imaginal part is ignored in the numeric comparison. @*
+@end deftypefun
+@*
+
+@findex sprintf
+@code{  S=sprintf  ( @var{fmt},@dots{} )}
+@deftypefun void tmcsprintf  (long nout,long ninput, tmsMatrix *sbuf,tmsMatrix *fm,@dots{})
+Print formatted string to string @var{S}. Behavours like C-library @code{sprintf} but has some limitations.
+@end deftypefun
+@*
+
+
+@findex  sqrt
+@code{  [Y]=sqrt  ( @var{X})}
+@deftypefun void tmcsqrt  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+Return square root of @var{X}. @*
+For complex numbers: @code{y = sqrt (abs (x))* (cos (angle (x)*0.5)+j*sin (angle (x)*0.5)) }
+@end deftypefun
+@*
+
+@findex  squeeze
+@code{  [Y]=squeeze  ( @var{X})}
+@deftypefun void tmcsqueeze  (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Remove external  dimensions from multi-dimension marix if they are of length 1.  2-D arrays are unaffected.
+@end deftypefun
+@*
+
+ 
+
+@findex  ss
+@code{ y=ss  (   @dots{} )}
+@deftypefun void tmcss  (long nout,long ninput, @dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+@findex  ss2tf
+@code{ y=ss2tf  (   @dots{} )}
+@deftypefun void tmcss2tf  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+
+@findex ssdata
+@code{ y=ssdata  (   @dots{} )}
+@deftypefun void tmcssdata  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+ 
+@findex   str2num
+@code{  Y= str2num ( @var{X})}
+@deftypefun void tmcstr2num  (long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
+Parse string @var{X} and convert to numeric array. @*  Only real vectors are supported.
+@end deftypefun
+
+@findex   strcmp
+@code{  Y= strcmp ( @var{S1}, @var{S2})}
+@deftypefun void tmcstrcmp  (long nout,long ninput, tmsMatrix *y,tmsMatrix *s1,tmsMatrix *s2)
+Compare strings. @*  
+If @var{S1} = @var{S2} then return 1, otherwise return 0. @*
+If @var{S1}, @var{S2} are not strings , return 0.
+@end deftypefun
+
+
+@findex   strfind
+@code{  K= strfind ( @var{sTEXT}, @var{sPATTERN})}
+@deftypefun void tmcstrfind  (long nout,long ninput,tmsMatrix *K,tmsMatrix *sTEXT, tmsMatrix *sPATTERN)
+Find starting indexes of any occurrences of the string @var{sPATTERN} in the string @var{sTEXT}. @*  
+@end deftypefun
+
+
+@findex  struct
+@code{  [Y]=struct  (  [@var{fn},@var{V}, @dots{}])}
+@deftypefun void tmcstruct  (long nout,long ninput,tmsMatrix *matres, @dots{} )
+Create a structure. @*
+No array of structure is created, even if @var{V} is not scalar.
+@end deftypefun
+@*
+
+ 
+
+
+@findex  subplot
+@code{ h=subplot (mM,@dots{}) }
+@deftypefun void tmcsubplot  (long nout,long ninput, tmsMatrix *hand, tmsMatrix *mM, @dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex sum
+@code{[ Y ]= sum  ( @var{X}  ) }
+@deftypefun void tmcsum  (long nout,long ninput, tmsMatrix *y,tmsMatrix *x) 
+Find sum:@*
+If  @var{X} is matrix,   returns a row with the sums of each its columns. @*
+If  @var{X} is vector,   returns  sum of its elements. @*
+@end deftypefun
+@*
+
+
+@findex   svd
+@code{  [U,S,V]=svd ( @var{X}[,@var{flag}]  )    }
+@deftypefun void tmcsvd (long nout,long ninput,tmsMatrix *U,tmsMatrix *S,tmsMatrix *V,tmsMatrix *X,tmsMatrix *flag)
+Computes a singular value decomposition   (SVD) of     matrix     @var{A} @*
+Uses LAPACK's @code{DGESVD/ZGESVD}  functions . 
+@end deftypefun
+@*
+
+
+@table @code
+
+@findex   tan
+@item @code{  Y=tan ( @var{X})}
+@deftypefun  void tmctan (long nout,long ninput,tmsMatrix *matres,tmsMatrix *x)
+Calculate  tan of X. For complex argument z @*
+  @code{tan (z)= sin (z)/cos (z)} @*
+@end deftypefun
+
+
+@findex  text
+@item @code{ h=text (mM,x1,@dots{}) }
+@deftypefun void tmctext  (long nout,long ninput, tmsMatrix *hand, tmsMatrix *x1, @dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex  tf
+@item @code{ y= tf  (   @dots{} )}
+@deftypefun void tmctf  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+ 
+@findex tf2ss
+@item @code{ y=tmctf2ss  (   @dots{} )}
+@deftypefun void tmctf2ss  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+@findex tfdata
+@item @code{ y=tmctfdata  (   @dots{} )}
+@deftypefun void tmctfdata  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+
+
+@findex  title
+@item @code{ h=title (mM,str,@dots{}) }
+@deftypefun void tmctitle  (long nout,long ninput, tmsMatrix *hand,tmsMatrix *str, @dots{})
+NA, produces a warning
+@end deftypefun
+@*
+
+
+
+@findex  unique
+@item @code{  [Y ]=unique  ( @var{X} )}
+@deftypefun void tmcunique  (long nout,long ninput, tmsMatrix *y, tmsMatrix *I,tmsMatrix *J,tmsMatrix *mx)
+Return unique values of vector @var{X} sorted in ascending order. @*
+@end deftypefun
+
+
+@findex  unwrap
+@item @code{  [Y ]=unwrap  ( @var{X}, [@var{mrange} )}
+@deftypefun void tmcunwrap (long nout,long ninput, tmsMatrix *y,tmsMatrix *x,tmsMatrix *mrange)
+Unwrap vector @var{X} that was wrapped by modulo @var{mrange}. If @var{mrange}
+is ommitted, asumed @code{mrange=PI} @*
+A matrix is considered as a column @*
+@end deftypefun
+
+
+@findex waitbar
+@item @code{  [h ]=waitbar  ( @var{frac}, title, pt1, pv1, pt2, pv2 )}
+@deftypefun void tmcwaitbar  (long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2)
+Host platform-specific callback for displaying calculation status  (if supported). @*
+@var{title} is a message title and @var{frac} is a progress fraction to be displayed.
+@end deftypefun
+@*
+
+
+@findex warning
+@item @code{ warning (srting1, string2) }
+@deftypefun void tmcwarning  (long nout,long ninput, tmsMatrix *msg_string,tmsMatrix *msg_string2)
+NA, ignored
+@end deftypefun
+@*
+
+
+@findex xlabel
+@item @code{ h=xlabel (h,title) }
+@deftypefun void tmcxlabel (long nout,long ninput,tmsMatrix *hand, tmsMatrix *title)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+
+@findex ylabel
+@item @code{ h=ylabel (h,title) }
+@deftypefun void tmcylabel (long nout,long ninput,tmsMatrix *hand, tmsMatrix *title)
+NA, produces a warning
+@end deftypefun
+@*
+
+
+@findex zeros 
+@item @code{  Y=zeros  (  @var{M}  ,@var{N}  )}
+@deftypefun void tmczeros  (long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2)
+Return 2D   matrix @var{Y} with dimensions given by M,N. All elements are 0. @*
+@code{Y=zeros (m)} has  dimensions  (m,m) @*
+@code{Y=zeros ([m,n])=zeros (m,n)} have dimensions  (m,n)
+@end deftypefun
+@*
+
+
+
+@findex tfdata
+@item @code{ y=tmctfdata  (   @dots{} )}
+@deftypefun void tmctfdata  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+@findex zpk
+@item @code{ y=zpk  (   @dots{} )}
+@deftypefun void tmczpk  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+
+@findex zpkdata
+@item @code{ y=zpkdata  (   @dots{} )}
+@deftypefun void tmczpkdata  (long nout,long ninput,@dots{})
+NA, raises  an error
+@end deftypefun
+@*
+ @end table
+
+
+
+@node Internal functions
+@section Internal functions
+@cindex Internal functions
+
+These functions are called by the code generated by TMC Compiler. User rare should call to this functions. 
+They are listed here for reference for better understanding of the generated code.
+
+Most of these functions assume that the matrix passed for output parameter is already initialized but it may contain a result of the previous operation. Thus the matrix is reallocated inside the function before it usage.
+
+@node Operations
+@subsection  Operations
+@cindex  Operations
+
+The section describes the functions that implements basic operations.
+
+@table @code
+@item  operation (+)
+@deftypefun void  tmcAdd  (tmsMatrix * @var{sum}, tmsMatrix * @var{a} , tmsMatrix * @var{b}) 
+@end deftypefun
+@*
+@item  operation (&&) (Short-circuit logical and, for scalars)
+@deftypefun void  tmcAndBoolean (tmsMatrix *@var{res}, tmsMatrix *@var{a}, tmsMatrix *@var{b})
+@end deftypefun
+@*
+@item  operation (&) (logical and)
+@deftypefun void  tmcAndScalar (tmsMatrix *res,tmsMatrix *a,tmsMatrix *b) 
+@end deftypefun
+@*
+@item  operation (=) (assignment)
+@deftypefun void tmcAssign (tmsMatrix *dest,tmsMatrix *src) 
+@end deftypefun
+@*
+@item  operation (/) (right matrix divide)
+@deftypefun void tmcDiv (tmsMatrix *X,tmsMatrix *A,tmsMatrix *B) 
+Performs @code{X=A/B}. Uses LAPACK functions @code{DGELS/ZGELS}.
+@end deftypefun
+@*
+@item  operation (./) (right array divide)
+@deftypefun void tmcDivScalar (tmsMatrix *X,tmsMatrix *A,tmsMatrix *B) 
+@end deftypefun
+@*
+@item  operation (\) (left matrix divide)
+@deftypefun void tmcLeftDiv (tmsMatrix *X,tmsMatrix *A,tmsMatrix *B)  
+@end deftypefun
+@*
+
+
+@item  operation (*) (matrix multiply)
+@deftypefun void  tmcMul (tmsMatrix *prod,tmsMatrix *a,tmsMatrix *b) 
+@end deftypefun
+@*
+@item  operation (.*) (array multiply)
+@deftypefun void  tmcMulScalar (tmsMatrix *prod,tmsMatrix *a,tmsMatrix *b) 
+@end deftypefun
+@*
+@item  operation (-) (unary minus)
+@deftypefun void  tmcNeg (tmsMatrix *sum,tmsMatrix *x) 
+@end deftypefun
+@*
+@item  operation (~) (logical not)
+@deftypefun void tmcNot (tmsMatrix *matres,tmsMatrix *src)
+@end deftypefun
+@*
+@item  operation (|) (logical or)
+@deftypefun void  tmcOrScalar (tmsMatrix *res,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  operation (||) (Short-circuit  logical or, for scalars)
+@deftypefun void  tmcOrBoolean (tmsMatrix *res,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  operation (^) (matrix power)
+@deftypefun void tmcPower (tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
+@end deftypefun
+@*
+
+@item  operation (.^) (array power)
+@deftypefun void tmcPowerScalar (tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
+@end deftypefun
+@*
+
+
+
+@item  operation (-)  
+@deftypefun void  tmcSub (tmsMatrix *res,tmsMatrix *a,tmsMatrix *b) 
+@end deftypefun
+@*
+@item  operation (')  (complex conjugate transpose)
+@deftypefun void  tmcTranspose (tmsMatrix *res,tmsMatrix *src) 
+Performs transpose operation with complex conjugation:  @code{res=src'}.
+@end deftypefun
+@*
+@item  operation (.')  (complex conjugate transpose)
+@deftypefun void  tmcTransposeScalar (tmsMatrix *res,tmsMatrix *src) 
+Performs non-conjugate transpose operation:  @code{res=src.'}.
+@end deftypefun
+@*
+
+@item @b{Comparisons}
+Evaluate a comparison: returns matrix @var{sum} of the same dimension as both @var{a}
+and @var{b} with @code{1} at the positions of true comparison and @code{0} at others.
+
+@item  comparison (==)  (equal)
+@deftypefun void  tmcEq (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b) 
+@end deftypefun
+@*
+
+@item  comparison (>=)  (not equal)
+@deftypefun void  tmcGe (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  comparison (>)  (not equal)
+@deftypefun void  tmcGt (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  comparison (<=)  (not equal)
+@deftypefun void  tmcLe (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  comparison (<)  (not equal)
+@deftypefun void  tmcLt (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item  comparison (~=)  (not equal)
+@deftypefun void  tmcNe (tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
+@end deftypefun
+@*
+
+@item @b{Indexing}
+Implements set/get for matrix elements given by indexes. Return a matrix.
+For cell array returns a single matrix given by single index selection.
+
+@item  index in matrix (I1,@dots{})   (get)
+@deftypefun void tmcGetByIndex (tmsMatrix *matres,tmsMatrix *src,long numdims,tmsMatrix *I1,@dots{})
+@end deftypefun
+@*
+
+@item  index in cell array @{I1,@dots{} @}   (get)
+@deftypefun void tmcGetByIndexCell (tmsMatrix *matres,tmsMatrix *src,long numdims,tmsMatrix *I1,@dots{})
+@end deftypefun
+@*
+
+@item  index in matrix (I1,@dots{})   (set)
+@deftypefun void tmcGetRefByIndex (tmsMatrix *matres,tmsMatrix *src,long numdims,tmsMatrix *I1,@dots{})
+@end deftypefun
+@*
+
+@item  index in cell array {I1,@dots{}}   (set)
+@deftypefun void tmcGetRefByIndexCell (tmsMatrix *matres,tmsMatrix *src,long numdims,tmsMatrix *I1,@dots{})
+@end deftypefun
+@*
+
+@item  last index  (end)   
+@deftypefun void  tmcGetEnd (tmsMatrix *matres,tmsMatrix *src,long dim,long numdims)
+This function has so far some restrictions in its implementations. Only syntax like
+@example
+array(m:n:end)
+@end example
+or
+@example
+Structure.array(m:n:end)
+@end example
+is implemented.
+@end deftypefun
+@*
+
+
+
+@item @b{Access struct fields}
+Implements set/get for structure fields. @*
+The field name  is accessed by its @samp{hash-code} that is registered in the global strings hash table.
+The hash table is initialized at the TMC Library initialization by the values accepted during the m-code parsing.
+Thus for correct functioning all the accessed field names should be explicitly refered from  the code. If an unknown  
+field name is created dynamically or e.g. created by @code{tmcload} function, an error may occured. The issue of string 
+hashing should be descussed in a separate section.
+
+@item   (@var{Structure}.@var{fieldname})   (get)
+@deftypefun void tmcGetByFieldHcode (tmsMatrix *matres, tmsMatrix *src, STRINGCODE hcode)
+@end deftypefun
+@*
+
+@item   (@var{Structure}.@var{fieldname})   (set)
+@deftypefun void tmcGetRefByFieldHcode (tmsMatrix *matres,tmsMatrix *src,STRINGCODE hcode)
+@end deftypefun
+@*
+
+
+
+@end table
+
+@node Internal utils
+@subsection  Internal utils
+@cindex  Internal utils
+
+These functions are used only in the generated code.
+
+@deftypefun void tmcAssignBool (tmsMatrix *dest,tmsMatrix *src)
+Performs assignment to dest: 1 if all src elements are non-zero, otherwise 0
+@end deftypefun
+
+@deftypefun void tmcCalcSwitchExpVal (tmsMatrix *exprcode,tmsMatrix *x)
+Switch-case operator support. Get numeric code for string or double expression of SWITCH.
+@end deftypefun
+ 
+@deftypefun void  _tmcClearRegister (tmsMatrix *x) 
+Main tmsMatrix destructor. Clears @var{x} matrix before re-usage.
+@end deftypefun
+
+
+@deftypefun  void tmcCollectCellColumns (tmsMatrix *colres,long numcols,tmsMatrix *a,@dots{})
+Collect a set of matrices into a cell array (row) @*
+Arguments: @*
+	colres: result cell array @*
+	numcols: number of columns to be collected @*
+	@var{a},@dots{}: matrices to be collected
+@end deftypefun
+
+
+
+@deftypefun         void tmcCollectCellRows (tmsMatrix *matres,long numrows,tmsMatrix *a,@dots{})
+Collect some rows of matrices into a cell array. @*
+Arguments: @*
+	matres: result cell array @*
+	numrows: number of rows to be collected @*
+	a,@dots{}: matrices to be collected. Must be cell arrays.
+@end deftypefun
+
+
+
+@deftypefun         void tmcCollectColumns (tmsMatrix *colres,long numcols,tmsMatrix *a,@dots{})
+Collect a set of matrices into an array (row) @*
+Arguments: @*
+	colres: result row array @*
+	numcols: number of columns to be collected @*
+	a,@dots{}: matrices to be collected
+@end deftypefun
+
+
+
+@deftypefun         void tmcCollectRows (tmsMatrix *matres,long numrows,tmsMatrix *a,@dots{})
+Collect some rows of matrices into a matrix array. @*
+Arguments: @*
+	matres: result matrix array @*
+	numrows: number of rows to be collected @*
+	a,@dots{}: matrices to be collected.
+@end deftypefun
+
+@deftypefun         void tmcComplexScalar (tmsMatrix *dest,double xr,double xi)
+Creates complex scalar matrix dest with real part xr and 
+imagine part xi. @*
+Arguments: @*
+	xr: real part @*
+	xi: imagine part
+	dest: result @*
+@end deftypefun
+
+
+@deftypefun         void tmcCopyMat (tmsMatrix *des,tmsMatrix *src)
+Copy a matrix into another initialized matrix. @*
+Arguments: @*
+	des: destination matrix @*
+	src: source matrix @*
+@end deftypefun
+
+
+@deftypefun         void _tmcCreateCellArray (tmsMatrix *res,long M,long N)
+Create a cell array matrix. @*
+Arguments: @*
+	res: initialized destination matrix @*
+	M: number of rows @*
+	N: number of columns @*
+@end deftypefun
+
+
+
+@deftypefun           void tmcCreateCellEmpty (tmsMatrix *matres)
+Create an empty cell array matrix. @*
+Arguments: @*
+	matres: initialized destination matrix @*
+@end deftypefun
+
+
+
+@deftypefun         void tmcCreateColonBaseIncLimit (tmsMatrix *matres,tmsMatrix *base,tmsMatrix *increment,tmsMatrix *limit)
+Create matrix @code{[base:increment:limit]}	 @*
+Arguments: @*
+matres: initialized destination matrix @*
+base: base of matrix @*
+increment : increment of matrix @*
+limit : limit of matrix @*
+@end deftypefun
+
+
+
+@deftypefun          void tmcCreateColonBaseLimit (tmsMatrix *matres,tmsMatrix *base,tmsMatrix *limit)
+Create matrix @code{[base:limit]}		 @*
+Arguments: @*
+base: base of matrix @*
+limit : limit of matrix @*
+@end deftypefun
+
+
+
+@deftypefun   void tmcCreateMagicColon (tmsMatrix *magcolM)
+Create matrix for internal presentation of colon operation @code{(:)}	 @*
+Arguments: @*
+magcolM: destination matrix
+@end deftypefun
+
+
+
+@deftypefun         void  _tmcCreateMatrix (tmsMatrix *res,long M,long N,short bHasImagine)
+Create  a numeric matrix array. @*
+Arguments: @*
+	res: initialized destination matrix @*
+	M: number of rows @*
+	N: number of columns @*
+	bHasImagine: presence of imagine part flag @code{(tmcCOMPLEX=1 or tmcREAL=0)}
+@end deftypefun
+
+
+
+@deftypefun         void tmcCreateMatrixEmpty (tmsMatrix *matres)
+Create  an empty matrix array. @*
+Arguments: @*
+	matres: initialized destination matrix @*
+@end deftypefun
+
+
+
+@deftypefun          tmsMatrix** tmcCreateRegFrame (long len)
+Create temporary array of matrixes. @*
+Arguments: @*
+len : number of variables to create
+@end deftypefun
+
+
+@deftypefun          void tmcCreateString (tmsMatrix *matres,const char *str)
+Create a matrix of string type	 @*
+Arguments: @*
+matres: result @*
+str: character zero-terminated string 
+
+@end deftypefun
+
+
+@deftypefun          void tmcCreateStringEmpty (tmsMatrix *matres)
+Create an empty matrix of string type	 @*
+Arguments: @*
+matres: result
+@end deftypefun
+
+
+
+
+@deftypefun          void tmcDisplayMat (tmsMatrix *x,short bVerb)
+Display matrix. @*
+Arguments: @*
+x: matrix to be displayed @*
+bVerb: verbose flag (0: compact printing)
+@end deftypefun
+
+
+
+
+@deftypefun          void tmcFncHandle (tmsMatrix *dest,void (*fncptr)(long,long,@dots{}),const char *nm)
+Implements initialization of function reference to a matrix @code{Y=@@F}.	 @*
+Arguments: @*
+	dest: destination matrix @*
+	fncptr: assigned function pointer @*
+	nm: function name 
+@end deftypefun
+
+
+@deftypefun         void tmcForIterInit (tmsMatrix *iteratorM,tmsMatrix *rangeM,tmsMatrix *iteratorvariableM)
+Implements 	initialization of iterator type matrix @var{iteratorM} in @samp{for} command by connecting it with
+ iterator variable @var{iteratorvariableM}. Matrix @var{iteratorvariableM} is cleared. @*
+Arguments: @*
+@var{iteratorM}: destination iterator reference matrix @*
+@var{rangeM}: reserved @*
+@var{iteratorvariableM}: iterator of for-loop
+@end deftypefun
+
+
+@deftypefun        short tmcForIterNext (tmsMatrix *iteratorM,tmsMatrix *rangeM)
+Implements increment of for-loop iterator	 @*
+Arguments: @*
+@var{iteratorM}: destination iterator reference matrix @*
+@var{rangeM}: range in for command @*
+Iterator variable must be matrix (not cell etc.) @*
+See also: @code{tmcForIterInit}
+@end deftypefun
+
+
+@deftypefun         short tmcFreeLib (void)
+Uninitialize TMC run-time (graphics, reference helpers, global variables, string hash, exception handling)	
+Arguments: @*
+NA
+@end deftypefun
+
+
+@deftypefun         void tmcFreeLocalVar (tmsMatrix *src)
+Clear and destroy temporary variables at function return.	 @*
+Arguments: @*
+src: matrix to be destroyed
+@end deftypefun
+
+
+@deftypefun          void tmcFreeRegFrame (tmsMatrix **reg)
+Destroy temporary matrix array.	 @*
+Argume; nts: @*
+reg : pointer to array to be destroyed. 
+@end deftypefun
+
+
+@deftypefun      tmsMatrix* _tmcGetField (tmsMatrix *S,long ind,const char *fname)
+Get a struct field given by name as a string.
+Arguments: @*
+S: returned matrix @*
+ind: reserved @*
+fname: field name @*
+@end deftypefun
+
+
+@deftypefun       short  _tmcGetFieldNumber (tmsMatrix *src,const char *fn)
+Get a struct field order number given by fieled name as a string.
+Arguments: @*
+src:   struct matrix @*
+fn: field name @*
+Return: field number 
+@end deftypefun
+
+
+
+@deftypefun  short _tmcGetString (const tmsMatrix *src , char *str_des , long maxlen )
+Copy string  from   string matrix @var{src} into buffer @var{str_des} and null-terminate it. If the matrix length is larger than @var{maxlen}-1, the string is truncated.
+Arguments: @*
+src:   struct matrix @*
+str_des: destination buffer @*
+maxlen: size of destination buffer.
+Return: 0
+@end deftypefun
+
+
+@findex pi 
+@code{   Y=pi    }
+@deftypefun void tmcpi  (long nout,long ninput,tmsMatrix *dest)
+Return PI constant 3.1415926535897932384626433832795 @dots{}. @*
+@end deftypefun
+@*
+
+
+
+@deftypefun    void tmci (long nout,long ninput,tmsMatrix *dest) 
+Return @code{i} constant @*
+@end deftypefun
+
+
+@deftypefun  void tmcinf (long nout,long ninput,tmsMatrix *dest)
+Return @code{Inf} constant @*
+@end deftypefun
+
+
+
+@deftypefun short tmcInitLib (const struct CInit_funcs_table *  @var{pInit_funcs_table})
+Initialize TMC run-time. Parameter @code{pInit_funcs_table}  should pass to the initialization function the pointer @code{&Init_funcs_table} to the global table that is generated by TMC compiler. 
+@end deftypefun
+
+
+
+@deftypefun  short tmcIsCaseDouble (tmsMatrix *expr_code,double x) 
+Returns 1 if @var{expr_code} equals @var{x} else returns 0
+@end deftypefun
+
+
+
+@deftypefun   short tmcIsCaseString (tmsMatrix *expr_code, STRINGCODE n)
+Returns 1 if @var{expr_code} contain a string with hash-code @var{n} else returns 0
+@end deftypefun
+
+
+@deftypefun    short  tmcIsFalse (tmsMatrix *x)
+Returns  1 if @var{x} has a zero element or empty, otherwise returns 0.
+@end deftypefun
+
+
+@deftypefun  void tmcIsFieldHcode (tmsMatrix *matres,tmsMatrix *src,STRINGCODE hcode) 
+Returns  @code{matres=1} struct @var{src} has a field with hash-code @var{hcode}, otherwise returns 0.@*
+May be  called without _tmcClearRegister for @var{matres}.
+@end deftypefun
+
+
+@deftypefun  short  tmcIsTrue (tmsMatrix *x)
+Returns  1 if @var{x} has all non zero elements and empty, otherwise returns 0.
+@end deftypefun
+
+
+@deftypefun    void tmcj (long nout,long ninput,tmsMatrix *dest)
+Return @code{i} constant. The same like @code{tmci} @*
+@end deftypefun
+
+
+
+
+@deftypefun   char* _tmcMat2String (tmsMatrix *src)
+Create char buffer containing string @var{src} and returns pointer to it. The pointer must be free by caller.
+@end deftypefun
+
+@deftypefun  void tmcNaN (long nout,long ninput,tmsMatrix *dest)
+Return @code{NaN} constant @*
+@end deftypefun
+
+
+
+
+@deftypefun    tmsMatrix* __tmcNewMatrix (void)
+Create empty matrix and returns pointer to it. The matrix must be free by caller using @code{tmcFreeLocalVar}.
+@end deftypefun
+
+
+@deftypefun  short tmcNotCase (tmsMatrix *expression,tmsMatrix *case_value) 
+Return 0 is case @var{expression} equals to @var{case_value}, otherwise return 1
+@end deftypefun
+
+
+@deftypefun  long tmcNumElem (tmsMatrix *x) 
+Returns number of matrix @var{x} elements.
+@end deftypefun
+
+
+
+@deftypefun   void _tmcRaiseException (long errcode,const char *module_name,const char *func_name,const char *errmsg,long numargin,tmsMatrix *x,@dots{})
+Raises an exception and terminate the program execution.
+@end deftypefun
+
+
+@deftypefun   void tmcReallocRegister (tmsMatrix *src) 
+Main tmsMatrix destructor. Clears x matrix before re-usage.	 
+Arguments: @*
+See: _tmcClearRegister
+@end deftypefun
+
+
+@deftypefun         void tmcScalar (tmsMatrix *dest,double x)
+Creates scalar matrix dest with real value x. @*
+Arguments: @*
+	x: real value @*
+	dest: result @*
+@end deftypefun
+	
+
+
+@deftypefun         void tmcSyntaxError (const char *msg)
+Raise run-time exception.
+Arguments: @*
+	msg: message string
+@end deftypefun
+
+@c ---------------------------------------------------------------
+
+@node Debugging features
+@subsection Debugging features
+@cindex  Debugging features
+
+
+@deftypefun         HANDLE tmcconnectdebugger (long pass)
+Initialize application possibility to be connected to TMC Debugger. @*
+Returns: handle of the window used by TMC debugger.
+Arguments: @*
+	pass: protection code (by default is 1) @*
+@end deftypefun
+
+
+@deftypefun         void tmcdbgCloseDebugger (void)
+Un-Initialize application debugging. @*
+Arguments: @*
+	none @*
+@end deftypefun
+
+
+
+@deftypefun         long tmcdbgCommonMemConnect (void** ptr)
+Connect to TMC debugger file-mapping. @*
+Arguments: @*
+	ptr: pointer to mapping view @*
+@end deftypefun
+
+
+
+@deftypefun         void tmcdbgOpenDebugger (void)
+Initialize application debugging. @*
+Arguments: @*
+	none @*
+@end deftypefun
+
+
+@deftypefun       void tmcdbgPopStackVar (short nVars)
+Free debugging frame from the variables before the function return. @*
+Arguments: @*
+	nVars: number of variables to remove @*
+@end deftypefun
+
+
+@deftypefun         void tmcdbgPushStackVar (const char *fncname,short nVars,tmsMatrix* var1,const char *varname1,@dots{})
+Put variables with their names into debugging frame @*
+Arguments: @*
+	fncname: currently entered function name @*
+	nVars: number of variables to put @*
+	var1,varname1,..: pairs matrix and its name  @*
+@end deftypefun
+
+
+@------------------------------------------------------------------------------------------------------------------------
+
+@node MEX function support
+@subsection MEX function support
+@cindex MEX function support
+
+If your project contains MEX-functions with their source available, you should 
+make a number of  corrections to the source in order to get it compiled with TMC-compiled application.
+
+The MATLAB MEX-function that has the prototype  
+@example
+@code{ void mexFunction ( int nlhs, mxArray *plhs[], int nrhs,
+ const mxArray*prhs[])}  
+@end example
+
+should be replaced by mex-tmc-function with prototype
+@example
+  void tmcFuncName (long nlhs,long nrhs,tmsMatrix *lhsMatrix1,@dots{}
+tmsMatrix *lhsMatrixM, tmsMatrix *rhsMatrix1,..tmsMatrix *rhsMatrixN) @*
+@end example
+
+Any reference to left-hand-side arguments
+@example
+	plhs[K] 	
+@end example
+should be replaced by refernce to
+@example
+ lhsMatrixK
+@end example
+
+A principle difference between MEX and TMC calling convention is that that in TMC the output argument matrix 
+should be created before calling a function while in MATLAB MEX the variable is created inside the function itself. @*
+Thus, i.e., the code 
+@example
+	plhs[0] = mxCreateDoubleMatrix(m , n  , mxREAL ); 
+@end example 
+should be replaced by the following:
+@example
+	TMCMEX_CREATE_DOUBLE_MATRIX(lhsMatrix1,m, n , mxREAL ); 
+@end example 
+that is expanded to 
+@example
+	_tmcCreateMatrix(lhsMatrix1, m , n , mxREAL ) 
+@end example
+
+@b{Macroses for supported external interface functions}
+The following macroses have the same prototype as the corresponding functions in MATLAB MEX and do not demand the change of user source code.
+
+@deftypefun  void mexErrMsgTxt (const char *message) 
+Display error message and raise an exception.
+@end deftypefun
+
+@deftypefun   void mexPrintf (const char *message)
+Display string message.
+@end deftypefun
+
+@deftypefun    char* mxArrayToString (tmsMatrix *mX)  
+Creates zero-terminated char buffer initialized by the string stored in
+matrix mX.
+Returns pointer to the string that must be freed by caller. 
+@end deftypefun
+
+
+@deftypefun             tmsMatrix* mxGetCell (tmsMatrix *mX,int k)  
+Returns @var{k}-th zero-based element of cell array matrix @var{mX}. 
+@end deftypefun
+	
+
+@deftypefun          int mxGetM (const tmsMatrix *mX) 
+Return number of rows of matrix mX.
+@end deftypefun
+  
+
+
+@deftypefun          int mxGetN (const tmsMatrix *mX) 
+Return number of columns of matrix mX.
+@end deftypefun
+
+
+@deftypefun          double* mxGetPi (const tmsMatrix *mX) 
+Return pointer to imagine part data of matrix mX.
+@end deftypefun
+
+
+@deftypefun          double* mxGetPr (const tmsMatrix *mX) 
+Return pointer to real part data of matrix mX.
+@end deftypefun
+
+
+
+
+@deftypefun         int mxGetString (const tmsMatrix *mX,const char *S,int len) 
+Create matrix of string type. Returns zero on success.
+@end deftypefun
+
+
+@deftypefun       void    mxFree (tmsMatrix *mX) 
+Free matrix memory. The matrix itself is not destroyed.
+@end deftypefun
+
+
+@deftypefun       void  mxSetCell (tmsMatrix *mX,int k,tmsMatrix *mA) 
+Assign a matrix mA to k-th zero-based element of cell array matrix mX. @*
+Arguments: @*
+	mX: cell array matrix to be modified @*
+	k: element index to assign @*
+	mA: matrix to be assigned @*
+@end deftypefun	
+
+
+
+@deftypefun         tmsMatrix* mxGetField (tmsMatrix *mX,int k,const char *fieldname) 
+Return field with name fieldname of k-th zero-based element of structure matrix mX. @*
+Arguments: @*
+	mX: structure array matrix @*
+	k: element index of structure array (reserved, must be 0) @*
+	fieldname: field name
+@end deftypefun
+
+
+
+@deftypefun         int mxGetFieldNumber (tmsMatrix *mX,const char *fieldname) 
+Return field number 0-based index of a field with name fieldname  of structure matrix mX. If the field does not exist returns -1. @*
+Arguments: @*
+	mX: structure array matrix @*
+	fieldname: field name
+@end deftypefun	
+
+
+@deftypefun        int mxGetNumberOfElements (tmsMatrix *mX) 
+Return number of elements in array matrix mX. @*
+Arguments: @*
+	mX: structure array matrix
+@end deftypefun	
+
+
+@deftypefun         int mxIsChar (tmsMatrix *mX) 
+Return 1 if the matrix array mX has string type. @*
+Arguments: @*
+	mX:  array matrix
+@end deftypefun
+
+
+@deftypefun        int mxIsComplex (tmsMatrix *mX) 
+Return 1 if the matrix array mX has imagine part. @*
+Arguments: @*
+	mX:  array matrix
+@end deftypefun
+	
+
+@deftypefun         int mxIsEmpty (tmsMatrix *mX) 
+Return 1 if the matrix array mX has no elements. @*
+Arguments: @*
+	mX:  array matrix
+@end deftypefun	
+
+
+
+@deftypefun         int mxIsStruct (tmsMatrix *mX) 
+Return 1 if the matrix array mX is of structure type. @*
+Arguments: @*
+	mX:  matrix
+@end deftypefun	
+
+
+@b{TMC MEX Macroses for initialization of output arguments}
+
+@deffn {Macro} TMCMEX_CREATE_CELL_MATRIX (tmsMatrix *mX,int M,int N)
+Initialize 2-dim cell array matrix. Each cell should be assigned by mxSetCell.@*
+Matrix @var{mX} should be a MEX function argument created by caller. @*
+Arguments:@*
+	mX: initialized matrix@*
+	M: number of rows@*
+	N: number of columns@*
+@end deffn	
+
+
+@deffn {Macro}    TMCMEX_CREATE_DOUBLE_MATRIX (tmsMatrix *mX,int M,int N,short tmcType) 
+Initialize 2-dim matrix.@*
+Matrix @var{mX} should be a MEX function argument created by caller. @*
+Arguments:@*
+	mX: initialized matrix@*
+	M: number of rows@*
+	N: number of columns@*
+	tmcType: matrix type (mxREAL=0,mxCOMPLEX=1)@*
+@end deffn	
+	
+@deffn {Macro}     TMCMEX_NEW_DOUBLE_MATRIX (tmsMatrix *mX,int M,int N,short tmcType) 
+Create and initialize 2-dim matrix.@*
+Matrix @var{mX} should be an uninitalized local variable. @*
+Arguments: @*
+	mX: initialized matrix @*
+	M: number of rows @*
+	N: number of columns @*
+	tmcType: matrix type (mxREAL=0,mxCOMPLEX=1)@*
+@end deffn		
+	
+@node MEX example
+@subsubsection MEX example
+
+@example
+@comment file: ExMex1.c
+/*================================================================= 
+ * function Y = ExMex1(X1,X2);
+ example function
+						Y= X1+X2
+ *=================================================================*/
+
+#include <math.h>
+#include "mex.h"
+
+#define TMCMEX_DLL // must be defined for TMC and undefined for MATLAB mex compilation
+
+
+#ifndef TMCMEX_DLL
+
+#include "mexport.h"
+#define mY	plhs[0]
+#define mX1  prhs[0]
+#define mX2  prhs[1]
+
+void mexFunction( int nlhs, mxArray *plhs[],
+int nrhs, const mxArray*prhs[] )
+
+#else
+#define nrhs	nargin
+#define nlhs	nargout
+void tmcExMex1(int nargout, int nargin,tmsMatrix *mY,
+				 tmsMatrix *mX1,tmsMatrix *mX2)
+#endif
+@group
+@{
+    int mp, np; 	
+    int  ind;     
+    double * X1_rPtr;
+    double * X1_iPtr;
+    double * Y_rPtr;
+    double * Y_iPtr;
+    double * X2_rPtr;
+    double * X2_iPtr;
+    
+    /* Check for proper number of arguments */
+    if (nrhs != 2)
+    @{
+        mexErrMsgTxt("Two input arguments required.");
+    @}
+    if (nlhs > 1) @{
+        mexErrMsgTxt("One output argument required.");
+    @}
+    /* Check the dimensions */
+	mp = mxGetM(mX1); /* Number of rows in the first input argument */
+    np = mxGetN(mX2); /* Number of rows in the first input argument */
+    if ( mp != np )
+    @{
+        mexErrMsgTxt("Matrix dimensions do not match.");
+    @}
+    /* Create a matrix for the return argument */
+    if ( mxGetPi ( mX1 ) == NULL && mxGetPi ( mX2 ) == NULL)
+    @{
+        TMCMEX_CREATE_DOUBLE_MATRIX(mY,mp, np , mxREAL );
+    @}
+    else
+    @{
+        TMCMEX_CREATE_DOUBLE_MATRIX(mY,mp, np , mxCOMPLEX );
+    @}
+    X1_rPtr = mxGetPr ( mX1 );
+    X1_iPtr = mxGetPi ( mX2 );
+    X2_rPtr = mxGetPr ( mX2 );
+    X2_iPtr = mxGetPi ( mX2 );
+    Y_rPtr = mxGetPr ( mY  );
+	Y_iPtr = mxGetPi ( mY  ) ;
+	if ( X1_iPtr == NULL )
+	@{
+		if ( ( Y_iPtr != NULL ) && ( X2_iPtr != NULL ) )
+		@{
+			for ( ind = 0 ; ind < mp ; ind++ )
+			@{	                       
+                    Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+                    Y_iPtr[ ind ] = X2_rPtr[ ind ] ;
+            @}
+		@}
+		else
+        @{
+			for ( ind = 0 ; ind < mp ; ind++ )
+			@{	
+                    Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+			@}
+        @}
+    @}
+    else
+    @{
+        if ( X2_iPtr == NULL )
+        @{
+            if ( Y_iPtr != NULL )
+			@{
+				for ( ind = 0 ; ind < mp ; ind++ )
+				@{	                              
+                        Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+                        Y_iPtr[ ind ] = X1_iPtr[ ind ];
+                @}
+			@}
+            else
+            @{
+				for ( ind = 0 ; ind < mp ; ind++ )
+				@{
+                        Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+                @}
+            @}
+        @}
+        else
+        @{
+            if ( Y_iPtr != NULL )
+			@{
+				for ( ind = 0 ; ind < mp ; ind++ )
+				@{	             
+                        Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+                        Y_iPtr[ ind ] = X1_iPtr[ ind ] + X2_iPtr[ ind ] ;
+                @}
+			@}
+            else
+            @{
+				for ( ind = 0 ; ind < mp ; ind++ )
+				@{
+                      Y_rPtr[ ind ] = X2_rPtr[ ind ] + X1_rPtr[ ind ];
+                @}
+            @}
+        @}
+    @}
+    return;
+@}
+@end group
+@end example
+
+@node TMC Code debugging
+@chapter TMC Code debugging
+@cindex TMC developement tools
+@cindex TMC Code debugging
+@findex tmcdbgPushStackVar
+@findex tmcdbgOpenDebugger
+
+The simplest way of the code debugging is the usage of @code{save} function to save intermediate variables. 
+Too additional tools are provided (for MS Windows):
+@itemize @bullet
+@item TMC Debugger.
+@cindex TMC Debugger
+
+This tool (tmcdbgW.exe) enables to view variables that are stored in the debugging frame by @code{tmcdbgPushStackVar} function.
+Calls to this function are generated by TMC Converter if it was called with switch @option{-d}.
+The application should call @code{tmcdbgOpenDebugger} function at initialisation and be stopped by a debugger (GDB or other one, depending on 
+the host compiler). 
+
+
+ Note, that call
+@example
+call tmcdisp(0,1,0,@var{variable})
+@end example
+or
+@example
+call tmcdisp(0,1,0,@var{address})
+@end example
+during GDB debugging session should print the value of the intermediate @var{variable} (like reg[n]). In 
+the following @command{GDB} session aplication @command{Ex1_w32_shared.exe} is loaded for debugging,
+a breakpoint is set at the entry to function @code{tmcmyeq} (generated from @code{myeq} ) and the application run.
+Then execution is stopped at the breakpoint, some steps are performed and then variable @code{reg[5]} is displayed. 
+The the address of local variable @var{x} is requested and the variable @var{x} is printed using its address.
+
+@example
+>gdb .\bin\Ex1_w32_shared.exe
+(gdb) b tmcmyeq
+Breakpoint 1 at 0x4013e0: file myeq.c, line 19.
+(gdb) r
+Breakpoint 1, tmcmyeq (nargout=1, nargin=1, y=0x56ae38, x=0x565708)
+    at myeq.c:19
+19      ,tmsMatrix *x) @{
+(gdb) s
+20      tmsMatrix **reg=tmcCreateRegFrame(25);
+(gdb) s
+19      ,tmsMatrix *x) @{
+(gdb) s
+20      tmsMatrix **reg=tmcCreateRegFrame(25);
+(gdb) s
+23      TMC_DBG_PUSH_STACK_VAR("myeq",2,
+(gdb) s
+20      tmsMatrix **reg=tmcCreateRegFrame(25);
+(gdb) s
+23      TMC_DBG_PUSH_STACK_VAR("myeq",2,
+(gdb) s
+30      tmcScalar(reg[2],2.000000000000000e+000);
+(gdb) s
+31      tmcPowerScalar(reg[3],x,reg[2]);
+(gdb) s
+34      tmcReallocRegister(reg[5]);
+(gdb) s
+35      tmcsin(1,1, reg[5], x);
+(gdb) s
+36      tmcMulScalar(reg[6],reg[3],reg[5]);
+(gdb) s
+38      tmcScalar(reg[8],3.000000000000000e+000);
+(gdb) call tmcdisp(0,1,0,reg[5])
+Matrix(1,1) =[
+0.958924,       ;
+];
+$1 = 0
+(gdb) p x
+$2 = (tmsMatrix *) 0x565708
+(gdb) call tmcdisp(0,1,0,0x565708)
+Matrix(1,1) =[
+-5,     ;
+];
+$4 = 0
+@end example
+
+If TMC Debugger is started at this point, it connects to the application (the appication process ID is found by its window)
+and reads its process memory from the debugging stack and accepts the variable addresses. Then it reads the variables
+from these addresses. TMC Debugger displays calling stack; when a called function from the stack is selected, a list/tree of 
+local variables is displayed. When a local variable is selected in the tree, its content is displayed.
+If some of variables are structures, the corresponded symbols hash table @file{hash_initx.dat} should be loaded into TMC Debugger. In the current
+version the table is compiled statically.
+
+
+@item TMC Graph Viewer.
+@cindex TMC Graph Viewer
+@findex tmcfigure
+@findex tmcplot
+@findex tmcsubplot
+
+This tool implements a graphic server that provides a minimal support for functions like @code{figure}, @code{plot}, @code{subplot}.
+This server updates the graphics even when the application is stopped at a breakpoint. The executable (tmcgra.exe) should be put in the application 
+running directory. 
+
+The first call to @code{function} or @code{plot} functions start the server. The data of the plot to be displayed is
+passed to the server by  a file in a predefined format. The file is put in the current directory and display
+is synchronized by a window message. Actually user may use its own implementation
+of the graphics using this data format.
+@end itemize
+
+	
+
+@c node References
+@c unnumbered References
+
+@c itemize @bullet
+@c end itemize
+
+@node Concept Index
+@unnumbered Concept Index
+@printindex cp
+
+@node Function Index
+@unnumbered Function Index
+@printindex fn
+
+@c node GNU Free Documentation License
+@c appendix GNU Free Documentation License
+@c include fdl-1.3.texi
+
+@c ifnothtml
+@c contents
+@c end ifnothtml
+
+@bye

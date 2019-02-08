@@ -1,0 +1,31 @@
+function [F,Mag,Ph]=TestO(f1,d1,f2,d2, NumFreqs)
+% [F,Mag,Ph]=TestO(1000,0.07,1500,0.7, 100)
+% Calculate 2nd-order filter frequency responce 
+
+if NumFreqs <2 || f1<= 0 || f2 <=0 
+    F=0; Mag=0; Ph=0;
+    return;
+end
+
+Fmin = min(f1,f2)*0.2;
+Fmax = max(f1,f2)/0.2;
+F = logspace( log10(Fmin),log10(Fmax), NumFreqs ); 
+w1 = f1*2*pi; w2 = f2*2*pi;
+w = F * 2*pi;
+[Mag,Ph,num,den]=resp2nd(w1,d1,w2,d2,w);
+T = 1e-3;
+[numz,denz]=myc2d(b,a,T);
+Tmax =min( max( 2 / min( Fmin ) , 1),10);
+
+X = ones(1,
+[Y, z] = myFilter(numz,denz, X, [0,0,0]);
+% figure(10);
+% subplot(2,1,1);
+% plot(F, Mag,'b');
+% subplot(2,1,2);
+% plot(F, Ph,'b');
+
+
+
+
+
