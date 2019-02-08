@@ -1,3 +1,8 @@
+Yet not released:
+- Fixes in run-time
+   zero index in matrix due to unsupported logical value
+	
+
 Release 1.11 of TMC Compiler:
 - Bugs fixes
 - New feature: local functions compilation
