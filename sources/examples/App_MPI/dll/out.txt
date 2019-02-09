@@ -1,0 +1,2 @@
+./Stubs/TestO.m(15) : error P0001: fatal syntax error
+./Stubs/TestO.m(15) : error P0001: fatal syntax error

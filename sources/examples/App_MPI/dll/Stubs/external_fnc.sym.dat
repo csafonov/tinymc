@@ -1,0 +1,8 @@
+ExMex1,2,1,x;
+MPI_Init,0,1,x;
+MPI_Finalize,0,1,x;
+MPI_Comm_Load,1,1,x;
+MPI_Comm_size,1,1,x;
+MPI_Comm_rank,1,1,x;
+MPI_Send,4,1,x;
+MPI_Recv,3,2,x;
