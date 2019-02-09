@@ -1,0 +1,25 @@
+-- BASIC USAGE ---
+AppEx - basic example
+AppEx_qd    - demonstration of quadriple-float functions (roots_qd)
+AppEx_mexqd - demonstration of MEX-interfaces to quadriple-float functions (roots_qd,left division,convolution )
+
+AppNasm - demonstration of ASM code generation and compilation by NASM
+-- ARM Native code ---
+Simo_ADT - example for Android (ADT and Android Studio)
+
+-- LABVIEW ---
+NI_LabViewEx : LabView VI example
+NI_LabViewDLLEx : dll for NI_LabViewEx
+
+-- LABWIN --- 
+NI_LabWinEx : LabWindows / CVI example
+NI_LabWinDLLEx : MAT sources for NI_LabWinEx
+
+-- DELPHI ---
+delphi_graph : Delphi-application (nicplot) uses TMC-generated DLL (plotdll)
+
+-- C# ---
+dotNET_component : C#-application   uses TMC-generated DLL as native code dll
+
+-- App_MPI --
+Usage of MPI interface for multi-processor calculations
