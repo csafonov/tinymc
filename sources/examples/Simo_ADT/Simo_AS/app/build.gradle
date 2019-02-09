@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 10
-    buildToolsVersion "28.0.0"
+
 
     defaultConfig {
         applicationId "com.tmc.tunerdemo"
@@ -15,6 +15,12 @@ android {
             // libraries Gradle should build and package with your APK.
             abiFilters  'armeabi-v7a'
         }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
     buildTypes {

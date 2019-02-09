@@ -8,7 +8,8 @@ APP_OPTIM := debug
 include $(CLEAR_VARS)
 LOCAL_MODULE    := TmcTunerDemo
 
-MY_TMC_PATH := D:/Data_D/HSKOST/TMC/rel_sourceforge/tmc_src-git
+# MY_TMC_PATH := ../../../../../../../
+MY_TMC_PATH := D:/Data_D/HSKOST\TMC/rel_github/tinymc/sources/
 MY_TMCLIB_PATH := $(MY_TMC_PATH)/src/tmcruntime/tmclib
 
 MY_TMCLIB_SRC := $(MY_TMCLIB_PATH)/cmatrix.c \
