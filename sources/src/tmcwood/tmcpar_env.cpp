@@ -720,7 +720,7 @@ int Load_FncNames(const char *filename)
 	long nArgIn;
 	long nArgOut;
 	char nMode;
-	char FuncName[100];
+	char FuncName[502];
 	char buf[502];
 	int k,n1;
 
@@ -1256,25 +1256,35 @@ fprintf(stderr,"Running TMC EXPRESS CONVERTER...\n");
             perror("Could not open the dump file"); exit(1);
         }
 	}
-	if (strlen(libh_dir_name)==0)
-	{
-		strncpy(libh_dir_name,module_path,strlen(module_path)+1);
-		strcat(libh_dir_name,"../tmclib/");
-	}
 
-	if (Compiler.pass2only==false)
+	if ( Compiler.mode != 'f'  )
 	{
-	 strncpy(buildin_fnc_file_name, libh_dir_name, strlen(libh_dir_name)+1);
-	 strcat(buildin_fnc_file_name,"buildin_fnc.sym.dat");
+			if (strlen(libh_dir_name)==0)
+			{
+				strncpy(libh_dir_name,module_path,strlen(module_path)+1);
+				strcat(libh_dir_name,"../tmclib/");
+			}
+
+			if (Compiler.pass2only==false)
+			{
+			 strncpy(buildin_fnc_file_name, libh_dir_name, strlen(libh_dir_name)+1);
+			 strcat(buildin_fnc_file_name,"buildin_fnc.sym.dat");
+			}
+			if (Compiler.pass2only==false)
+			strncpy(symtable_file_name, output_dir_name, strlen(output_dir_name)+1);
+			else
+			strncpy(symtable_file_name, root_dir_name, strlen(root_dir_name)+1);
+
+			strcat(symtable_file_name, ws_file_name);
+			strcat(symtable_file_name,".sym.dat");
 	}
-	if (Compiler.pass2only==false)
-	strncpy(symtable_file_name, output_dir_name, strlen(output_dir_name)+1);
 	else
-	strncpy(symtable_file_name, root_dir_name, strlen(root_dir_name)+1);
+	{
+		// single file compilation:
+		// e.g. TMCC -d -c -C -h .\Stubs\testm.sym.dat -g2 -f EXAMPLE.m  -l .\OutC\testmx.err.log  -o .\OutC\ > outC2x.txt
+		strncpy(symtable_file_name, libh_dir_name, strlen(libh_dir_name)+1);
 
-	strcat(symtable_file_name, ws_file_name);
-	strcat(symtable_file_name,".sym.dat");
-
+	}
 /////
 #ifdef BLD_RTL_FEATURE
 	strncpy(inputfilelist_file_name, output_dir_name, strlen(output_dir_name)+1);

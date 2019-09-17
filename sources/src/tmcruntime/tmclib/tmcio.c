@@ -1581,7 +1581,7 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 	sBuf=_tmcMat2String(fname);
 	sPerm[0]=(char)perm->value.complx.rData[0];
 	if (tmcNumElem(perm)>1)
-		sPerm[1]=(char)perm->value.complx.rData[0];
+		sPerm[1]=(char)perm->value.complx.rData[1];//FIX BUG
 	fp = fopen(sBuf,sPerm);
 	_tmcCreateMatrix(h,1,1,tmcREAL);
 	h->value.complx.rData[0]=(double)(unsigned long)fp;
@@ -1603,95 +1603,141 @@ else
 
 	fclose(fp);
 }
-void tmcfeof(long nout,long ninput,tmsMatrix *mIsEof,tmsMatrix *h)
+void tmcfeof(long nout, long ninput, tmsMatrix *mIsEof, tmsMatrix *h)
 {
-int stat;
-FILE* fp = (FILE*)(unsigned long)h->value.complx.rData[0];
+	int stat;
+	FILE* fp = (FILE*)(unsigned long)h->value.complx.rData[0];
 
-if (fp)
-	 stat= feof(fp);
-else
-	_tmcRaiseException(file_not_found,s_module,"feof","invalid file handle.",1,h);
+	if (fp)
+		stat = feof(fp);
+	else
+		_tmcRaiseException(file_not_found, s_module, "feof", "invalid file handle.", 1, h);
 
 
-	_tmcCreateMatrix(mIsEof,1,1,tmcREAL);
-	mIsEof->value.complx.rData[0]=(double)stat;
+	_tmcCreateMatrix(mIsEof, 1, 1, tmcREAL);
+	mIsEof->value.complx.rData[0] = (double)stat;
 
 }
 
 
-void tmcfprintf(long nout,long ninput, tmsMatrix *fm,...)
+void tmcfprintf(long nout, long ninput, tmsMatrix *fm, ...)
 /*
-FPRINTF behaves like ANSI C with certain exceptions and extensions. 
-    These include:
-    1. Only the real part of each parameter is processed.
-    2. ANSI C requires an integer cast of a double argument to correctly
-       use an integer conversion specifier like d. A similiar conversion
-       is required when using such a specifier with non-integral MATLAB
-       values. Use FIX, FLOOR, CEIL or ROUND on a double argument to
-       explicitly convert non-integral MATLAB values to integral values
-       if you plan to use an integer conversion specifier like d.
-       Otherwise, any non-integral MATLAB values will be outputted using
-       the format where the integer conversion specifier letter has been
-       replaced by e.
-    3. The following non-standard subtype specifiers are supported for
-       conversion characters o, u, x, and X.
-       t    - The underlying C datatype is a float rather than an
-              unsigned integer.
-       b    - The underlying C datatype is a double rather than an
-              unsigned integer.
-       For example, to print out in hex a double value use a format like
-       '%bx'.
-    4. FPRINTF is "vectorized" for the case when A is nonscalar. The
-       format string is recycled through the elements of A (columnwise)
-       until all the elements are used up. It is then recycled in a similar
-       manner through any additional matrix arguments.
+FPRINTF behaves like ANSI C with certain exceptions and extensions.
+	These include:
+	1. Only the real part of each parameter is processed.
+	2. ANSI C requires an integer cast of a double argument to correctly
+	   use an integer conversion specifier like d. A similiar conversion
+	   is required when using such a specifier with non-integral MATLAB
+	   values. Use FIX, FLOOR, CEIL or ROUND on a double argument to
+	   explicitly convert non-integral MATLAB values to integral values
+	   if you plan to use an integer conversion specifier like d.
+	   Otherwise, any non-integral MATLAB values will be outputted using
+	   the format where the integer conversion specifier letter has been
+	   replaced by e.
+	3. The following non-standard subtype specifiers are supported for
+	   conversion characters o, u, x, and X.
+	   t    - The underlying C datatype is a float rather than an
+			  unsigned integer.
+	   b    - The underlying C datatype is a double rather than an
+			  unsigned integer.
+	   For example, to print out in hex a double value use a format like
+	   '%bx'.
+	4. FPRINTF is "vectorized" for the case when A is nonscalar. The
+	   format string is recycled through the elements of A (columnwise)
+	   until all the elements are used up. It is then recycled in a similar
+	   manner through any additional matrix arguments.
 */
 {
-	char *sBuf,*sTempBuf;
-	char *cPtr,*cPtrPrev;
+	char *sBuf, *sTempBuf;
+	char *cPtr, *cPtrPrev;
 	short ind;
 	va_list marker;
 	tmsMatrix *M;
 	tmsMatrix *fmt;
+	char c;
+	FILE *fp;
+	long len,kk;
+	va_start(marker, fm);     // Initialize variable arguments. 
 
-    FILE *fp;
-
-	va_start( marker, fm );     // Initialize variable arguments. 
-	
 	if (_tmcIsChar(fm))
 	{
 		fp = stdout;
-	    sBuf=_tmcMat2StringESC(fm);
-		ind=1;
+		sBuf = _tmcMat2StringESC(fm);
+		ind = 1;
 	}
 	else
 	{
-		fp =(FILE*)(unsigned long)fm->value.complx.rData[0];
-		fmt = va_arg( marker,  tmsMatrix * );
-	    sBuf=_tmcMat2StringESC(fmt);
-		ind=2;
+		fp = (FILE*)(unsigned long)fm->value.complx.rData[0];
+		fmt = va_arg(marker, tmsMatrix *);
+		sBuf = _tmcMat2StringESC(fmt);
+		ind = 2;
 	}
 
-	cPtr=sBuf;
+	cPtr = sBuf;
 	cPtrPrev = sBuf;
-//		if (ninput==1)
-//				fprintf(stdout,cPtrPrev);
+	//		if (ninput==1)
+	//				fprintf(stdout,cPtrPrev);
 
-		while (ind<ninput)
+	while (ind < ninput)
+	{
+		
+		cPtrPrev = cPtr;
+		cPtr = strchr(cPtr, '%');
+
+		if (cPtr == NULL)
 		{
-			M = va_arg( marker,  tmsMatrix * );
-			cPtrPrev=cPtr;
-			cPtr=strchr(cPtr,'%');
-			if (cPtr==NULL)
+			fprintf(fp, "%s", cPtrPrev);
+			break;
+		}
+		else
+		{
+			*cPtr = 0; // set terminator
+			fprintf(fp, "%s", cPtrPrev);
+			c = cPtr[1];
+			if (c != '%')
 			{
-				fprintf(fp,"%s",cPtrPrev);
-				break;
+				M = va_arg(marker, tmsMatrix *);
+				ind++;
 			}
-			else
+			switch (c)
 			{
-				*cPtr=0; // set terminator
-				fprintf(fp,"%s",cPtrPrev);
+			case 's':
+				// printf as string
+				sTempBuf = _tmcMat2StringESC(M);
+				fprintf(fp, "%s", sTempBuf);
+				MYFREE(sTempBuf);
+				break;
+			case 'd':
+			case 'u':
+				if (_mdblIsInteger(M->m_rData[0]))
+					{
+					fprintf(fp, "%I64d", (__int64)M->m_rData[0]);
+					}
+				else
+				{
+					fprintf(fp, "%f", M->m_rData[0]);
+				}
+				break;
+			case 'f':
+			case 'g':
+					fprintf(fp, "%f", M->m_rData[0]);
+					break;
+			case 'x':
+				fprintf(fp, "%x",(long) M->m_rData[0]);
+				break;
+			case 'X':
+				fprintf(fp, "%X", (long)M->m_rData[0]);
+				break;
+			case '%':
+				fprintf(fp, "%%");
+				// no parameter passed for it
+				break;
+
+
+				}
+
+
+			/*
 				if (cPtr[1]=='s')
 				{
 					// printf as string
@@ -1707,12 +1753,25 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 					// printf as double
 					fprintf(fp,"%f",M->m_rData[0]);
 				}
+				*/
 				cPtr+=2;
 			}
-			ind++;
+			//ind++;
 		}
 		va_end( marker );              // Reset variable arguments.      
-		fprintf(fp,"%s",cPtr);//was: without format: HSKOST19.04.2015 for Android corrected 19.09.2015
+		if (cPtr != NULL)
+		{
+			len = strlen(cPtr);
+			c = 0;
+			for (kk = 0; kk < len; kk++)
+			{
+				if (cPtr[kk]=='%' && c=='%')
+					continue;
+				c = cPtr[kk];
+					fprintf(fp, "%c", c);
+			}
+		}
+//		   fprintf(fp,"%s",cPtr);//was: without format: HSKOST19.04.2015 for Android corrected 19.09.2015
 //		fprintf(fp,"\n");
 	MYFREE(sBuf);
 }
@@ -1812,6 +1871,34 @@ size_t len;//x64
 		if (buffer[len-1]=='\n')
 			buffer[len-1] = 0;
 		_tmcSetString(str,buffer);
+	}
+
+
+}
+
+void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *h)
+{
+	//returns the next line of a file associated with file
+	// identifier FID as a MATLAB string. Read line from file, KEEP newline character.
+	// If just an end-of-file is encountered then -1 is returned.
+	char buffer[MAX_FGETS_LEN]; // max  length !!!
+	FILE *fp;
+	size_t len;//x64
+
+	fp = (FILE*)(unsigned long)h->value.complx.rData[0];
+	if (fgets(buffer, MAX_FGETS_LEN - 2, fp) == NULL)
+	{
+		_tmcCreateMatrix(str, 1, 1, tmcREAL);
+		str->value.complx.rData[0] = -1;
+	}
+	else
+	{
+		len = strlen(buffer);
+		// Differ from getl:
+		//if (buffer[len - 1] == '\n')
+		//	buffer[len - 1] = 0;
+
+		_tmcSetString(str, buffer);
 	}
 
 

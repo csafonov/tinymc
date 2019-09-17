@@ -828,12 +828,6 @@ double y;
 	{
 		_tmcRaiseException(err_invalid_dimentions,s_module,"cmp","Matrix dimensions must agree",2,a,b);
 	}
-	if ((_tmcGetType(a) !=  TYPE_MATRIX && _tmcGetType(a) !=  TYPE_STRING)||
-		(_tmcGetType(b) !=  TYPE_MATRIX && _tmcGetType(b) !=  TYPE_STRING)
-		)
-	{
-		_tmcRaiseException(err_must_be_matrix,s_module,"cmp","Matrix type invalid",2,a,b);
-	}
 
 	if ( MNa==0 || MNb==0)
 	{
@@ -842,6 +836,13 @@ double y;
 	}
 	else
 	{
+		if ((_tmcGetType(a) != TYPE_MATRIX && _tmcGetType(a) != TYPE_STRING) ||
+			(_tmcGetType(b) != TYPE_MATRIX && _tmcGetType(b) != TYPE_STRING)
+			)
+		{
+			_tmcRaiseException(err_must_be_matrix, s_module, "cmp", "Matrix type invalid", 2, a, b);
+		}
+
 		M=max(Ma,Mb);
 		N=max(Na,Nb);
 		MN=M*N;
@@ -850,10 +851,11 @@ double y;
 
 	tmcReallocRegister(sum);
 	_tmcCreateMatrix(sum,M,N,tmcREAL);
-	
-	xa=a->m_rData[0];
-	xb=b->m_rData[0];
-
+	if (MN > 0) // HSKOST FIX 2019.09.05
+	{
+		xa = a->m_rData[0];
+		xb = b->m_rData[0];
+	}
 		for (ind=0;ind<MN;ind++)
 		{
 			if (ind>0 && MNa>1)
@@ -1231,6 +1233,13 @@ tmsMatrix **matN = (tmsMatrix **)MYMALLOC(sizeof(tmsMatrix *) * numcols);
 	}
 	va_end( marker );              // Reset variable arguments.      
 
+	if (_tmcIsCellArray(a))
+	{// like [X ; x] where X and x are cell arrays
+		_tmcCollectCellColumnsN(colres, numcols, matN, sum_col_dim, act_numrows);
+		MYFREE(matN);
+		return;
+	}
+
 	_tmcCreateMatrix(colres,act_numrows,sum_col_dim,bHasImagine);
 	// matrix is by columns - simply copy all the matrixes
 	ind1=0;//  full number of filled values
@@ -1283,6 +1292,12 @@ tmsMatrix **matN = (tmsMatrix **)MYMALLOC(sizeof(tmsMatrix *) * numrows);
 	}
 	va_end( marker );              // Reset variable arguments.      
 
+	if (_tmcIsCellArray(a))
+	{// like [X ; x] where X and x are cell arrays
+		_tmcCollectCellRowsN(matres, numrows, matN, sum_row_dim, act_numcols);
+		MYFREE(matN);
+		return; 
+	}
 
 	_tmcCreateMatrix(matres,sum_row_dim,act_numcols,bHasImagine);
 	
@@ -1758,6 +1773,7 @@ short IsMagicColonIndex[2]={0,0};
 long i1,i2;
 tmsMatrix *I,*J;
 long MNa,MNi,MNj,MNr,aScalar;
+long M_lh, N_lh;
 
 long max_val,ind_at_max;
 long Na,Ma,max_valJ;
@@ -1784,8 +1800,8 @@ short ind1_inc;
 	bHasIm=_tmcHasIm(src);// HAZARD: must synchronize.
 	bLhHadIm = _tmcHasIm(matres);
 	MNr=tmcNumElem(matres); // size(x,1)*size(x,2)
-
-
+	M_lh = _tmcGetM(matres);
+	N_lh = _tmcGetN(matres);
 
 	if (numdims==1)
 	{
@@ -2064,26 +2080,56 @@ short ind1_inc;
 				// insert real part
 
 		// may optimize  if going by columns
-		ind1=0;
-		for (n=0;n<Na;n++)
-		{
-			i1= IsMagicColonIndex[1] ? n : (long)(J->m_rData[n]-1);// n
-			for(m=0;m<Ma;m++)
+		// TODO: kishkus !!!
+		if (aScalar)
+		{// A(I,J)= a, where I,J = vectors 
+			ind1 = 0;
+
+			for (n = 0; n < MNj; n++) // through indexes of I,J; if magic - through A dims
 			{
-				i2= IsMagicColonIndex[0] ? m : (long)(I->m_rData[m]-1);// m
-				//ind1= (aScalar==0)? n*Ma+m : 0; 
-				ind2=(long)(i1 * _tmcGetM(matres) + i2);
-				matres->m_rData[ind2]=src->m_rData[ind1];
-				if (bHasIm)
-					matres->m_iData[ind2]=src->m_iData[ind1];
-				else if (bLhHadIm)
+				i1 = IsMagicColonIndex[1] ? n : (long)(J->m_rData[n] - 1);// n
+				for (m = 0; m < MNi; m++)
 				{
-					matres->m_iData[ind2]=0;
+					i2 = IsMagicColonIndex[0] ? m : (long)(I->m_rData[m] - 1);// m
+																			  //ind1= (aScalar==0)? n*Ma+m : 0; 
+					ind2 = (long)(i1 * _tmcGetM(matres) + i2);
+					matres->m_rData[ind2] = src->m_rData[0];
+					if (bHasIm)
+						matres->m_iData[ind2] = src->m_iData[0];
+					else if (bLhHadIm)
+					{
+						matres->m_iData[ind2] = 0;
+					}
+					//ind1 += ind1_inc;
 				}
-				ind1 += ind1_inc;
+			}
+
+
+
+
+		}
+		else
+		{// A(I,J) = B
+			ind1 = 0;
+			for (n = 0; n < Na; n++) // through indexes of B
+			{
+				i1 = IsMagicColonIndex[1] ? n : (long)(J->m_rData[n] - 1);// n
+				for (m = 0; m < Ma; m++)
+				{
+					i2 = IsMagicColonIndex[0] ? m : (long)(I->m_rData[m] - 1);// m
+					//ind1= (aScalar==0)? n*Ma+m : 0; 
+					ind2 = (long)(i1 * _tmcGetM(matres) + i2);
+					matres->m_rData[ind2] = src->m_rData[ind1];
+					if (bHasIm)
+						matres->m_iData[ind2] = src->m_iData[ind1];
+					else if (bLhHadIm)
+					{
+						matres->m_iData[ind2] = 0;
+					}
+					ind1 += ind1_inc;
+				}
 			}
 		}
-
 
 	}
     if(src->m_desc.m_type==TYPE_STRING)
@@ -3160,6 +3206,45 @@ void tmcstrcmp(long nout,long ninput, tmsMatrix *y,tmsMatrix *s1,tmsMatrix *s2)
 	_tmcCreateMatrix(y,1,1,tmcREAL);
 	y->m_rData[0]=stat;
 }
+
+//HAZARD TODO CHECK
+void tmcstrcmpi(long nout, long ninput, tmsMatrix *y, tmsMatrix *s1, tmsMatrix *s2)
+{
+	long cnt;
+	long len1, len2;
+	short stat = 1;
+
+	// return 1 if s1==s2 otherwise return 0
+	// if s1 or s2 is not string return 0. 
+	if ((s1->m_desc.m_type == TYPE_STRING || s1->m_desc.m_type == TYPE_MATRIX) &&
+		(s2->m_desc.m_type == TYPE_STRING || s2->m_desc.m_type == TYPE_MATRIX))
+	{
+		len1 = tmcNumElem(s1);
+		len2 = tmcNumElem(s2);
+		if (len1 == len2)
+		{
+			for (cnt = 0; cnt<len1; cnt++)
+			{
+				if (toupper((int)s1->m_rData[cnt]) != toupper((int)s2->m_rData[cnt]))
+				{
+					stat = 0;
+					break;
+				}
+			}
+		}
+		else
+		{
+			stat = 0;
+		}
+	}
+	else
+	{
+		stat = 0;
+	}
+	_tmcCreateMatrix(y, 1, 1, tmcREAL);
+	y->m_rData[0] = stat;
+}
+
 void tmcdiff(long nout,long ninput, tmsMatrix *dx,tmsMatrix *x)
 { // restriction: dx=diff(x) only syntax is supported
 long M,N;
@@ -3835,6 +3920,8 @@ long dLen;
 	}
 }
 
+
+
 void _tmczeros2D(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2);
 void tmczeros(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,...)
 {
@@ -3858,16 +3945,42 @@ short cnt;
 					in2 = va_arg( marker,  tmsMatrix * );
 					arrdims[cnt]=(long)_tmcScalarVal(in2);
 		}
-		_tmcCreateMatrixMD(Y,(short)ninput,arrdims,tmcREAL);
+		_tmcCreateMatrixMD(Y,(short)ninput,arrdims,tmcREAL,0);
 		MYFREE(arrdims);
 	}
 	va_end( marker );              // Reset variable arguments.      
 
 }
 
-void tmcones(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2)
+void tmcones(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,...)
 {
-	_tmcOnesFac(nout,ninput,Y,in1,in2,1);
+	tmsMatrix *in2;
+	long *arrdims;
+	short cnt;
+	va_list marker;
+	va_start(marker, in1);     // Initialize variable arguments. 
+
+	if (ninput<3)
+	{
+		in2 = va_arg(marker, tmsMatrix *);
+		  _tmcOnesFac(nout, ninput, Y, in1, in2, 1);//HAZARD: not all syntax supported
+		//_tmczeros2D(nout, ninput, Y, in1, in2);
+	}
+	else
+	{
+		arrdims = (long*)MYMALLOC(sizeof(long)*ninput);
+		arrdims[0] = (long)_tmcScalarVal(in1);
+		for (cnt = 1; cnt<ninput; cnt++)
+		{
+			in2 = va_arg(marker, tmsMatrix *);
+			arrdims[cnt] = (long)_tmcScalarVal(in2);
+		}
+		_tmcCreateMatrixMD(Y, (short)ninput, arrdims, tmcREAL,1);
+		MYFREE(arrdims);
+	}
+	va_end(marker);              // Reset variable arguments.      
+
+	//_tmcOnesFac(nout,ninput,Y,in1,in2,1);
 }
 void _tmczeros2D(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2)
 {//HAZARD: not all syntax supported
@@ -4605,6 +4718,23 @@ tmsMatrix* mxCreateDoubleMatrix(long m, long n , short iscomplex )
 	_tmcCreateMatrix(dest,m,n,iscomplex);
 	return dest;
 }
+
+tmsMatrix* mxCreateString(const char *str)
+{
+//long *myEBP;
+//
+//	__asm
+//	{
+//		mov myEBP,ebp 
+//	}
+//	sprintf(dbg_buf2,"tmcScalar: %x,%s",myEBP[1],"...");
+
+	tmsMatrix *dest =tmcNewMatrix();
+	tmcReallocRegister(dest);
+	_tmcSetString(dest,str);
+	return dest;
+}
+
 //////////////////////////////////////////
 #ifndef  _TMC_EMBEDDED_
 HANDLE hWndDebug;
@@ -4731,9 +4861,9 @@ long _tmcCountM(short ndim,long* arrdims)
 	}
 	return N;
 }
-void _tmcCreateMatrixMD(tmsMatrix *res,short ndim,long* arrdims,short bHasImagine)
+void _tmcCreateMatrixMD(tmsMatrix *res,short ndim,long* arrdims,short bHasImagine,double ReInitVal)
 {
-long M,N;
+long M,N,MN;
 short cnt;
 
 	if (ndim<3)
@@ -4747,14 +4877,23 @@ short cnt;
 	res->m_desc.m_type= TYPE_MATRIX;
 
 	memset(&res->value,0,sizeof(res->value));
-	if (M*N)
+	MN = M * N;
+	if (MN)
 	{
-	res->m_rData = (double*)MYMALLOC(M*N*sizeof(double));
-	memset(res->m_rData,0,M*N*sizeof(double));
+	res->m_rData = (double*)MYMALLOC(MN *sizeof(double));
+	
+		if (ReInitVal)
+		{
+			for (long mm = 0; mm < MN; mm++)
+				res->m_rData[mm] = ReInitVal;
+		}
+		else
+			memset(res->m_rData, 0, MN * sizeof(double));
+
 	if (bHasImagine)
 		{
-			res->m_iData = (double*)MYMALLOC(M*N*sizeof(double));
-			memset(res->m_iData,0,M*N*sizeof(double));
+			res->m_iData = (double*)MYMALLOC(MN *sizeof(double));
+			memset(res->m_iData,0, MN *sizeof(double));
 			res->m_desc.m_modifier |=MODIFIER_MASK_HAS_IM;
 		}
 		else
@@ -5008,7 +5147,7 @@ long ind_dst,ind_src;
 			}
 			//IndexVolume *= SrcDim[k];
 		}
-		_tmcCreateMatrixMD(matres,numdims,SrcDim,bHasIm);
+		_tmcCreateMatrixMD(matres,numdims,SrcDim,bHasIm,0);
 
 
 

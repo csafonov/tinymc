@@ -4,20 +4,23 @@
 */
 // tmcdbg.cpp : Defines the entry point for the console application.
 //
-#include "forcelib.h" // to assure MFC linked before CRT
+//#include "forcelib.h" // to assure MFC linked before CRT
 
 #include <windows.h>
 #include <stddef.h>
 
 
 #include "tmc.h"
+#include "tmcstringhash.h"
 #include <stdio.h>
 #include <conio.h>
 
+const char * hcode2string_remote(STRINGCODE hcode);
+
 #ifdef _DEBUG
-#pragma comment(lib,"tmcrtvc8d.lib")
+//#pragma comment(lib,"tmcrtvc8d.lib")
 #else
-#pragma comment(lib,"tmcrtvc8.lib")
+//#pragma comment(lib,"tmcrtvc8.lib")
 #endif
 
 /*
@@ -126,7 +129,7 @@ long *ptrD;
 
 	case TYPE_MATRIX://=0, // simple matrix
 	case TYPE_STRING://=2
-		NN=sizeof(double)*tmcNumElem(mat);
+		NN=sizeof(double)*_tmcGetNumElem(mat);
 		if (NN>0)
 		{
 			ptr=(double*)MYMALLOC(NN);
@@ -134,7 +137,7 @@ long *ptrD;
 			mat->value.complx.rData=ptr;
 			if (_tmcHasIm(mat))
 			{
-				ptr=(double*)MYMALLOC(sizeof(double)*tmcNumElem(mat));
+				ptr=(double*)MYMALLOC(sizeof(double)*_tmcGetNumElem(mat));
 				stat=ReadProcessMemory(hProcess_copy,(void*)mat->value.complx.iData,ptr,NN,&NumberOfBytesRead);
 				mat->value.complx.iData=ptr;
 			}
@@ -160,12 +163,12 @@ long *ptrD;
 			hcFields=(STRINGCODE*)MYMALLOC(NN);
 				stat=ReadProcessMemory(hProcess_copy,(void*)mat->value.StructDef.hcFields,hcFields,NN,&NumberOfBytesRead);
 				mat->value.StructDef.hcFields=hcFields;
-			NN=sizeof(tmsMatrix *)*mat->value.StructDef.m_nFields*tmcNumElem(mat);
+			NN=sizeof(tmsMatrix *)*mat->value.StructDef.m_nFields*_tmcGetNumElem(mat);
 			m_fields=(tmsMatrix **)MYMALLOC(NN);
 
 				stat=ReadProcessMemory(hProcess_copy,(void*)mat->value.StructDef.m_fields,m_fields,NN,&NumberOfBytesRead);
 			mat->value.StructDef.m_fields=(tmsMatrix **)MYMALLOC(NN);
-			NN=mat->value.StructDef.m_nFields*tmcNumElem(mat);
+			NN=mat->value.StructDef.m_nFields*_tmcGetNumElem(mat);
 			for (k=0;k<NN;k++)
 			{
 				mat->value.StructDef.m_fields[k]=tmcNewMatrix();
@@ -186,14 +189,14 @@ long *ptrD;
 		}
 		break;
 	case TYPE_CELL_ARRAY://3
-		NN=sizeof(tmsMatrix *)*tmcNumElem(mat);
+		NN=sizeof(tmsMatrix *)*_tmcGetNumElem(mat);
 		if (NN>0)
 		{
 			m_fields=(tmsMatrix **)MYMALLOC(NN);
 
 			stat=ReadProcessMemory(hProcess_copy,(void*)mat->value.m_cells,m_fields,NN,&NumberOfBytesRead);
 			mat->value.m_cells=(tmsMatrix **)MYMALLOC(NN);
-			NN=tmcNumElem(mat);
+			NN= _tmcGetNumElem(mat);
 			for (k=0;k<NN;k++)
 			{
 				mat->value.m_cells[k]=tmcNewMatrix();
@@ -226,12 +229,12 @@ long *ptrD;
 
 short InitTmc(void)
 {
-	tmcInitLib(&Init_funcs_table);
+//	tmcInitLib(&Init_funcs_table);
 	return 0;
 }
 short  FreeTmc(void)
 {
-tmcFreeLib();
+//tmcFreeLib();
 return 0;
 }
 
@@ -329,7 +332,7 @@ int lenout;
 				lenout=sprintf(out,"[%d,%d]=",m+1,n+1);out+=lenout;
 				for (k=0;k<_tmcGetNf(x);k++)
 				{
-					lenout=sprintf(out,"\t field %s=\r\n",hcode2string(x->value.StructDef.hcFields[k]));out+=lenout;
+					lenout=sprintf(out,"\t field %s=\r\n",hcode2string_remote(x->value.StructDef.hcFields[k]));out+=lenout;
 				    DisplayMat(x->value.StructDef.m_fields[(m+n*M)+k*M*N],bVerb);
 				    lenout=sprintf(out,";\r\n");out+=lenout;
 				}
@@ -437,3 +440,55 @@ FILE *fp;
 		fclose(fp);
 
 }
+
+char buff_notsring_remote[1000];
+const char * hcode2string_remote(STRINGCODE hcode)
+{
+	//register bucket *bp, **bpp;
+	bucket *bp;
+	bucket  b ;
+	short n;
+	unsigned long hashcode = ((hcode >> 16) & 0x0000FFFF);
+	int stat;
+	DWORD NumberOfBytesRead;
+	char c;
+	short ind;
+
+	stat = ReadProcessMemory(hProcess_copy, (void*)(pcliTmcDbgCommonBlock->psymbol_table + hashcode), &bp,sizeof(bp), &NumberOfBytesRead);
+	
+
+	//bpp = symbol_table + hashcode;
+	//bp = *bpp;
+
+	n = 0;
+	while (bp)
+	{
+		stat = ReadProcessMemory(hProcess_copy, (void*)bp, &b, sizeof(b), &NumberOfBytesRead);
+		if (b.hcode == hcode)
+		{
+			ind = 0;
+			c = '?';// read NULL-terminated string
+			while (c)
+			{
+				stat = ReadProcessMemory(hProcess_copy, (void*)(b.name+ind), &c, sizeof(char), &NumberOfBytesRead);
+				buff_notsring_remote[ind++] = c;
+			}
+			return (const char *)&buff_notsring_remote[0];
+			//return (bp->name);
+		}
+		n++;
+		//bpp = &bp->link;
+		//bp = *bpp;
+		stat = ReadProcessMemory(hProcess_copy, (void*)b.link, &bp, sizeof(bp), &NumberOfBytesRead);
+	}
+	buff_notsring_remote[0] = 0;
+	if (bp == NULL)
+	{
+		fprintf(stderr, "\nHCODE=0x%x:no_string", hcode);
+		sprintf(buff_notsring_remote, "HCODE_0x%x", hcode);
+		//	_tmcRaiseException(err_bad_init,s_module,"no_string","Cant find string in hash table",0,NULL);
+	}
+	return (const char *)&buff_notsring_remote[0];
+}
+
+////////////////

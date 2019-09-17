@@ -461,7 +461,7 @@ void tmcsubplot(long nout,long ninput, tmsMatrix *hand,tmsMatrix *mM,...)
 	_tmcCreateMatrix(hand,1,1,0);
 #endif
 }
-void tmchold(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff)
+void tmchold(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mAx,tmsMatrix *onoff)
 {
 // this function is implemented with one output to avoid TMC compilation warnings.
 	if (nout>0)
@@ -498,10 +498,10 @@ AssureTmcgra();
 	_tmcCreateMatrix(fhand,1,1,0);
 
 }
-void tmcnichols(long nout,long ninput,tmsMatrix *sys,tmsMatrix *mopt)
-{
-		fprintf(stdout,"WARN: nichols() not suppoted \n");
-}
+//void tmcnichols(long nout,long ninput,tmsMatrix *sys,tmsMatrix *mopt)
+//{     // nichols,2,0,i;
+//		fprintf(stdout,"WARN: nichols() not suppoted \n");
+//}
 void tmcgcf(long nout,long ninput,...)
 {
 		fprintf(stdout,"WARN: gcf() not suppoted \n");

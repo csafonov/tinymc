@@ -109,6 +109,47 @@ void tmcCreateCellEmpty(tmsMatrix *matres)
 	_tmcCreateCellArray(matres,0,0);
 }
 
+/**
+	\brief Collect rows like [X ; x] (Internal function)
+	\param matres: reallocated result
+	\param numrows: number of matrices
+	\param matN: allocated array of pointers to matrixes, freed by caller.
+	Called from tmcCollectRows() operation
+*/
+void _tmcCollectCellRowsN(tmsMatrix *matres, long numrows, tmsMatrix **matN,long sum_row_dim, long act_numcols)
+{
+	long ind, ind1,ind2,m,n,M, nc;
+	long cnt;
+	_tmcCreateCellArray(matres, sum_row_dim, act_numcols);
+
+	nc = 0;//  full number of filled rows
+	for (cnt = 0; cnt<numrows; cnt++)
+	{
+		M = _tmcGetM(matN[cnt]);
+		if (!_tmcIsCellArray(matN[cnt]) && !_tmcIsEmptyMatrix(matN[cnt]))
+		_tmcRaiseException(must_be_cell_array, s_module, "_tmcCollectCellRowsN", "[X;x]: x must be also cell array", 2,matN[0], matN[cnt]);
+		
+		if (_tmcGetN(matN[cnt]) != act_numcols && !_tmcIsEmptyMatrix(matN[cnt]))
+		{
+			_tmcRaiseException(err_invalid_dimentions, s_module, "_tmcCollectCellRowsN", "[X;x]: must have the same number of columns", 2, matN[0], matN[cnt]);
+		}
+
+		for (m = 0; m < M; m++) // by row of each added matrix
+		{
+			ind1 = nc;
+			ind2 = m;
+			for (n = 0; n<act_numcols; n++)
+			{
+				matres->value.m_cells[ind1] = tmcNewMatrix();
+				tmcAssign(matres->value.m_cells[ind1], matN[cnt]->value.m_cells[ind2]);
+				ind1 += sum_row_dim;
+				ind2 += M;
+			}
+			nc++;
+		}
+	}
+
+}
 void tmcCollectCellRows(tmsMatrix *matres,long numrows,tmsMatrix *a,...)
 { // collect some rows of matrixes into a cell array
   // e.g. A= { c1 ; c2 }, c1,c2 must be cell arrays (rows, created internally)
@@ -166,6 +207,50 @@ tmsMatrix **matN = (tmsMatrix **)MYMALLOC(sizeof(tmsMatrix *) * numrows);
 	}
 	MYFREE(matN);
 }
+
+/**
+\brief Collect columns like [X , x] for single row (Internal function)
+\param matres: reallocated result
+\param numrows: number of matrices
+\param matN: allocated array of pointers to matrixes, freed by caller.
+Called from tmcCollectColumns() operation
+*/
+void _tmcCollectCellColumnsN(tmsMatrix *matres, long numcols, tmsMatrix **matN, long sum_col_dim, long act_numrows)
+{
+	long m, n,ind1,ind2,cnt,nr,N,M;
+	_tmcCreateCellArray(matres, act_numrows, sum_col_dim);
+	nr = 0;
+	ind1 = 0;
+	for (cnt = 0; cnt < numcols; cnt++)
+	{
+		
+		N = _tmcGetN(matN[cnt]);
+		M = _tmcGetM(matN[cnt]);
+
+		if (!_tmcIsCellArray(matN[cnt]) && !_tmcIsEmptyMatrix(matN[cnt]))
+		_tmcRaiseException(must_be_cell_array, s_module, "_tmcCollectCellColumnsN", "[X,x]: x must be also cell array", 2,matN[0], matN[cnt]);
+
+		if (M != act_numrows && !_tmcIsEmptyMatrix(matN[cnt]))
+		{
+		_tmcRaiseException(err_invalid_dimentions, s_module, "_tmcCollectCellColumnsN", "[X,x]: must have the same number of columns", 2, matN[0], matN[cnt]);
+		}
+
+		ind2 = 0;
+		for (n = 0; n <N; n++) // by column of each added matrix
+		{
+			for (m = 0; m<act_numrows; m++)
+			{
+					matres->value.m_cells[ind1] = tmcNewMatrix();
+					tmcAssign(matres->value.m_cells[ind1], matN[cnt]->value.m_cells[ind2]);
+					ind1 +=1;
+					ind2 +=1;
+				}
+				nr++;
+			}
+		
+	}
+}
+
 void tmcCollectCellColumns(tmsMatrix *colres,long numcols,tmsMatrix *a,...)
 { // collect a set of matrixes into a cell array (row)
 long ind;
@@ -202,7 +287,7 @@ long  d[MAX_MATRIX_DIM];
 long NN;
 long k;
 short bMustResize=0;
-	if (numdims>=1)
+	if (numdims == 1) //HSKOST 2019.09.05 FIX for numdims>1 cells
 	{
 		if (( _tmcGetM(refs[0])!=1) || (_tmcGetN(refs[0])!=1) || (refs[0]->m_desc.m_type != TYPE_MATRIX))
 		{
@@ -307,7 +392,7 @@ long NN;
 		refs[k] = va_arg( marker,  tmsMatrix * );
 	}
 	va_end( marker );              // Reset variable arguments.      
-	if (numdims>=1)
+	if (numdims==1) //HSKOST 2019.09.05 FIX for numdims>1 cells
 	{
 		if (( _tmcGetM(refs[0])!=1) || (_tmcGetN(refs[0])!=1) || (refs[0]->m_desc.m_type != TYPE_MATRIX))
 		{

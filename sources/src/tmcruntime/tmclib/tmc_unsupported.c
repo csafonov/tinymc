@@ -23,22 +23,23 @@ void tmceval(long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *str)
 
 	_tmcRaiseException(err_unsupported,"main","eval","FATAL: eval(x) is unsupported!!!.",1,str);
 }
-void tmcssdata(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","ssdata","FATAL: ssdata is unsupported!!!.",0,NULL);
-}
-void tmcss2tf(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","ss2tf","FATAL: ss2tf is unsupported!!!.",0,NULL);
-}
-//void tmctfdata(long nout,long ninput,...)
+//void tmcssdata(long nout,long ninput,...)
 //{
+//	//ssdata, 1, 5, i;
+//	_tmcRaiseException(err_unsupported,"main","ssdata","FATAL: ssdata is unsupported!!!.",0,NULL);
+//}
+//void tmcss2tf(long nout,long ninput,...)
+//{//ss2tf,2,5,i;
+//	_tmcRaiseException(err_unsupported,"main","ss2tf","FATAL: ss2tf is unsupported!!!.",0,NULL);
+//}
+//void tmctfdata(long nout,long ninput,...)
+//{ //tfdata,2,3,i;
 //	_tmcRaiseException(err_unsupported,"main","tfdata","FATAL: tfdata is unsupported!!!.",0,NULL);
 //}
-void tmctf(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","tf","FATAL: tf is unsupported!!!.",0,NULL);
-}
+//void tmctf(long nout,long ninput,...)
+//{ // tf,-1,1,i;
+//	_tmcRaiseException(err_unsupported,"main","tf","FATAL: tf is unsupported!!!.",0,NULL);
+//}
 void tmcget(long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *str)
 {
 	_tmcRaiseException(err_unsupported,"main","get","FATAL: get(S,'prop') is unsupported!!!.",2,S,str);
@@ -57,40 +58,37 @@ void tmcisa(long nout,long ninput,tmsMatrix *y, tmsMatrix *x, tmsMatrix *str)
 			y->m_rData[0]= 0;
 	}
 }
-void tmctfdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt)
-{
-	_tmcRaiseException(err_unsupported,"main","tmctfdata","FATAL: tfdata is unsupported!!!.",0,NULL);
-}
-void tmcfreqresp(long nout,long ninput, tmsMatrix *y, tmsMatrix *sys,tmsMatrix *w)
-{
-	_tmcRaiseException(err_unsupported,"main","tmcfreqresp","FATAL: freqresp is unsupported!!!.",0,NULL);
-}
-void tmcfrdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt)
-{
-	_tmcRaiseException(err_unsupported,"main","tmcfrdata","FATAL: frdata is unsupported!!!.",0,NULL);
+//void tmctfdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt)
+//{//tfdata,2,3,i;
+//	_tmcRaiseException(err_unsupported,"main","tmctfdata","FATAL: tfdata is unsupported!!!.",0,NULL);
+//}
+//void tmcfreqresp(long nout,long ninput, tmsMatrix *y, tmsMatrix *sys,tmsMatrix *w)
+//{//freqresp,2,1,i;
+//	_tmcRaiseException(err_unsupported,"main","tmcfreqresp","FATAL: freqresp is unsupported!!!.",0,NULL);
+//}
+//void tmcfrdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt)
+//{//frddata,1,2,i;
+//	_tmcRaiseException(err_unsupported,"main","tmcfrdata","FATAL: frdata is unsupported!!!.",0,NULL);
+//
+//}
 
-}
-void tmcfrdqfd(long nout,long ninput,tmsMatrix *sys,tmsMatrix *L,tmsMatrix *Freqs)
-{
-	_tmcRaiseException(err_unsupported,"main","tmcfrdqfd","FATAL: frdqfd is unsupported!!!.",0,NULL);
-}
-void tmctf2ss(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","tmctf2ss","FATAL: tmctf2ss is unsupported!!!.",0,NULL);
-}
-void tmcss(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","tmcss","FATAL: tmcss is unsupported!!!.",0,NULL);
-}
-void tmczpkdata(long nout,long ninput,...)
-{
-	_tmcRaiseException(err_unsupported,"main","tmczpkdata","FATAL: tmczpkdata is unsupported!!!.",0,NULL);
-}
-void tmczpk(long nout,long ninput,tmsMatrix *y,tmsMatrix *z,tmsMatrix *p,tmsMatrix *k,tmsMatrix *tsamp)
-{
-	_tmcRaiseException(err_unsupported,"main","tmczpk","FATAL: tmczpk is unsupported!!!.",0,NULL);
-}
-void tmcfrd(long nout,long ninput,tmsMatrix *y,tmsMatrix *Resp,tmsMatrix *Freqs)
-{
-	_tmcRaiseException(err_unsupported,"main","tmcfrd","FATAL: tmcfrd is unsupported!!!.",0,NULL);
-}
+//void tmctf2ss(long nout,long ninput,...)
+//{//tf2ss,-1,4,i;
+//	_tmcRaiseException(err_unsupported,"main","tmctf2ss","FATAL: tmctf2ss is unsupported!!!.",0,NULL);
+//}
+//void tmcss(long nout,long ninput,...)
+//{//ss,-1,1,i;
+//	_tmcRaiseException(err_unsupported,"main","tmcss","FATAL: tmcss is unsupported!!!.",0,NULL);
+//}
+//void tmczpkdata(long nout,long ninput,...)
+//{//zpkdata,2,-1,i;
+//	_tmcRaiseException(err_unsupported,"main","tmczpkdata","FATAL: tmczpkdata is unsupported!!!.",0,NULL);
+//}
+//void tmczpk(long nout,long ninput,tmsMatrix *y,tmsMatrix *z,tmsMatrix *p,tmsMatrix *k,tmsMatrix *tsamp)
+//{ //zpk,4,1,i;
+//	_tmcRaiseException(err_unsupported,"main","tmczpk","FATAL: tmczpk is unsupported!!!.",0,NULL);
+//}
+//void tmcfrd(long nout,long ninput,tmsMatrix *y,tmsMatrix *Resp,tmsMatrix *Freqs, tmsMatrix *Ts)
+//{ //frd,3,1,i;
+//	_tmcRaiseException(err_unsupported,"main","tmcfrd","FATAL: tmcfrd is unsupported!!!.",0,NULL);
+//}

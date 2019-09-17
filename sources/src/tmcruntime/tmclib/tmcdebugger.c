@@ -26,7 +26,9 @@
 
 #include "tmc.h"
 
-static char *s_module="tmcdebugger.c";
+
+//#ifndef TMCDBG_CLI // this symbol defined in the debugger
+static char *s_module = "tmcdebugger.c";
 
 TMC_DBG_STACK TmcDebugStack;
 struct CTmcDbgCommonBlock *pTmcDbgCommonBlock;
@@ -87,6 +89,7 @@ pTmcDbgCommonBlock=NULL;
 	}
 	pTmcDbgCommonBlock = (struct CTmcDbgCommonBlock*)g_pMemory;
 	pTmcDbgCommonBlock->stack_addr = & TmcDebugStack ;
+	pTmcDbgCommonBlock->psymbol_table = GetSymbolTableAddr();
 }
 void tmcdbgCloseDebugger(void)
 {
@@ -142,6 +145,8 @@ long tmcdbgCommonMemClose()
 	g_pMemory  = NULL;
 	return 0;
 }
+
+//#else
 //// client API /////////
 HANDLE g_hClientMapFile;
 long tmcdbgCommonMemConnect(void** ptr)
@@ -174,3 +179,4 @@ long tmcdbgCommonMemDisconnect( void)
 }
 /////////////////////
 #endif
+//#endif

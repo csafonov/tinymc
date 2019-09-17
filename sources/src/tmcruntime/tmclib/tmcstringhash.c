@@ -34,16 +34,6 @@ static char *s_module="tmcstringhash.c";
 #define true	1
 #define false   0
 
-/*  the structure of a symbol table entry  */
-
-	struct bucket
-	{
-		struct bucket *link;
-		struct bucket *next;
-		char *name;
-		STRINGCODE hcode;
-	};
-	typedef struct bucket bucket;
 
 // private members:
 //static		bucket **symbol_table;
@@ -445,4 +435,9 @@ static void free_hash_strings(void)
 	FREE(p->name);
 	FREE(p);
     }
+}
+
+bucket ** GetSymbolTableAddr()
+{
+	return symbol_table;
 }

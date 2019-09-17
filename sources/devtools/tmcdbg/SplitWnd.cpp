@@ -14,7 +14,7 @@
 	#include "tmcdbgWDlg.h"
 
 
-	
+#include "tmcstringhash.h"
 	#include "tmcdebugger.h"
 
 
@@ -541,7 +541,7 @@ wchar_t buf[100];
 				{
 					//lenout=sprintf(out,"\t field %s=\r\n",hcode2string(x->value.StructDef.hcFields[k]));out+=lenout;
 					tempM = x->value.StructDef.m_fields[(m+n*M)+k*M*N];
-					swprintf(buf,L"%s [%d x %d]",string2uni(hcode2string(x->value.StructDef.hcFields[k])),_tmcGetM(tempM),_tmcGetN(tempM));
+					swprintf(buf,L"%s [%d x %d]",string2uni(hcode2string_remote(x->value.StructDef.hcFields[k])),_tmcGetM(tempM),_tmcGetN(tempM));
 					VarRoot2=GetMyTreeCtrl()->InsertItem(
 					TVIF_TEXT|TVIF_PARAM,buf,0,0,0,0,(LPARAM)(void*)tempM,VarRoot,TVI_LAST);	
 					DisplayMatTree(tempM,VarRoot2,fmt);
@@ -650,7 +650,7 @@ tmsMatrix *mat = tmcNewMatrix();
 	if (ConnectTmc()<0)
 		return;
 
-	swscanf((LPCTSTR)m_Addr,L"%x",&_lpBaseAddress);
+	swscanf((LPCTSTR)m_Addr,L"%x",(unsigned int*)&_lpBaseAddress);
 	
 	ptrMat = tmcNewMatrix();
 	//_tmcClearRegister(ptrMat);

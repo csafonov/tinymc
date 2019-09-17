@@ -17,6 +17,7 @@
 #include "cplot.h"
 #endif
 
+#include "tmcstringhash.h"
 #include "tmcdebugger.h"
 
 #ifdef _DEBUG
@@ -193,16 +194,16 @@ double *times;
 			m = (tmsMatrix *)(void*)x;
 			if (_tmcGetType(m) == TYPE_MATRIX)
 			{
-				times = (double*)malloc(sizeof(double) * _tmcNumElem(m));
-				for (long k=0;k<_tmcNumElem(m);k++)
+				times = (double*)malloc(sizeof(double) * _tmcGetNumElem(m));
+				for (long k=0;k<_tmcGetNumElem(m);k++)
 				{
 					times[k]=k+1;
 				}
-				Plot(times , m->value.complx.rData , _tmcNumElem(m) , RGB(255,0,0) ,"M" );
+				Plot(times , m->value.complx.rData , _tmcGetNumElem(m) , RGB(255,0,0) ,"M" );
 				SetCurrFigure(++f);
 				if (_tmcHasIm(m))
 				{
-					Plot(times , m->value.complx.iData , _tmcNumElem(m) , RGB(0,255,0) ,"M");
+					Plot(times , m->value.complx.iData , _tmcGetNumElem(m) , RGB(0,255,0) ,"M");
 					SetCurrFigure(++f);
 				}
 				free(times);

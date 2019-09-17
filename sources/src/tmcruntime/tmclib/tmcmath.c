@@ -1003,10 +1003,35 @@ void tmcDivScalar(tmsMatrix *divres,tmsMatrix *a,tmsMatrix *b)
 
 
 void tmcdiag(long nout,long ninput,tmsMatrix *y,tmsMatrix *d)
-{ // Restriction: The only syntax: y=diag(d). 
-	long m,M;
+{ // Restriction: The only syntax: y=diag(d), d= vector
+	long m,M,N,K;
+
+ if (_tmcIsMatrix(d))
+ {
+    // d is matrix
+	// y = column vector from  the elements of the n-th diagonal of X,(restriction: n=0)
+	M=_tmcGetM(d);
+	N=_tmcGetN(d);
+	K = N;
+	if (M<N)
+		K=M;
+
+	_tmcCreateMatrix(y,K,1,_tmcHasIm(d));
+	for (m=0;m<K;m++)
+	{
+		y->m_rData[m] = d->m_rData[m + M*m];
+		if (_tmcHasIm(d))
+		{
+			y->m_iData[m] = d->m_iData[m + M*m];
+		}
+	}
+ }
+ else
+ {
+	// d is a vector with M components
+	// y =  square matrix  order M with the elements of d on the n-th diagonal , (restriction: n=0)
+
 	M = tmcNumElem(d);
-	
 	_tmcCreateMatrix(y,M,M,_tmcHasIm(d));
 	for (m=0;m<M;m++)
 	{
@@ -1015,6 +1040,39 @@ void tmcdiag(long nout,long ninput,tmsMatrix *y,tmsMatrix *d)
 		{
 			y->m_iData[m+m*M]=d->m_iData[m];
 		}
+	}
+ }
+}
+
+/**
+	\brief Returns Tr(A)= sum(diag(d));
+*/
+void tmctrace(long nout,long ninput,tmsMatrix *y,tmsMatrix *d)
+{ 
+	long   m,M,N,K;
+	double Dr,Di;
+
+	M=_tmcGetM(d);
+	N=_tmcGetN(d);
+	K = N;
+	if (M<N)
+		K=M;
+
+	Dr=0;
+	Di=0;
+	_tmcCreateMatrix(y,1,1,_tmcHasIm(d));
+	for (m=0;m<K;m++)
+	{
+		Dr += d->m_rData[m];
+		if (_tmcHasIm(d))
+		{
+			Di += d->m_iData[m];
+		}
+	}
+	y->m_rData[0] = Dr;
+	if (_tmcHasIm(d))
+	{
+		y->m_iData[0] = Di;
 	}
 }
 
@@ -3504,3 +3562,146 @@ void tmcpi(long nout,long ninput,tmsMatrix *dest)
 	dest->m_rData[0]=dbl_constant_PI;
 }
 
+
+void tmcmean(long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+{ 
+	long m,n,MN,M,N,offMN;
+	double Sr,Si;
+	//For vectors, mean(X) is the sum of the elements of X / number of elements.
+	//For matrices, mean(X) is a row vector with the mean over each column.
+	if (ninput>1)
+			_tmcRaiseException(err_bad_index,s_module,"mean","mean(X) unsupported ninput=1",1,x);
+	if (_tmcIsMatrix(x))
+	{
+		N=_tmcGetN(x);
+		M=_tmcGetM(x);
+
+		_tmcCreateMatrix(y,1,_tmcGetN(x),_tmcHasIm(x));
+		for (n=0;n<N;n++)
+		{
+				Sr=0;Si=0;
+				offMN = n*M;
+				for (m=0;m<M;m++)
+					Sr += x->m_rData[offMN+m];
+
+				if (_tmcHasIm(x))
+				{
+					for (m=0;m<M;m++)
+						Si += x->m_iData[offMN+m];
+				}
+				y->m_rData[n]=Sr / M;
+				if (_tmcHasIm(x))
+					y->m_iData[n]=Si / M;
+		}
+	}
+	else
+	{
+		MN=tmcNumElem(x);
+		_tmcCreateMatrix(y,1,1,_tmcHasIm(x));
+		Sr=0;Si=0;
+		for (n=0;n<MN;n++)
+			Sr += x->m_rData[n];
+
+		if (_tmcHasIm(x))
+		{
+			for (n=0;n<MN;n++)
+				Si += x->m_iData[n];
+		}
+		y->m_rData[0]=Sr / MN;
+		if (_tmcHasIm(x))
+			y->m_iData[0]=Si / MN;
+	}
+}
+
+void tmcstd(long nout,long ninput, tmsMatrix *y,tmsMatrix *x)
+{ 
+	long m,n,MN,M,N,offMN;
+	double Sr,Si;
+	double Dr,Di;
+	double D;
+	//For vectors, std(X) is the  of the  .
+	//For matrices, std(X) is a row vector with the mean over each column.
+	if (ninput>1)
+			_tmcRaiseException(err_bad_index,s_module,"std","std(X) unsupported ninput=1",1,x);
+	if (_tmcIsMatrix(x))
+	{
+		N=_tmcGetN(x);
+		M=_tmcGetM(x);
+		D = M - 1;
+		_tmcCreateMatrix(y,1,_tmcGetN(x),_tmcHasIm(x));
+		if (M < 2)
+		{
+			for (n = 0; n < N; n++)
+			{
+				y->m_rData[n] = 0;
+				if (_tmcHasIm(x))
+					y->m_iData[n] = 0;
+			}
+		}
+		else
+		for (n=0;n<N;n++)
+		{
+				Sr=0;Si=0;
+				offMN = n*M;
+				for (m=0;m<M;m++)
+					Sr += x->m_rData[offMN+m];
+				Sr = Sr / M;
+
+				if (_tmcHasIm(x))
+				{
+					for (m=0;m<M;m++)
+						Si += x->m_iData[offMN+m];
+					Si = Si / M;
+				}
+
+				Dr=0;Di=0;
+				for (m=0;m<M;m++)
+					Dr += (x->m_rData[offMN+m]-Sr)*(x->m_rData[offMN+m]-Sr);
+				if (_tmcHasIm(x))
+				{
+					for (m=0;m<M;m++)
+						Di += (x->m_iData[offMN+m]-Si)*(x->m_iData[offMN+m]-Si);
+				}
+				y->m_rData[n]=sqrt(Dr / D );
+				if (_tmcHasIm(x))
+					y->m_iData[n]=sqrt(Di / D);
+		}
+	}
+	else
+	{
+		MN=tmcNumElem(x);
+		_tmcCreateMatrix(y,1,1,_tmcHasIm(x));
+		if (MN < 2)
+		{
+				y->m_rData[0] = 0;
+				if (_tmcHasIm(x))
+					y->m_iData[0] = 0;
+				return;
+		}
+		D = MN - 1;
+		Sr=0;Si=0;
+		for (n=0;n<MN;n++)
+			Sr += x->m_rData[n];
+		Sr=Sr/MN;
+
+		if (_tmcHasIm(x))
+		{
+			for (n=0;n<MN;n++)
+				Si += x->m_iData[n];
+			Si=Si/MN;
+		}
+
+				Dr=0;Di=0;
+				for (n=0;n<MN;n++)
+					Dr += (x->m_rData[n]-Sr)*(x->m_rData[n]-Sr);
+				if (_tmcHasIm(x))
+				{
+					for (n=0;n<MN;n++)
+						Di += (x->m_iData[n]-Si)*(x->m_iData[n]-Si);
+				}
+
+				y->m_rData[0]=sqrt(Dr / D );
+				if (_tmcHasIm(x))
+					y->m_iData[0]=sqrt(Di / D);
+	}
+}

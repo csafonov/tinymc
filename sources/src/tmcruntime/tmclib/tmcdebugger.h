@@ -4,7 +4,8 @@
  File may be used in the generated application
   *****************************************************************************/
 // tmcdebugger.h
-
+#ifndef _tmcdebugger_h_
+#define _tmcdebugger_h_
 
 #define TMC_DBG_PUSH_STACK_VAR  tmcdbgPushStackVar
 #define TMC_DBG_POP_STACK_VAR	tmcdbgPopStackVar
@@ -41,6 +42,7 @@ typedef
 struct CTmcDbgCommonBlock
 {
 	struct CTmcDbgStack *stack_addr;
+	bucket   **psymbol_table;
 };
 
 
@@ -51,3 +53,5 @@ void tmcdbgCloseDebugger(void);
 
 long tmcdbgCommonMemConnect(void** ptr);
 long tmcdbgCommonMemDisconnect( void);
+
+#endif

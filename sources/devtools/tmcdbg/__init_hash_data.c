@@ -1,6 +1,6 @@
-#include "forcelib.h" // to assure MFC linked before CRT
-
-#include "tmc_lib.h"
+//#include "forcelib.h" // to assure MFC linked before CRT
+#include <stdio.h>
+#include "tmc.h"
 
 //#include "tmc.h"
 //#include "TestM.globals.h"

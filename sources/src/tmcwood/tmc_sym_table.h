@@ -66,6 +66,7 @@ public:
 		FinalList.push_back(fn);
 	}
 	void LoadFinalList(char* file_name,symbol_table *pSymTable);// load files list and also register all its functions as unparsed.
+	void Add2FinalList(char* _input_file_name,symbol_table *pSymTable);
 	void LoadFileList(char* file_name,symbol_table *pSymTable);
 	void PushFileStack(std::string fn)
 	{

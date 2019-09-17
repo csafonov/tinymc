@@ -716,7 +716,7 @@ std::string CInstr::gen_icode(CInstrList *ilist)
 				int na=0;
 				if (n_argin==0)
 				{
-					sprintf(buff,"TMC_DBG_PUSH_STACK_VAR(%s,%d,NULL,NULL);\n", m_ident_name.c_str(),n_argin  );
+					sprintf(buff,"TMC_DBG_PUSH_STACK_VAR(\"%s\",%d,NULL,NULL);\n", m_ident_name.c_str(),n_argin  );
 					retval.append(buff);
 				}
 				else

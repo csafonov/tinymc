@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{77d848f4-e9af-402e-bf5d-7a7897522535}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{e568b4e8-bdc4-4b1e-acf3-2d3ff999cc9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{843631ef-0e4f-4469-92f8-2e05f1f903e6}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{dac0457e-c15a-45d0-8c0a-85a356494268}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="TMCLIB">
+      <UniqueIdentifier>{f7d01f5a-9abe-4970-92d2-f1d452632f69}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SplitWnd.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="tmcdbg_w.c">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="tmcdbgW.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="tmcdbgWDlg.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmcdebugger.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmclib.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmccell.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmcio.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\cmatrix.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\graphic_stubs.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmcexcpt.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmcstringhash.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DLL_SRC\tmclib\tmcmstruct.c">
+      <Filter>TMCLIB</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="splitwnd.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="tmcdbgW.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="tmcdbgWDlg.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="forcelib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DLL_SRC\tmclib\cmatrix.h">
+      <Filter>TMCLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DLL_SRC\tmclib\tmc.h">
+      <Filter>TMCLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DLL_SRC\tmclib\tmc_lib.h">
+      <Filter>TMCLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DLL_SRC\tmclib\tmcdebugger.h">
+      <Filter>TMCLIB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DLL_SRC\tmclib\tmcstringhash.h">
+      <Filter>TMCLIB</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tmcdbgW.rc">
+      <Filter>Source Files\GUI</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\tmcdbgW.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\tmcdbgW.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Plot.lib" />
+  </ItemGroup>
+</Project>

@@ -291,26 +291,29 @@ stdhead_file=NULL;
 
 			fprintf(code_file,"\t%%include \"myinc.inc\"\n");
 		}
-if (Compiler.mode != '?')
+
+if (  bSingleFile==false)
 {
-	create_filelist(IncInputDirList,IncInputFileList,inputfilelist_file_name,BIT_FILE_TYPE_M|BIT_FILE_TYPE_LSP);
+	if (Compiler.mode != '?' )
+	{
+		create_filelist(IncInputDirList,IncInputFileList,inputfilelist_file_name,BIT_FILE_TYPE_M|BIT_FILE_TYPE_LSP);
+	}
+		if (Compiler.ask_print_src)
+		create_filelist(IncSrcDirList,IncSrcFileList,srcfilelist_file_name,BIT_FILE_TYPE_M);
+
+
+	if (Compiler.C_output)
+		create_init_hash_data_file(init_hash_data_file_name);
+
+	if (Compiler.mode != '?')
+		TmcFileList.LoadFileList(inputfilelist_file_name,&TmcSymbolTable); // load filelist.txt
+		// load built-in functions list: <name, in_args,out_args>
+		// for function with variable number of inputs: in_args<0
 }
-	if (Compiler.ask_print_src)
-	create_filelist(IncSrcDirList,IncSrcFileList,srcfilelist_file_name,BIT_FILE_TYPE_M);
-
-
-if (Compiler.C_output)
-	create_init_hash_data_file(init_hash_data_file_name);
-
-if (Compiler.mode != '?')
-	TmcFileList.LoadFileList(inputfilelist_file_name,&TmcSymbolTable); // load filelist.txt
-	// load built-in functions list: <name, in_args,out_args>
-	// for function with variable number of inputs: in_args<0
-	
 	// Actually symbol table is ready.
 	//Load_FncNames(buildin_fnc_file_name);
 	Load_FncNames(symtable_file_name);
-	if (Compiler.pass2only==true)
+	if ((Compiler.pass2only==true) && (bSingleFile==false))
 	{
 	Load_FncNames(external_fnc_file_name);
 	}
@@ -333,7 +336,8 @@ if (Compiler.mode != '?')
 if (Compiler.mode != '?')
 	if (bSingleFile==false)
 		TmcFileList.LoadFinalList(inputfilelist_file_name,&TmcSymbolTable); // load filelist.txt
-
+	else
+		TmcFileList.Add2FinalList(input_file_name,&TmcSymbolTable);
 	//HAZARD: the main file is in the FinalList
 	//TmcSymbolTable.AppendFinalList(input_file_name);//HAZARD
 
@@ -482,7 +486,7 @@ perf_latch_time(1);
 
 	}
 
-if (Compiler.C_output)
+if (Compiler.C_output && (bSingleFile==false))
 {
 	FILE* tmc_hash = fopen(string_hash_file_name_out, "w");
         if (tmc_hash == NULL) {
@@ -497,7 +501,7 @@ if (Compiler.C_output)
 
 	if (Compiler.bUseDumpFile) fclose(dump_file);
 
-	if (Compiler.pass2only==true && Compiler.C_output)
+	if (Compiler.pass2only==true && Compiler.C_output && (bSingleFile==false))
 	{
 		TmcSymbolTable.PrintCommonHeader(stdhead_file_name);
 		TmcSymbolTable.PrintGlobalsDefs(globalhead_file_name,globalc_file_name);

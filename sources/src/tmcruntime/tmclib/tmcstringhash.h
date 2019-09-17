@@ -8,6 +8,18 @@
 #define tmcstringhash_h_
 
 	typedef unsigned long STRINGCODE;
+
+	/*  the structure of a symbol table entry  */
+	struct bucket
+	{
+		struct bucket *link;
+		struct bucket *next;
+		char *name;
+		STRINGCODE hcode;
+	};
+	typedef struct bucket bucket;
+
+
 	struct CInitHashData
 	{
 		const char *str;
@@ -27,5 +39,5 @@
 	void InitStringHash(void);
 	void DestroyStringHash(void);
 	const char * hcode2string(STRINGCODE hcode);
-
+	bucket ** GetSymbolTableAddr();
 #endif

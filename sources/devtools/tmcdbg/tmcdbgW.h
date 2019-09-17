@@ -17,7 +17,7 @@
 
 extern "C"
 {
-#include "tmc_lib.h"
+#include "tmc.h"
 }
 #include <Afxcview.h>
 
@@ -60,6 +60,7 @@ extern "C"
 	LPCSTR  remote_frame_name_at(long k);
 	void    * remote_frame_addr_at(long k);
 	short  remote_etype_at(long k);
+	const char * hcode2string_remote(STRINGCODE hcode);
 }
 
 

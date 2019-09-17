@@ -264,7 +264,7 @@ typedef struct tag_tmsMatrix* tmcMatrixRef ;
 #define _tmcIsEmptyMatrix(x) ( (x->m_desc.m_nRows==0 ||  x->m_desc.m_nCols==0) ? 1:0)
 #define _tmcHasIm(x) ((short)((x->m_desc.m_modifier & MODIFIER_MASK_HAS_IM) ? 1:0))
 #define _tmcIsChar(x) ((short)(x->m_desc.m_type==TYPE_STRING))
-
+#define _tmcIsCellArray(x) ((short)(x->m_desc.m_type==TYPE_CELL_ARRAY)?1:0)
 
 #define _mdblIsInteger( x ) ((short)((x==floor(x)) ? 1:0))
 
@@ -285,6 +285,7 @@ typedef struct tag_tmsMatrix* tmcMatrixRef ;
 #define _tmcHasExtraDim(x) ( ((x)->m_desc.m_modifier & MODIFIER_MASK_MULTI_DIM)  )
 #define _tmcSetM(x,m) (  (x)->m_desc.m_nRows=(m) )
 #define _tmcSetN(x,n) (  (x)->m_desc.m_nCols=(n) )
+#define  _tmcGetNumElem(x) ( (x)->m_desc.m_nRows * (x)->m_desc.m_nCols)
 
 ///////////////// INTERNAL UTILITIES /////////////////////////////
 //tmsMatrix *_tmcGetByRef(tmsMatrix *x);
@@ -344,7 +345,7 @@ void tmclasterr(long nout,long ninput,tmsMatrix *msg_string_out, tmsMatrix *msg_
 #define err_bad_init -10
 #define file_not_found	-11
 #define out_of_int_range	-12
-
+#define must_be_cell_array	-13
 ////////////////////
 
 double _tmcCabs(double re,double im); 
@@ -382,7 +383,8 @@ void _tmcMultByScalar(tmsMatrix *prod,tmsMatrix *X,tmsMatrix *scalarB);
 short _tmcIsScalar(tmsMatrix *x);
 short RealReciprocal(double *result,double D);
 void _tmcLongGetMaxVal(long *max_val,long *ind_at_max,tmsMatrix *x);
-
+void _tmcCollectCellRowsN(tmsMatrix *matres, long numrows, tmsMatrix **matN,long sum_row_dim,long act_numcols);
+void _tmcCollectCellColumnsN(tmsMatrix *matres, long numcols, tmsMatrix **matN, long sum_col_dim, long act_numrows);
 //////////////////////////////////////////////////////////////////
 
 void tmcFreeLocalVar(tmsMatrix *src);// free local var at exit
@@ -465,7 +467,7 @@ void tmcIsFieldHcode(tmsMatrix *matres,tmsMatrix *src,STRINGCODE hcode); // matr
 // HASH END
 
 ////////////////////// MULTI-DIM /////////////
-void _tmcCreateMatrixMD(tmsMatrix *res,short ndim,long* arrdims,short bHasImagine);
+void _tmcCreateMatrixMD(tmsMatrix *res, short ndim, long* arrdims, short bHasImagine, double ReInitVal);
 void _tmcCreateCellArrayMD(tmsMatrix *res,short ndim,long* arrdims);
 void _tmcClearExtraDims(tmsMatrix *res);
 long _tmcCountM(short ndim,long* arrdims);
@@ -514,7 +516,7 @@ void tmcfeval(long nout,long ninput,tmsMatrix *y, tmsMatrix *fnc_handle, tmsMatr
 void tmcstruct(long nout,long ninput,tmsMatrix *matres,...);
 void tmcsize(long nout,long ninput,tmsMatrix *m,...);
 void tmclength(long nout,long ninput, tmsMatrix *len, tmsMatrix *X);
-void tmcones(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,tmsMatrix *in2);
+void tmcones(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,...);
 void tmczeros(long nout,long ninput,tmsMatrix *Y, tmsMatrix *in1,...);
 void tmceye(long nout,long ninput, tmsMatrix *y, tmsMatrix *in1, tmsMatrix *in2);
 void tmcndims(long nout,long ninput, tmsMatrix *y, tmsMatrix *M);
@@ -544,6 +546,7 @@ void tmcfieldnames(long nout,long ninput,tmsMatrix *flist,tmsMatrix *S);
 void tmcfields(long nout,long ninput,tmsMatrix *flist,tmsMatrix *S);
 
 void tmcstrcmp(long nout,long ninput, tmsMatrix *y,tmsMatrix *s1,tmsMatrix *s2);
+void tmcstrcmpi(long nout, long ninput, tmsMatrix *y, tmsMatrix *s1, tmsMatrix *s2);
 void tmcdiff(long nout,long ninput, tmsMatrix *dx,tmsMatrix *x);
 void tmcfind(long nout,long ninput, tmsMatrix *I,tmsMatrix *J,tmsMatrix *V, tmsMatrix *x,tmsMatrix *Opt,tmsMatrix *sOpt);
 void tmcsum(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
@@ -569,6 +572,7 @@ void tmcfliplr(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 void tmcisreal(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 void tmcsign(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 void tmcinv(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
+void tmctrace(long nout,long ninput,tmsMatrix *y,tmsMatrix *d);
 void tmcdiag(long nout,long ninput,tmsMatrix *y,tmsMatrix *d);
 void tmccumprod(long nout,long ninput,tmsMatrix *y,tmsMatrix *x,tmsMatrix *dim);
 void tmcsqueeze(long nout,long ninput,tmsMatrix *y,tmsMatrix *x);
@@ -622,7 +626,7 @@ void tmcAndScalar(tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2);
 void tmcOrScalar(tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2);
 
 // graphic stubs
-void tmchold(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff);
+void tmchold(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mAx,tmsMatrix *onoff);
 void tmcgrid(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff);
 void tmcfigure(long nout,long ninput,tmsMatrix *fhand,tmsMatrix *fnum);
 void tmcgcf(long nout,long ninput,...);
@@ -652,6 +656,7 @@ void tmcnum2str(long nout,long ninput,tmsMatrix *sbuf, tmsMatrix *x, tmsMatrix *
 void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *h);
 void tmcfgets(long nout,long ninput,tmsMatrix *str,tmsMatrix *h);
 void tmcfeof(long nout,long ninput,tmsMatrix *y,tmsMatrix *h);
+void tmcfread(long nout,long ninput,tmsMatrix *mA,tmsMatrix *mFID);
 
 // system utilities
 void tmcpause(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *d);
@@ -683,23 +688,20 @@ void tmcbitshift(long nout,long ninput,tmsMatrix *y,tmsMatrix *a,tmsMatrix *k,tm
 
 // UNSUPPORTED
 void tmceval(long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *str);
-void tmcssdata(long nout,long ninput,...);
-void tmcss2tf(long nout,long ninput,...);
-void tmctf2ss(long nout,long ninput,...);
-void tmcss(long nout,long ninput,...);
-void tmczpkdata(long nout,long ninput,...);
-void tmczpk(long nout,long ninput,tmsMatrix *y,tmsMatrix *z,tmsMatrix *p,tmsMatrix *k,tmsMatrix *tsamp);
-void tmcfrd(long nout,long ninput,tmsMatrix *y,tmsMatrix *Resp,tmsMatrix *Freqs);
-
-void tmctf(long nout,long ninput,...);
+//void tmcssdata(long nout,long ninput,...);
+//void tmcss2tf(long nout,long ninput,...);
+//void tmctf2ss(long nout,long ninput,...);
+//void tmcss(long nout,long ninput,...);
+//void tmczpkdata(long nout,long ninput,...);
+//void tmczpk(long nout,long ninput,tmsMatrix *y,tmsMatrix *z,tmsMatrix *p,tmsMatrix *k,tmsMatrix *tsamp);
+//void tmcfrd(long nout,long ninput,tmsMatrix *y,tmsMatrix *Resp,tmsMatrix *Freqs, tmsMatrix *Ts);
+//void tmctf(long nout,long ninput,...);
 void tmcget(long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *str);
 void tmcisa(long nout,long ninput,tmsMatrix *y, tmsMatrix *x, tmsMatrix *str);
-void tmctfdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt);
-void tmcfreqresp(long nout,long ninput, tmsMatrix *y, tmsMatrix *sys,tmsMatrix *w);
-void tmcfrdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt);
-void tmcnichols(long nout,long ninput,tmsMatrix *sys,tmsMatrix *mopt);
-
-void tmcfrdqfd(long nout,long ninput,tmsMatrix *sys,tmsMatrix *L,tmsMatrix *Freqs);
+//void tmctfdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt);
+//void tmcfreqresp(long nout,long ninput, tmsMatrix *y, tmsMatrix *sys,tmsMatrix *w);
+//void tmcfrdata(long nout,long ninput, tmsMatrix *num, tmsMatrix *den,tmsMatrix *tsamp, tmsMatrix *sys,tmsMatrix *mopt);
+//void tmcnichols(long nout,long ninput,tmsMatrix *sys,tmsMatrix *mopt);
 
 //lapackutils
 void tmcsvd(long nout,long ninput,tmsMatrix *U,tmsMatrix *S,tmsMatrix *V,tmsMatrix *X,tmsMatrix *flag);
@@ -712,7 +714,7 @@ void tmcroots(long nout,long ninput,tmsMatrix *r,tmsMatrix *p);
 void tmcqr(long nout,long ninput,tmsMatrix *q,tmsMatrix *r,tmsMatrix *e,tmsMatrix *A,tmsMatrix *flg);
 void tmcdet(long nout,long ninput,tmsMatrix *y,tmsMatrix *A);
 void tmccond(long nout,long ninput,tmsMatrix *y,tmsMatrix *A,tmsMatrix *p);
-void tmcpoly(long nout,long ninput,tmsMatrix *y,tmsMatrix *A);
+//void tmcpoly(long nout,long ninput,tmsMatrix *y,tmsMatrix *A);
 
 // special routines
 void tmcrand(long nout,long ninput,tmsMatrix *y,tmsMatrix *m,tmsMatrix *n);
@@ -806,5 +808,10 @@ void tmcroots_qd(long nout,long ninput,tmsMatrix *r,tmsMatrix *p);
 void tmcqr_qd(long nout,long ninput,tmsMatrix *q,tmsMatrix *r,tmsMatrix *e,tmsMatrix *A,tmsMatrix *flg);
 void tmcdet_qd(long nout,long ninput,tmsMatrix *y,tmsMatrix *A);
 void tmcleftdivide_qd(long nout,long ninput, tmsMatrix *X,tmsMatrix *A,tmsMatrix *B);
+
+void tmcmean(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
+void tmcstd(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
+
+
 
 #endif

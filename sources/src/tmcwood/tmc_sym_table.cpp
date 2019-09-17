@@ -18,7 +18,22 @@ symbol_table TmcSymbolTable;
 
 CStringHash StringHash;
 
-
+/**
+	\brief Add the file name for single file compilation
+*/
+void  CTmcFileList::Add2FinalList(char* _in_file_name,symbol_table *pSymTable)
+{
+	FileList.push_back(_in_file_name);
+				std::string fn=get_func_name_only(_in_file_name);
+				symbol_table::record_iterator p =pSymTable->find_symbol(fn,false,-1);//load function list
+					if (p!=pSymTable->nil())
+					{
+						if (p->m_modifier.m_extern_func_parsed==1 )
+						{
+							AppendFinalList(_in_file_name);
+						}
+					}
+}
 
 void  CTmcFileList::LoadFinalList(char* file_name,symbol_table *pSymTable)
 	// load files list and also register all its functions as unparsed.
