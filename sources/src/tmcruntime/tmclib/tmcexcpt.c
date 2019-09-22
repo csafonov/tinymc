@@ -60,7 +60,7 @@ ULONG_PTR e_infos[1];//x64
 		ind=0;M =x;
 		while (ind<numargin)
 		{
-			fprintf(stderr,"Matrix addr=%lx\n",M);
+			fprintf(stderr,"Matrix addr=%lx\n",(unsigned long)(void*)M);
 			tmcDisplayMat(M,1);
 			fprintf(stderr,"*******************************\n");
 			M = va_arg( marker,  tmsMatrix * );
@@ -93,12 +93,12 @@ char *ptrStr;
 	{
 		ptrStr = (char*)ExceptionInfo->ExceptionRecord->ExceptionInformation[0];
 				fprintf(stderr,"\nerror at ADDR=%x:\n %s\n",
-				ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
+					(unsigned long)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
 	}
 	else
 	{
-				fprintf(stderr,"\nEXCEPTION=%x,\nADDR=%x,\n",ExceptionInfo->ExceptionRecord->ExceptionCode,
-				ExceptionInfo->ExceptionRecord->ExceptionAddress);
+				fprintf(stderr,"\nEXCEPTION=%x,\nADDR=%x,\n", ExceptionInfo->ExceptionRecord->ExceptionCode,
+					(unsigned long)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress);
 	}
 
 return EXCEPTION_EXECUTE_HANDLER;

@@ -633,7 +633,7 @@ void tmcgcf(long nout,long ninput,...);
 void tmcishold(long nout,long ninput,tmsMatrix *y,tmsMatrix *fhan);
 
 void tmcget(long nout,long ninput,tmsMatrix *val,tmsMatrix *obj,tmsMatrix *prop);
-void tmcwaitbar(long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2);
+//void tmcwaitbar(long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2);
 void tmcclose(long nout,long ninput,tmsMatrix *stat,tmsMatrix *hand);
 void tmcaxis(long nout,long ninput,tmsMatrix *hand,...);
 void tmcgca(long nout,long ninput,tmsMatrix *hand);

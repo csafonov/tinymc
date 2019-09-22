@@ -220,18 +220,18 @@ void _tmcStorePlot(FILE *fp,const double *x,const double *y,unsigned long colr,
 
 #ifndef  _TMC_EMBEDDED_
 /// This function is platform-specific
-void tmcwaitbar(long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2)
-{
-extern __int64 g_MemCnt;
-extern __int64 g_MemN;
-extern __int64 g_MemUsed;
-
-	if (nout>0)
-	_tmcCreateMatrix(hand,1,1,0);
-
-	if (ninput>1)
-		fprintf(stdout,"waitbar: %f, Mem=%I64d,N=%I64d,MU=%I64d \n",frac->m_rData[0],g_MemCnt,g_MemN,g_MemUsed);
-}
+//void tmcwaitbar(long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2)
+//{
+//extern __int64 g_MemCnt;
+//extern __int64 g_MemN;
+//extern __int64 g_MemUsed;
+//
+//	if (nout>0)
+//	_tmcCreateMatrix(hand,1,1,0);
+//
+//	if (ninput>1)
+//		fprintf(stdout,"waitbar: %f, Mem=%I64d,N=%I64d,MU=%I64d \n",frac->m_rData[0],g_MemCnt,g_MemN,g_MemUsed);
+//}
 #endif
 
 void tmcclose(long nout,long ninput,tmsMatrix *stat,tmsMatrix *hand)

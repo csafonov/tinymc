@@ -1775,79 +1775,121 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 //		fprintf(fp,"\n");
 	MYFREE(sBuf);
 }
-void tmcsprintf(long nout,long ninput, tmsMatrix *sbuf,tmsMatrix *fm,...)
+void tmcsprintf(long nout, long ninput, tmsMatrix *sbuf, tmsMatrix *fm, ...)
 {
 	char TempBuffer[MAX_PRINTF_LEN];// max len string
-	char *sBuf,*sTempBuf;
-	char *cPtr,*cPtrPrev;
-	short ind,nc;
+	char *sBuf, *sTempBuf;
+	char *cPtr, *cPtrPrev;
+	short ind;// , nc;
 	va_list marker;
 	tmsMatrix *M;
 	char *out;
 	long nStored;
-long len;
-long n;
+	long len,kk;
+	long n;
+	char c;
 
-	out=TempBuffer;
-	sBuf=_tmcMat2StringESC(fm);
-	cPtr=sBuf;
+	out = TempBuffer;
+	sBuf = _tmcMat2StringESC(fm);
+	cPtr = sBuf;
 	cPtrPrev = sBuf;
-		va_start( marker, fm );     // Initialize variable arguments. 
-		ind=1;nc=0;
-	if (ninput==1)
-				nStored=sprintf(out,"%s",cPtrPrev);
+	va_start(marker, fm);     // Initialize variable arguments. 
+	ind = 1;// nc = 0;
+	if (ninput == 1)
+		nStored = sprintf(out, "%s", cPtrPrev);
 
-		while (ind<ninput)
+	while (ind<ninput)
+	{
+
+		cPtrPrev = cPtr;
+		cPtr = strchr(cPtr, '%');
+		if (cPtr == NULL)
 		{
-			M = va_arg( marker,  tmsMatrix * );
-			cPtrPrev=cPtr;
-			cPtr=strchr(cPtr,'%');
-			if (cPtr==NULL)
+			sprintf(out, "%s", cPtrPrev);
+			break;
+		}
+		else
+		{
+			*cPtr = 0; // set terminator
+			nStored = sprintf(out, "%s", cPtrPrev);
+			out += nStored;
+			c = cPtr[1];
+			if (c != '%')
 			{
-				sprintf(out,"%s",cPtrPrev);
-				break;
+				M = va_arg(marker, tmsMatrix *);
+				ind++;
 			}
-			else
+			nStored = 0;
+			switch (c)
 			{
-				*cPtr=0; // set terminator
-				nStored=sprintf(out,"%s",cPtrPrev);
-				out += nStored;
-				if (cPtr[1]=='s')
+			case 's':
+				// printf as string
+				sTempBuf = _tmcMat2StringESC(M);
+				nStored = sprintf(out, "%s", sTempBuf);
+				MYFREE(sTempBuf);
+				break;
+			case 'd':
+			case 'u':
+				if (_mdblIsInteger(M->m_rData[0]))
 				{
-					// printf as string
-					sTempBuf=_tmcMat2StringESC(M);
-					nStored=sprintf(out,"%s",sTempBuf);
-					out += nStored;
-					MYFREE(sTempBuf);
+					nStored = sprintf(out, "%I64d", (__int64)M->m_rData[0]);
 				}
 				else
 				{
-					// printf as double
-					if (cPtr[1]=='f')
-						nStored=sprintf(out,"%f",M->m_rData[0]);
-					else if (cPtr[1]=='d' && _mdblIsInteger(M->m_rData[0]))
-						nStored=sprintf(out,"%I64d",(__int64)M->m_rData[0]);
-					else
-						nStored=sprintf(out,"%f",M->m_rData[0]);
-					out += nStored;
+					nStored = sprintf(out, "%f", M->m_rData[0]);
 				}
-				cPtr+=2;// HAZARD - must analyse the actual format, may be more than 2 letters!!!
-				nc+=2;
+				break;
+			case 'f':
+			case 'g':
+				nStored = sprintf(out, "%f", M->m_rData[0]);
+				break;
+			case 'x':
+				nStored = sprintf(out, "%x", (long)M->m_rData[0]);
+				break;
+			case 'X':
+				nStored = sprintf(out, "%X", (long)M->m_rData[0]);
+				break;
+			case '%':
+				nStored = sprintf(out, "%%");
+				// no parameter passed for it
+				break;
 			}
-			ind++;
+			out += nStored;
+
+			cPtr += 2;// HAZARD - must analyse the actual format, may be more than 2 letters!!!
+			//nc += 2;
 		}
-		va_end( marker );              // Reset variable arguments.      
-	if (ninput>1 )// print the tail of the format
-		nStored=sprintf(out,"%s",cPtr);
-		out += nStored;
+		//ind++;
+	}
+	va_end(marker);              // Reset variable arguments.      
+	if (ninput>1)// print the tail of the format
+	{
+		if (cPtr != NULL)
+		{
+			len = strlen(cPtr);
+			c = 0;
+			for (kk = 0; kk < len; kk++)
+			{
+				if (cPtr[kk] == '%' && c == '%')
+					continue;
+				c = cPtr[kk];
+				nStored = sprintf(out, "%c", c);
+				out += nStored;
+			}
+		}
+
+		//nStored=sprintf(out,"%s",cPtr);
+	}
+	//		out += nStored;
 	MYFREE(sBuf);
 
 	len = (long)strlen(TempBuffer); //x64 without NULL-termination.
-	_tmcCreateMatrix(sbuf,1,len,tmcREAL);
+	_tmcCreateMatrix(sbuf, 1, len, tmcREAL);
 	sbuf->m_desc.m_type = TYPE_STRING;
-	for(n=0;n<len;n++)
-		sbuf->m_rData[n]=TempBuffer[n];
+	for (n = 0; n<len; n++)
+		sbuf->m_rData[n] = TempBuffer[n];
 }
+
 
 void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *h)
 {

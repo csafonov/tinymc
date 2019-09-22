@@ -89,7 +89,6 @@ diag,1,1,i;
 trace,1,1,i;
 inv,1,1,i;
 isnan,1,1,i;
-waitbar,6,1,i;
 close,1,1,i;
 nargchk,3,1,i;
 cumprod,2,1,i;

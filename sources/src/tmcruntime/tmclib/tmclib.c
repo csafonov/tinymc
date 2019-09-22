@@ -4200,11 +4200,9 @@ tmsMatrix *x = NULL;
 
 //FILE *fp;
 
-	if (nout==1)
-	{
-		x = 	mx;
-	}
-	else
+	x = 	mx;// [Y]=unique(x) or  [Y,I]=unique(x)
+		
+	if (nout>2)
 	{
 	_tmcRaiseException(err_unsupported,"sets","tmcunique","FATAL:only syntax [Y]=unique(x), [Y,I]=unique(x) is supported.",0,NULL);
 	}
@@ -4328,7 +4326,10 @@ NoAppendSetDiff: ;
 
 	// create temporary matrix (not-sorted).
 	y0 = tmcNewMatrix();
-	_tmcCreateMatrix(y0,1,NumD+1,_tmcHasIm(A));
+	if (NumD > 0)
+	{
+		_tmcCreateMatrix(y0, 1, NumD, _tmcHasIm(A));
+	}// else y=[]
 	for (k=0;k<NumD;k++)
 	{
 		y0->m_rData[k]= A->m_rData[pInd[k]];
