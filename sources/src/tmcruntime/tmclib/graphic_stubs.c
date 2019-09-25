@@ -238,7 +238,8 @@ void tmcclose(long nout,long ninput,tmsMatrix *stat,tmsMatrix *hand)
 {
 	if (nout>0)
 	_tmcCreateMatrix(stat,1,1,0);
-		fprintf(stdout,"closed handle %f \n",hand->m_rData[0]);
+		//fprintf(stdout,"closed handle %f \n",hand->m_rData[0]);
+	fprintf(stdout, "close() not suppoted \n");
 }
 void tmcaxis(long nout,long ninput,tmsMatrix *hand,...)
 {

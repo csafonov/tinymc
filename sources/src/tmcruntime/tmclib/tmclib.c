@@ -516,13 +516,30 @@ long _tmcGetLinIndex(long ndims,tmsMatrix **pI)
 	else // only 2 is supported
 		return (long)(pI[0]->value.complx.rData[0]*pI[1]->value.complx.rData[0])-1;
 }
+
+void _AssignExtraDims(tmsMatrix *dest, tmsMatrix *src)
+{
+	short k;
+	short edim = _tmcGetExtraDim(src);
+	if (edim)
+	{
+		_tmcCreateDims(dest, edim + 2);
+		_tmcSetExtraDim(dest, edim);
+
+		for (k = 0; k<edim + 2; k++)
+		{
+			_tmcSetDim(dest, k, _tmcGetDimS(src, k + 1));
+		}
+	}
+}
+
 void tmcAssign(tmsMatrix *dest,tmsMatrix *src)
 {
 	long M,N,ind,MN;
 	tmsMatrix *lh_src;
 	short k;
 	long st_ind;
-	short edim;
+	//short edim;
 
 //	dest = _tmcGetByRef(dest);
 	if(dest==src)
@@ -625,17 +642,17 @@ void tmcAssign(tmsMatrix *dest,tmsMatrix *src)
 
 
 	_tmcClearRegister(dest);
-	edim = _tmcGetExtraDim(src);
-	if (edim)
-	{
-		_tmcCreateDims(dest,edim+2);
-		_tmcSetExtraDim(dest,edim);
-		
-		for ( k=0;k<edim+2;k++)
-		{
-		_tmcSetDim(dest,k,_tmcGetDimS(src,k+1));
-		}
-	}
+	//edim = _tmcGetExtraDim(src);
+	//if (edim)
+	//{
+	//	_tmcCreateDims(dest,edim+2);
+	//	_tmcSetExtraDim(dest,edim);
+	//	
+	//	for ( k=0;k<edim+2;k++)
+	//	{
+	//	_tmcSetDim(dest,k,_tmcGetDimS(src,k+1));
+	//	}
+	//}
 
 
 
@@ -653,18 +670,20 @@ void tmcAssign(tmsMatrix *dest,tmsMatrix *src)
 	if (src->m_desc.m_type == TYPE_CELL_ARRAY)
 	{
 		_tmcCreateCellArray(dest,M,N);
+		_AssignExtraDims(dest, src);
 		for (ind=0;ind<M*N;ind++)
 		{
 			dest->value.m_cells[ind] = tmcNewMatrix();
 			tmcAssign(dest->value.m_cells[ind],src->value.m_cells[ind]); // recursive
 		}
+		
 		return;
 	}
 
 
 	if (src->m_desc.m_type == TYPE_MATRIX || src->m_desc.m_type == TYPE_STRING)
 	{
-
+		_AssignExtraDims(dest, src);
 		 dest->m_desc.m_nRows = src->m_desc.m_nRows;
 		 dest->m_desc.m_nCols = src->m_desc.m_nCols;
 		 dest->m_desc.m_type = src->m_desc.m_type;
@@ -681,6 +700,7 @@ void tmcAssign(tmsMatrix *dest,tmsMatrix *src)
 		 {
 			dest->m_desc.m_modifier  &= ~MODIFIER_MASK_HAS_IM;
 		 }
+		 
 	}
 	if (src->m_desc.m_type == TYPE_FNC_HANDLE)
 	{

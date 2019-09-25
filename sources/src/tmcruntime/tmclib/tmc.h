@@ -238,14 +238,14 @@ struct tag_tmsMatrix
 
 struct tag_RefHelper
 {
-	struct tag_tmsMatrix *refI[MAX_REFS];
+	struct tag_tmsMatrix *refI[MAX_REFS];// list of indexes (I,J,..)
 //	const  char *		 refFn[MAX_REFS];
 	STRINGCODE		 refhcFn[MAX_REFS];
-	short  nrefs; // max index in refs
-	short  dims[MAX_REF_DEEP];
+	short  nrefs; // max index in refs, total number of indexes
+	short  dims[MAX_REF_DEEP];// number of dimensions in the current inclusion level, e.g. A(I,J,K)-->3
 	char   type[MAX_REF_DEEP];
-	short  ndims; // max index in dims
-	struct tag_tmsMatrix *src;
+	short  ndims; // max index in dims, max inclusion level of brackets, e.g. A(m(n(k))) --> 3
+	struct tag_tmsMatrix *src;// left-hand matrix in the assignment
 };
 
 extern struct tag_RefHelper RefHelper;// HAZARD : static struct

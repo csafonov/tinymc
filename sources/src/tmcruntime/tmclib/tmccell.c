@@ -350,13 +350,23 @@ short bMustResize=0;
 		{
 				_tmcResizeCellArrayMD(src,(short)numdims,arrdims);
 		}
-		ind=d[0];
-		NN=_tmcGetDimS(src,1);
-		for (k=1;k<numdims;k++)
+
+		if (numdims == 3)
 		{
-			ind += d[1]*NN;
-			NN  *= _tmcGetDimS(src,k+1);
+			ind = d[0] + d[1] * arrdims[0] + d[2] * arrdims[0] * arrdims[1];//see 1-46, HSKOST fix for 3D only 2019.09.22
 		}
+		else
+		{
+			_tmcRaiseException(err_bad_cell_index, s_module, "tmcGetByIndexCell", "4D not supported", 0, NULL);
+		}
+
+		//ind=d[0];
+		//NN=_tmcGetDimS(src,1);
+		//for (k=1;k<numdims;k++)
+		//{
+		//	ind += d[1]*NN;
+		//	NN  *= _tmcGetDimS(src,k+1);
+		//}
 
 
 	}
@@ -438,13 +448,21 @@ long NN;
 				_tmcRaiseException(err_bad_cell_index,s_module,"_tmcGetByIndexCell","Index (1) out of range (2).",2,refs[k],src);
 				}
 		}
-		ind=d[0];
-		NN=_tmcGetDimS(src,1);
-		for (k=1;k<numdims;k++)
+		if (numdims == 3)
 		{
-			ind += d[1]*NN;
-			NN  *= _tmcGetDimS(src,k+1);
+			ind = d[0] + d[1] * arrdims[0] + d[2] * arrdims[0] * arrdims[1];//see 1-46, HSKOST fix for 3D only 2019.09.22
 		}
+		else
+		{
+			_tmcRaiseException(err_bad_cell_index, s_module, "tmcGetByIndexCell", "4D not supported", 0, NULL);
+		}
+		//ind=d[0];
+		//NN=_tmcGetDimS(src,1);
+		//for (k=1;k<numdims;k++)
+		//{
+		//	ind += d[1]*NN;
+		//	NN  *= _tmcGetDimS(src,k+1);
+		//}
 	}
 
 	    tmcAssign(matres,src->value.m_cells[ind]);
@@ -680,13 +698,21 @@ long NN;
 		{
 				_tmcResizeCellArrayMD(matres,(short)numdims,arrdims);
 		}
-		ind=d[0];
-		NN=_tmcGetDimS(matres,1);
-		for (k=1;k<numdims;k++)
+		if (numdims==3)
 		{
-			ind += d[1]*NN;
-			NN  *= _tmcGetDimS(matres,k+1);
+			ind = d[0] + d[1] * arrdims[0] + d[2] * arrdims[0] * arrdims[1];//see 1-46, HSKOST fix for 3D only 2019.09.22
 		}
+		else
+		{
+			_tmcRaiseException(err_bad_cell_index, s_module, "_tmcSetByIndexCell", "4D not supported", 0,NULL);
+		}
+		//ind=d[0];
+		//NN=_tmcGetDimS(matres,1);
+		//for (k=1;k<numdims;k++)
+		//{
+		//	ind += d[1]*NN;
+		//	NN  *= _tmcGetDimS(matres,k+1);
+		//}
 	}
 	tmcAssign(matres->value.m_cells[ind],src);
 }
