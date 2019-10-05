@@ -261,7 +261,7 @@ typedef struct tag_tmsMatrix* tmcMatrixRef ;
 #define BITMAX	((double)9.007199254740991e15)	 // 2^53-1
 
 #define _tmcIsMatrix(x) (((x->m_desc.m_nRows>1) && (x->m_desc.m_nCols>1))? 1:0 )
-#define _tmcIsEmptyMatrix(x) ( (x->m_desc.m_nRows==0 ||  x->m_desc.m_nCols==0) ? 1:0)
+#define _tmcIsEmptyMatrix(x) ( (x->m_desc.m_nRows==0 ||  x->m_desc.m_nCols==0 || x->m_desc.m_type == TYPE_NOTHING) ? 1:0)
 #define _tmcHasIm(x) ((short)((x->m_desc.m_modifier & MODIFIER_MASK_HAS_IM) ? 1:0))
 #define _tmcIsChar(x) ((short)(x->m_desc.m_type==TYPE_STRING))
 #define _tmcIsCellArray(x) ((short)(x->m_desc.m_type==TYPE_CELL_ARRAY)?1:0)
@@ -346,6 +346,7 @@ void tmclasterr(long nout,long ninput,tmsMatrix *msg_string_out, tmsMatrix *msg_
 #define file_not_found	-11
 #define out_of_int_range	-12
 #define must_be_cell_array	-13
+#define par_must_be_string_matrix	-14
 ////////////////////
 
 double _tmcCabs(double re,double im); 
@@ -479,6 +480,8 @@ void _tmcResizeCellArrayMD(tmsMatrix *y,short numdims,long *arrdims);
 short _tmcGetReducedDim(short numdim,long* arrdims);
 void  _tmcRedimArrayMD(tmsMatrix *matres,short numdims,long *arrdims);
 
+long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[]);
+
 /////////////////////////////////////////////
 
 void tmcTransposeScalar(tmsMatrix *matres,tmsMatrix *src);
@@ -504,6 +507,8 @@ char* _tmcMat2StringESC(tmsMatrix *src); // for usage in sprintf,fprintf only, i
 
 void _tmcSetString(tmsMatrix *y,const char *str);
 short _tmcGetString(const tmsMatrix *src , char *str_des , long maxlen );
+short _tmcGetStringW(const tmsMatrix *src, wchar_t *str_des, long maxlen);
+
 long _dstrlen(const double *x,long maxlen);
 
 short tmcNotCase(tmsMatrix *expression,tmsMatrix *case_value);

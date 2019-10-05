@@ -2880,7 +2880,7 @@ double  dx_,dy;
 void tmcPowerScalar(tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
 { // y=src1.^src2
   // Restriction:
-  //  src2 must be real, scalar
+  //  src2 must be real,scalar or src1 is scalar 
 tmsMatrix *y;
 long k,MN;
 double scal,scali;
@@ -2893,7 +2893,7 @@ double mag,ang;
 		_tmcRaiseException(err_unsupported,s_module,"PowerScalar(.^)","exponent must be real.",2,src1,src2);
 	
 	if (tmcNumElem(src2)==1)
-	{
+	{// X^n
 		_tmcCreateMatrix(y,_tmcGetM(src1),_tmcGetN(src1),_tmcHasIm(src1));
 		MN=tmcNumElem(src1);
 		scal = src2->m_rData[0]; // exponent
@@ -2920,8 +2920,8 @@ double mag,ang;
 	}
 	else
 	if (tmcNumElem(src1)==1) // tmcNumElem(src1)==1
-	{
-		_tmcCreateMatrix(y,_tmcGetM(src2),_tmcGetN(src2),_tmcHasIm(src2));
+	{// x^N
+		_tmcCreateMatrix(y,_tmcGetM(src2),_tmcGetN(src2),_tmcHasIm(src1));
 		MN=tmcNumElem(src2);
 		scal = src1->m_rData[0]; // base
 
@@ -2954,7 +2954,7 @@ double mag,ang;
 			_tmcRaiseException(err_invalid_dimentions,s_module,"PowerScalar(.^)","exponent and base must be equal dimentions.",2,src1,src2);
 		}
 
-		_tmcCreateMatrix(y,_tmcGetM(src2),_tmcGetN(src2),_tmcHasIm(src2));
+		_tmcCreateMatrix(y,_tmcGetM(src2),_tmcGetN(src2),_tmcHasIm(src1));
 		MN=tmcNumElem(src2);
 
 		if (_tmcHasIm(src1)==0)

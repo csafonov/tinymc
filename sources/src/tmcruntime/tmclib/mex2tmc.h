@@ -21,6 +21,7 @@
 
 //#define mexErrMsgTxt(x) {fprintf(stderr,x);	_tmcRaiseException(err_unsupported,"MEX","error in MEX.","error in MEX.",0,NULL);}
 #define mexErrMsgTxt(x) {fprintf(stderr,"%s",x);	_tmcRaiseException(err_unsupported,"MEX","error in MEX.","error in MEX.",0,NULL);}
+#define mexErrMsgTxtW(x) {fwprintf(stderr,L"%s",x);	_tmcRaiseException(err_unsupported,"MEX","error in MEX.","error in MEX.",0,NULL);}
 #define mxGetM(x) _tmcGetM(x)
 #define mxGetN(x) _tmcGetN(x)
 
@@ -28,6 +29,7 @@
 #define mxGetPi(x)	(x->m_iData)
 
 #define mxGetString _tmcGetString
+#define mxGetStringW _tmcGetStringW
 
 //#define mxSetCell	_tmcSetCell
 //#define mxGetCell   _tmcGetCell
@@ -51,6 +53,6 @@
 #define mxIsStruct(x) (((x)->m_desc.m_type ==TYPE_STRUCT))
 
 #define mxGetFieldNumber _tmcGetFieldNumber
-
+#define mxCalcSingleSubscript _tmcCalcSingleSubscript
 
 #endif

@@ -1044,7 +1044,7 @@ int _tmcwritedataelm(int fh,tmsMatrix *MatN,const char *varnameN,long *posI)
 union buf_long l;
 int len;
 long MN,k;
-
+short ndims, kDim;
 //#ifdef _TMC_ANDROID_ // HAZARD_TODO: no unicode support so far
 unsigned short * temp_string ;
 //#else
@@ -1077,13 +1077,36 @@ const char *fn;
 		memset(&l,0,sizeof(l));
 		_write(fh,&l.b[0], sizeof(unsigned long));
 		posI[0] += 2*sizeof(unsigned long);
-		// dimentions array
-		_tmcwritesavetag(fh,mi_INT32,2*sizeof(long),posI);//num_of_dims*sizeof(long)
-		l.x = _tmcGetM(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		l.x = _tmcGetN(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		posI[0] +=2*sizeof(long);
+
+		ndims = _tmcGetNdim(MatN);
+		if (ndims <= 2)
+		{
+			_tmcwritesavetag(fh, mi_INT32, 2 * sizeof(long), posI);//num_of_dims*sizeof(long)
+			l.x = _tmcGetM(MatN);
+			_write(fh, &l.b[0], sizeof(long));
+			l.x = _tmcGetN(MatN);
+			_write(fh, &l.b[0], sizeof(long));
+			posI[0] += 2 * sizeof(long);
+		}
+		else
+		{
+			// dimentions array
+			_tmcwritesavetag(fh, mi_INT32, ndims * sizeof(long), posI);//num_of_dims*sizeof(long)
+			for (kDim = 1; kDim <= ndims; kDim++)
+			{
+				l.x = _tmcGetDim(MatN, kDim);
+				_write(fh, &l.b[0], sizeof(long));
+				posI[0] += sizeof(long);
+			}
+			if (ndims % 2) //  PADDING
+			{
+				l.x = 0;
+				_write(fh, &l.b[0], sizeof(long));
+				posI[0] += sizeof(long);
+			}
+
+		}
+
 		// array name
 		len = (long)strlen(varnameN);//x64
 		_tmcwritesavetag(fh,mi_INT8,len,posI);
@@ -1127,14 +1150,38 @@ const char *fn;
 		_write(fh,&l.b[0], sizeof(unsigned long));
 		memset(&l,0,sizeof(l));
 		_write(fh,&l.b[0], sizeof(unsigned long));
-		posI[0] += 2*sizeof(unsigned long);
-		// dimentions array
-		_tmcwritesavetag(fh,mi_INT32,2*sizeof(long),posI);//num_of_dims*sizeof(long)
-		l.x = _tmcGetM(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		l.x = _tmcGetN(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		posI[0] +=2*sizeof(long);
+		posI[0] += 2 * sizeof(unsigned long);
+
+		ndims =   _tmcGetNdim(MatN);
+		if (ndims <= 2)
+		{
+			// dimentions array
+			_tmcwritesavetag(fh, mi_INT32, 2 * sizeof(long), posI);//num_of_dims*sizeof(long)
+			l.x = _tmcGetM(MatN);
+			_write(fh, &l.b[0], sizeof(long));
+			l.x = _tmcGetN(MatN);
+			_write(fh, &l.b[0], sizeof(long));
+			posI[0] += 2 * sizeof(long);
+		}
+		else
+		{
+			// dimentions array
+			_tmcwritesavetag(fh, mi_INT32, ndims * sizeof(long), posI);//num_of_dims*sizeof(long)
+			for (kDim = 1; kDim <= ndims; kDim++)
+			{
+				l.x = _tmcGetDim(MatN, kDim);
+				_write(fh, &l.b[0], sizeof(long));
+				posI[0] +=  sizeof(long);
+			}
+			if (ndims % 2) //  PADDING
+			{
+				l.x = 0;
+				_write(fh, &l.b[0], sizeof(long));
+				posI[0] += sizeof(long);
+			}
+		}
+
+
 		// array name
 		len = (long)strlen(varnameN);//x64
 		_tmcwritesavetag(fh,mi_INT8,len,posI);

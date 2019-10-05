@@ -490,6 +490,13 @@ long N;
 		x->m_desc.m_nCols=0;
 	return ;
 	}
+
+	if (x->m_desc.m_type == TYPE_NOTHING)
+	{
+		x->m_desc.m_nRows = 0;
+		x->m_desc.m_nCols = 0;
+		return;
+	}
 }
 
 
@@ -2685,9 +2692,13 @@ short _Mstrcmp(tmsMatrix *x,const char *fn)
 short _tmcGetString(const tmsMatrix *src , char *str_des , long maxlen )
 { // analog of mxGetString
 long n;
-	if (src->m_desc.m_type != TYPE_STRING)
-		return -1;
 
+	if (src->m_desc.m_type != TYPE_STRING)
+	{
+		_tmcRaiseException(par_must_be_string_matrix, s_module, "_tmcGetString", "obsolete function: Argument must be TYPE_STRING", 0, NULL);
+		return -1;
+	}
+		
 	for(n=0;n<_tmcGetN(src) && n<maxlen-1;n++)
 	{
 		str_des[n] = (char)src->m_rData[n];
@@ -2695,6 +2706,18 @@ long n;
 	str_des[n]=0;
 
 return 0;
+}
+short _tmcGetStringW(const tmsMatrix *src, wchar_t *str_des, long maxlen)
+{
+	long n;
+	//	Assure the result string to be of TYPE_STRING to support Unicide string
+	//	if (src->m_desc.m_type != TYPE_STRING)
+	//		return -1;
+	for (n = 0; n<_tmcGetNumElem(src) && n<maxlen - 1; n++)
+	{
+		str_des[n] = (wchar_t)src->m_rData[n];
+	}
+	str_des[n] = 0;
 }
 
 char* _tmcMat2String(tmsMatrix *src)
@@ -3183,7 +3206,7 @@ void tmcisempty(long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
 			_tmcCreateMatrix(y,1,1,tmcREAL);
 			if (x->m_desc.m_type == TYPE_STRUCT)
 			{
-				y->m_rData[0]= (_tmcGetNf(x)==0 ? 1:0);
+				y->m_rData[0] = (_tmcGetNf(x) == 0 ? 1 : 0);
 			}
 			else
 				y->m_rData[0]=_tmcIsEmptyMatrix(x);
@@ -4335,7 +4358,7 @@ tmsMatrix *y0;
 	{
 		for (m=0;m<MNb;m++)
 		{
-			if (A->m_rData[k]==B->m_rData[k] && A->m_iData[k]==B->m_iData[k])
+			if (A->m_rData[k]==B->m_rData[m] && A->m_iData[k]==B->m_iData[m])
 			{
 				goto NoAppendSetDiff; // do not append
 			}
@@ -5360,5 +5383,30 @@ double* tmcMatrixPRe(tmsMatrix *X,long m,long n)
 double* tmcMatrixPIm(tmsMatrix *X,long m,long n)
 {
 		return X->value.complx.iData;
+}
+
+/**
+	Offset in the matrix from first element to desired element
+*/
+long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[])
+{
+	long ind=0;
+
+	switch (nsubs)
+	{
+	case 1:
+		ind = subs[0];
+		break;
+	case 2:
+		ind = subs[0] + _tmcGetM(X)*subs[1];
+		break;
+	case 3:// arrdims[k] = _tmcGetDimS(X, 1 + k);
+		ind = subs[0] + subs[1] * _tmcGetDimS(X,1) + subs[2] * _tmcGetDimS(X, 1) * _tmcGetDimS(X, 2);
+		break;
+	default:
+		_tmcRaiseException(err_bad_cell_index, s_module, "mxCalcSingleSubscript", "4D not supported", 0, NULL);
+		;
+	}
+	return ind;
 }
 

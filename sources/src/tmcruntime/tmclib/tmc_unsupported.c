@@ -40,10 +40,10 @@ void tmceval(long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *str)
 //{ // tf,-1,1,i;
 //	_tmcRaiseException(err_unsupported,"main","tf","FATAL: tf is unsupported!!!.",0,NULL);
 //}
-void tmcget(long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *str)
-{
-	_tmcRaiseException(err_unsupported,"main","get","FATAL: get(S,'prop') is unsupported!!!.",2,S,str);
-}
+//void tmcget(long nout,long ninput, tmsMatrix *y, tmsMatrix *S, tmsMatrix *str)
+//{
+//	_tmcRaiseException(err_unsupported,"main","get","FATAL: get(S,'prop') is unsupported!!!.",2,S,str);
+//}
 void tmcexist(long nout,long ninput,tmsMatrix *y,tmsMatrix *x,tmsMatrix *mtype)
 {
 		fprintf(stdout,"WARN: exist() not suppoted \n");

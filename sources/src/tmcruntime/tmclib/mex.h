@@ -45,6 +45,7 @@ typedef enum {
 #define mxIsLogical(mX) (0)
 #define mxIsCell(mX) ( (mX->m_desc.m_type ==TYPE_CELL_ARRAY) ? 1:0)
 
+
 //inline tmsMatrix* mxCreateDoubleMatrix(long m, long n , short iscomplex ) {return (void*)0;}
 #define		mxCreateDoubleMatrix _something_wrong_?_?
 #define     mxCreateString       _something_wrong_?_?s
@@ -54,5 +55,5 @@ typedef enum {
 
 #define TMCMEX_NEW_DOUBLE_MATRIX(y,m , n , tmcTYPE)   y=__tmcNewMatrix();_tmcCreateMatrix(y,m,n,tmcTYPE);  
 #define TMCMEX_CREATE_STRING_MATRIX(y,str)  (_tmcSetString(y,str)) 
-
+#define TMCMEX_NEW_STRING_MATRIX(y,str)  y=__tmcNewMatrix();_tmcSetString(y,str); 
 #endif
