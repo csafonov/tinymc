@@ -2589,7 +2589,7 @@ void dbgPrintLspToken(long TokVal)
 long ReturnLspToken(long TokVal)
 {
 #ifdef _DEBUG
-//VANDAL	dbgPrintLspToken(TokVal);
+	dbgPrintLspToken(TokVal);
 #endif
 	return TokVal;
 }

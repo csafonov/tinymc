@@ -477,6 +477,7 @@ in_list_par		   :  LPAREN list_par RPAREN
 					;
 
 
+
 list_par            : ident
 					{
 					$$ = create_list_ident($1);
@@ -485,8 +486,8 @@ list_par            : ident
 					{
                    	$$ = append_to_list_ident($1,$3);
 					}
-
                    ;
+                   
 list_statement     : statement
                    {
                    $$ = create_statement_list($1);
@@ -500,8 +501,13 @@ list_statement     : statement
 ident              : IDENT
 					{
 					 $$ = create_identifier($1,(int)tmcpar_lineno,(int)tmcpar_colno);
-					 }
-					 ;
+					}
+				   |
+				   NOT
+					{
+					 $$ = create_identifier_dummy((int)tmcpar_lineno,(int)tmcpar_colno);
+					}
+				   ;
 magic_end
 					: MAGIC_END
 					{

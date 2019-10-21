@@ -33,6 +33,7 @@ struct tree_const_val* make_magic_col(void);
 
 class T_const* create_constant(CONST_VAL_TYPES type,struct tree_const_val* v,int l,int c);
 class T_ident* create_identifier(const char *x,int l,int c);
+class T_ident* create_identifier_dummy(int l,int c);
 class T_expr_bin* create_binary_expression(const char *etype,T_expr_gen* te1,T_expr_gen* te2,int l,int c);
 class T_expr_bool* create_boolean_expression(const char *etype,T_expr_gen* te1,T_expr_gen* te2,int l,int c);
 class T_expr_unar* create_unary_expression(const char *etype,T_expr_gen* te,int l,int c);

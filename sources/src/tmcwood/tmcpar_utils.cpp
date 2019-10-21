@@ -91,6 +91,18 @@ class T_ident* create_identifier(const char *x,int l,int c)
 	class T_ident* t = new T_ident(x,l,c); 
 	return t;
 }
+/**
+		\brief Call from parser on list_par recognition with dummy output variable (~)  
+*/
+
+class T_ident* create_identifier_dummy(int l,int c)
+{
+	std::string dummy_output_name;
+	/* symbol_table::symbol_record sr =*/ TmcSymbolTable.insert_name_dummy(dummy_output_name,&TmcFileList);
+	class T_ident* t = new T_ident(dummy_output_name,l,c); 
+	t->mark_as_dummy_output();
+	return t;
+}
 class T_const* create_constant(CONST_VAL_TYPES type,struct tree_const_val* v,int l,int c)
 {
 	class T_const* t;

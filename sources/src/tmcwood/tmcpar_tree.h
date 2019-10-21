@@ -182,6 +182,7 @@ class T_ident : public T_expr_gen
 {
 private:
 	std::string m_ident_name;//!< Identifier name
+	bool m_is_dummy_output;//!< like [~,...
 public:
 	std::string name() {return m_ident_name;};
 	virtual bool is_expr_col(void) {return false;}
@@ -189,6 +190,11 @@ public:
 	virtual bool is_ident(void) {return true;}
 	virtual bool is_matrix(void) {return false;} // for assigmnents
 	virtual void print_node();
+	void mark_as_dummy_output()
+	{
+			m_is_dummy_output=true;
+	}
+	bool is_dummy_output() { return m_is_dummy_output;}
 #ifdef BLD_RTL_FEATURE
 private:
 	int m_num_out_pars;// if the identifier is a function. By default is 1 and restored by multy-assignment or statement.
@@ -242,7 +248,7 @@ public:
 	//}
 	virtual void generate_rtl_node(CInstrList *ilist);// identifier
 #endif
-	T_ident(std::string _ident_name,int l,int c): T_expr_gen(l,c),m_ident_name(_ident_name)
+	T_ident(std::string _ident_name,int l,int c): T_expr_gen(l,c),m_ident_name(_ident_name),m_is_dummy_output(false)
 #ifdef BLD_RTL_FEATURE
 	,m_num_out_pars(1),//Changed  15.11.2012	m_num_out_pars(1) to 0 - not good:
 	// by default must asssume that there is some return value.

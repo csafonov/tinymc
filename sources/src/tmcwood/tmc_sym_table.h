@@ -105,6 +105,7 @@ public:
 			char m_sym_type; //description: 'i','m','x'
 			bool m_is_assigned;
 			bool m_is_referenced;// for .log info only
+			bool m_is_dummy_output;// like [~,...
 		};
 	modifier m_modifier;
 	short in_args;
@@ -118,7 +119,7 @@ public:
 		{m_modifier.m_is_var=0;m_modifier.m_found=0;
 		 m_modifier.m_global=0;m_modifier.m_extern_func_parsed=0;m_modifier.m_formal_parameter=0;
 		 in_args=-1;out_args=-1;m_modifier.m_in_stack=0;m_modifier.m_is_initialized=0;m_modifier.m_is_assigned=false;
-			m_modifier.m_sym_type='\0';m_modifier.m_is_referenced=false;
+			m_modifier.m_sym_type='\0';m_modifier.m_is_referenced=false;m_modifier.m_is_dummy_output=false;
 		};
 		void set_name(std::string x) {m_name=x;};
 		std::string& name() {return m_name;};
@@ -156,6 +157,7 @@ public:
 		}
 	};
 private:
+	int dummy_var_counter;
 	CStringHash hashtab; // hash helper
 	void append_symbol(symbol_record *sr);
 public:
@@ -169,7 +171,8 @@ public:
  record_iterator  find_symbol(std::string x,bool caseinsencitive,int indFunc);
 //! Insert a new name in the table. If it is a function, push its path in file list
   symbol_record& insert_name (const std::string& name,class CTmcFileList *pTmcFileList);
- 
+//! Insert a new dummy output name in the table 
+  symbol_record& insert_name_dummy (std::string& dummy_output_name,class CTmcFileList *pTmcFileList);
   /**
 		\brief Called at RTL generation for function node. Checks output parameters.
   */
@@ -260,6 +263,7 @@ public:
 				p++;
 		}
 		Compiler.indFunc = 0;//! < reset the local functions enumeration
+		dummy_var_counter = 0;
   };
 
 /**

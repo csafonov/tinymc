@@ -243,6 +243,32 @@ symbol_table::record_iterator  symbol_table::find_symbol(std::string x,bool case
 	return *sr;
   }
 
+  /**
+		\brief	Register a dummy variable in the symbol table.
+		Called from parser only (create_identifier_dummy).
+*/
+  symbol_table::symbol_record& symbol_table::insert_name_dummy (std::string& dummy_output_name, class CTmcFileList *pTmcFileList)
+  {
+	char buff[32];
+	dummy_var_counter++;
+	sprintf(buff,"junkTilda%d",dummy_var_counter);
+
+	symbol_record *sr;
+
+	// The symbol must be unique!!!!
+		// if not found - this is a variable
+		sr = new symbol_record;
+		dummy_output_name = std::string(buff);
+		sr->set_name(dummy_output_name);
+		sr->m_modifier.m_is_var=1;// is the symbol is not already included from PATH
+		sr->m_modifier.m_global=0;
+		sr->m_modifier.m_indFunc = Compiler.indFunc; //!< store local function index to separate local variables per local functions
+	    sr->m_modifier.m_is_dummy_output = true;
+		append_symbol(sr);
+		
+		return *sr;
+  }
+
 int  symbol_table::PrintSymTable(std::string filename)
 	{
 		FILE *fp = fopen(filename.c_str(),"w");
