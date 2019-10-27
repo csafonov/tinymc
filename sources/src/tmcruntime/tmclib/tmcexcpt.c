@@ -60,7 +60,7 @@ ULONG_PTR e_infos[1];//x64
 		ind=0;M =x;
 		while (ind<numargin)
 		{
-			fprintf(stderr,"Matrix addr=%lx\n",(unsigned long)(void*)M);
+			fprintf(stderr,"Matrix addr=%llx\n",(unsigned __int64)(void*)M);
 			tmcDisplayMat(M,1);
 			fprintf(stderr,"*******************************\n");
 			M = va_arg( marker,  tmsMatrix * );
@@ -92,13 +92,13 @@ char *ptrStr;
 		ExceptionInfo->ExceptionRecord->ExceptionCode==EXCEPTION_TMC_LIB_ERROR)
 	{
 		ptrStr = (char*)ExceptionInfo->ExceptionRecord->ExceptionInformation[0];
-				fprintf(stderr,"\nerror at ADDR=%x:\n %s\n",
-					(unsigned long)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
+				fprintf(stderr,"\nerror at ADDR=%llx:\n %s\n",
+					(unsigned __int64)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
 	}
 	else
 	{
-				fprintf(stderr,"\nEXCEPTION=%x,\nADDR=%x,\n", ExceptionInfo->ExceptionRecord->ExceptionCode,
-					(unsigned long)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress);
+				fprintf(stderr,"\nEXCEPTION=%x,\nADDR=%llx,\n", ExceptionInfo->ExceptionRecord->ExceptionCode,
+					(unsigned __int64)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress);
 	}
 
 return EXCEPTION_EXECUTE_HANDLER;

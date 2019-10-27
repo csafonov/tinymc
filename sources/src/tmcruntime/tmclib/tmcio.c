@@ -1605,8 +1605,10 @@ void tmcDisplayMatF(FILE *fp,tmsMatrix *x,short bVerb)
 	}
 
 }
-///////////////////////////////////////////////////////////////////////////
-void tmcfopen(long nout,long ninput,tmsMatrix *h,tmsMatrix *fname,tmsMatrix *perm)
+
+
+//////////
+void tmcfopen(long nout,long ninput,tmsMatrix *mHandle,tmsMatrix *fname,tmsMatrix *perm)
 /*
 FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
     mode specified by PERMISSION.  PERMISSION can be:
@@ -1630,14 +1632,17 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 	if (tmcNumElem(perm)>1)
 		sPerm[1]=(char)perm->value.complx.rData[1];//FIX BUG
 	fp = fopen(sBuf,sPerm);
-	_tmcCreateMatrix(h,1,1,tmcREAL);
-	h->value.complx.rData[0]=(double)(unsigned long)fp;
+	//_tmcCreateMatrix(h,1,1,tmcREAL);
+	//h->value.complx.rData[0]=(double)(unsigned __int64)fp;
+	_StoreHanleFromMat(mHandle, (const unsigned __int64*)&fp);
 	MYFREE(sBuf);
 }
-void tmcfclose(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *h)
+void tmcfclose(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mHandle)
 {
 int stat;
-FILE* fp = (FILE*)(unsigned long)h->value.complx.rData[0];
+//FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+FILE* fp;
+_ReadHanleFromMat((void*)&fp,  mHandle);
 
 // this function is implemented with one output to avoid TMC compilation warnings.
 	if (nout>0)
@@ -1646,19 +1651,21 @@ FILE* fp = (FILE*)(unsigned long)h->value.complx.rData[0];
 if (fp)
 	 stat= feof(fp);
 else
-	_tmcRaiseException(file_not_found,s_module,"fclose","invalid file handle.",1,h);
+	_tmcRaiseException(file_not_found,s_module,"fclose","invalid file handle.",1, mHandle);
 
 	fclose(fp);
 }
-void tmcfeof(long nout, long ninput, tmsMatrix *mIsEof, tmsMatrix *h)
+void tmcfeof(long nout, long ninput, tmsMatrix *mIsEof, tmsMatrix *mHandle)
 {
 	int stat;
-	FILE* fp = (FILE*)(unsigned long)h->value.complx.rData[0];
+	//FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+	FILE* fp;
+	_ReadHanleFromMat((void*)&fp, mHandle);
 
 	if (fp)
 		stat = feof(fp);
 	else
-		_tmcRaiseException(file_not_found, s_module, "feof", "invalid file handle.", 1, h);
+		_tmcRaiseException(file_not_found, s_module, "feof", "invalid file handle.", 1, mHandle);
 
 
 	_tmcCreateMatrix(mIsEof, 1, 1, tmcREAL);
@@ -1714,7 +1721,9 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 	}
 	else
 	{
-		fp = (FILE*)(unsigned long)fm->value.complx.rData[0];
+		//fp = (FILE*)(unsigned __int64)fm->value.complx.rData[0];
+		_ReadHanleFromMat((void*)&fp, fm);
+
 		fmt = va_arg(marker, tmsMatrix *);
 		sBuf = _tmcMat2StringESC(fmt);
 		ind = 2;
@@ -1808,7 +1817,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 		va_end( marker );              // Reset variable arguments.      
 		if (cPtr != NULL)
 		{
-			len = strlen(cPtr);
+			len = (long)strlen(cPtr);
 			c = 0;
 			for (kk = 0; kk < len; kk++)
 			{
@@ -1913,7 +1922,7 @@ void tmcsprintf(long nout, long ninput, tmsMatrix *sbuf, tmsMatrix *fm, ...)
 	{
 		if (cPtr != NULL)
 		{
-			len = strlen(cPtr);
+			len = (long)strlen(cPtr);
 			c = 0;
 			for (kk = 0; kk < len; kk++)
 			{
@@ -1938,7 +1947,7 @@ void tmcsprintf(long nout, long ninput, tmsMatrix *sbuf, tmsMatrix *fm, ...)
 }
 
 
-void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *h)
+void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *mHandle)
 {
 //returns the next line of a file associated with file
 //    identifier FID as a MATLAB string. The line terminator is NOT
@@ -1948,7 +1957,8 @@ char buffer[MAX_FGETS_LEN]; // max  length !!!
 FILE *fp;
 size_t len;//x64
 
-	fp =(FILE*)(unsigned long)h->value.complx.rData[0];
+	//fp =(FILE*)(unsigned __int64)h->value.complx.rData[0];
+	_ReadHanleFromMat((void*)&fp, mHandle);
 	if (	fgets(buffer,MAX_FGETS_LEN-2,fp) == NULL)
 	{
 		_tmcCreateMatrix(str,1,1,tmcREAL);
@@ -1965,7 +1975,7 @@ size_t len;//x64
 
 }
 
-void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *h)
+void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *mHandle)
 {
 	//returns the next line of a file associated with file
 	// identifier FID as a MATLAB string. Read line from file, KEEP newline character.
@@ -1974,7 +1984,8 @@ void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *h)
 	FILE *fp;
 	size_t len;//x64
 
-	fp = (FILE*)(unsigned long)h->value.complx.rData[0];
+	//fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+	_ReadHanleFromMat((void*)&fp, mHandle);
 	if (fgets(buffer, MAX_FGETS_LEN - 2, fp) == NULL)
 	{
 		_tmcCreateMatrix(str, 1, 1, tmcREAL);

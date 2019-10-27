@@ -2718,6 +2718,7 @@ short _tmcGetStringW(const tmsMatrix *src, wchar_t *str_des, long maxlen)
 		str_des[n] = (wchar_t)src->m_rData[n];
 	}
 	str_des[n] = 0;
+	return 0;
 }
 
 char* _tmcMat2String(tmsMatrix *src)
@@ -5408,5 +5409,51 @@ long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[])
 		;
 	}
 	return ind;
+}
+
+///////////////////////////////////////////////////////////////////////////
+/**
+\brief Read 64-bit handle stored in the matrix. (Utility function for x64 support)
+\param ptr: pointer to  up-to 64-bit handle
+\param	mHandle: Matrix where the handle is stored, 1x2-matrix.
+*/
+void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle)
+{
+	unsigned __int64 bufx;
+	unsigned long lw;
+	unsigned long hw;
+
+	if (mHandle && _tmcGetNumElem(mHandle)==2)
+	{
+		lw = (unsigned long)mHandle->value.complx.rData[0];
+		hw = (unsigned long)mHandle->value.complx.rData[1];
+	}
+	else
+	{
+		lw = 0xFFFFFFFF;// invalid handle
+		hw = 0xFFFFFFFF;
+	}
+	bufx = (unsigned __int64)lw | ((unsigned __int64)hw << 32);
+	*ptr = bufx;
+}
+
+/**
+\brief Store 64-bit handle  into the matrix. (Utility function for x64 support)
+\param	mHandle: Matrix for storage. Must be allocated. Result is 1x2-matrix.
+\param fp: up-to 64-bit handle
+*/
+void _StoreHanleFromMat(tmsMatrix *mHandle, const unsigned __int64 *fp)
+{
+	unsigned __int64 bufx;
+	unsigned long lw;
+	unsigned long hw;
+
+	bufx = *fp;
+	lw = (unsigned long)(bufx & 0xFFFFFFFF);
+	hw = (unsigned long)((bufx >> 32) & 0xFFFFFFFF);
+
+	_tmcCreateMatrix(mHandle, 1, 2, tmcREAL);
+	mHandle->value.complx.rData[0] = lw;
+	mHandle->value.complx.rData[1] = hw;
 }
 

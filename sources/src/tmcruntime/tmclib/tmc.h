@@ -817,6 +817,9 @@ void tmcleftdivide_qd(long nout,long ninput, tmsMatrix *X,tmsMatrix *A,tmsMatrix
 void tmcmean(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 void tmcstd(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 
+/// x64 - utilities
+void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle);
+void _StoreHanleFromMat(tmsMatrix *mHandle, const unsigned __int64 *fp);
 
 
 #endif
