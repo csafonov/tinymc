@@ -1365,7 +1365,7 @@ void tmcCreateMatrixEmpty(tmsMatrix *matres)
 }
 
 
-long tmcNumElem(tmsMatrix *x)
+long tmcNumElem(const tmsMatrix *x)
 {
 	return x->m_desc.m_nRows*x->m_desc.m_nCols;
 
@@ -2163,6 +2163,72 @@ short ind1_inc;
 	matres->m_desc.m_type=src->m_desc.m_type;
 }
 
+void __tmcGetIndexSize2D(long *M,long *N, short *bScalarSrc,short IsMagicColonIndex[],const tmsMatrix *src, long numdims,const tmsMatrix *matN[])
+{
+	if (numdims == 1)
+	{
+		// if dim(src)<dim(I) then I defines dims
+		// else src defines dims.
+		*M = _tmcGetM(matN[0]);
+		*N = _tmcGetN(matN[0]);
+		if ((*N == 1) || (*M == 1))
+		{//HAZARD
+			if (_tmcGetM(src) == 1 || _tmcGetN(src) == 1)
+			{
+				// keep dim(src)
+				if (_tmcGetM(src) == 1)
+				{
+					// Special case of src=scalar.
+					if (_tmcGetN(src) == 1)
+					{
+						*M = _tmcGetM(matN[0]);
+						*N = _tmcGetN(matN[0]);
+						*bScalarSrc = 1;
+					}
+					else
+					{
+						*M = 1;
+						*N = tmcNumElem(matN[0]);
+					}
+				}
+				else
+				{
+					*N = 1;
+					*M = tmcNumElem(matN[0]);
+				}
+			}
+		}
+	}
+	if (numdims == 2)
+	{
+		*M = tmcNumElem(matN[0]); // rows
+		*N = tmcNumElem(matN[1]); // cols
+	}
+	// process magic colon
+	if (numdims == 1)
+	{
+		if (matN[0]->m_desc.m_type == TYPE_MAGIC_COLON)
+		{
+			*M = tmcNumElem(src);
+			*N = 1;
+			IsMagicColonIndex[0] = 1;
+		}
+	}
+	if (numdims == 2)
+	{
+		if (matN[0]->m_desc.m_type == TYPE_MAGIC_COLON)
+		{
+			*M = _tmcGetM(src);
+			IsMagicColonIndex[0] = 1;
+		}
+		if (matN[1]->m_desc.m_type == TYPE_MAGIC_COLON)
+		{
+			*N = _tmcGetN(src);
+			IsMagicColonIndex[1] = 1;
+		}
+
+	}
+}
 
 void tmcGetByIndex(tmsMatrix *matres,tmsMatrix *src,long numdims,tmsMatrix *I1,...)
 // only numdims<=2 dim matrix is supported
@@ -2206,79 +2272,23 @@ short bScalarSrc=0;
 
 
 
-	if ((src->m_desc.m_type==TYPE_STRUCT) || (src->m_desc.m_type==TYPE_CELL_ARRAY))
+	if (src->m_desc.m_type==TYPE_STRUCT)
 	{
 		// special treatment for structs array or single struct.
-		// Restriction: indexing () of cell array is not supported.
 		_tmcGetByIndexStruct(matres,src,matN,(short)numdims);
 		MYFREE(matN);
 		return;
 	}
+	// Calulate dimensions of the result and prepare some additional info
+	__tmcGetIndexSize2D(&M,&N,&bScalarSrc, IsMagicColonIndex,src, numdims,matN);
 
-	if (numdims==1)
+	if (src->m_desc.m_type == TYPE_CELL_ARRAY)
 	{
-		// if dim(src)<dim(I) then I defines dims
-		// else src defines dims.
-		M=_tmcGetM(matN[0]);
-		N=_tmcGetN(matN[0]);
-		if (( N==1) || (M==1))
-		{//HAZARD
-				if (_tmcGetM(src)==1 || _tmcGetN(src)==1)
-				{
-					// keep dim(src)
-					if (_tmcGetM(src)==1)
-					{
-						// Special case of src=scalar.
-						if (_tmcGetN(src)==1)
-						{
-							M=_tmcGetM(matN[0]);
-							N=_tmcGetN(matN[0]);
-							bScalarSrc=1;
-						}
-						else
-						{
-							M=1;
-							N=tmcNumElem(matN[0]);
-						}
-					}
-					else
-					{
-						N=1;
-						M=tmcNumElem(matN[0]);
-					}
-				}
-		}
+		// indexing () of 2D cell array, result is a subset cell array 
+		_tmcGetByIndexSubCell(matres, src, matN, (short)numdims,M,N, IsMagicColonIndex, bScalarSrc);
+		MYFREE(matN);
+		return;
 	}
-	if (numdims==2)
-	{
-		M=tmcNumElem(matN[0]); // rows
-		N=tmcNumElem(matN[1]); // cols
-	}
-	// process magic colon
-	if (numdims==1)
-	{
-		if (matN[0]->m_desc.m_type == TYPE_MAGIC_COLON)
-		{
-					M = tmcNumElem(src);
-					N = 1;
-					IsMagicColonIndex[0]=1;
-		}
-	}
-	if (numdims==2)
-	{
-		if (matN[0]->m_desc.m_type == TYPE_MAGIC_COLON)
-		{
-					M = _tmcGetM(src);
-					IsMagicColonIndex[0]=1;
-		}
-		if (matN[1]->m_desc.m_type == TYPE_MAGIC_COLON)
-		{
-					N = _tmcGetN(src);
-					IsMagicColonIndex[1]=1;
-		}
-
-	}
-
 
 
 

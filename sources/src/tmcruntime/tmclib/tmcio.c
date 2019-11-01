@@ -1347,7 +1347,7 @@ void _tmcGetSubDimMatD2(tmsMatrix *pMat,long offs,const tmsMatrix *x)
 				}
 }
 
-void tmcDisplayMat(tmsMatrix *x,short bVerb)
+void tmcDisplayMat(const tmsMatrix *x,short bVerb)
 {
 	long m,n;
 	short k;
@@ -1626,6 +1626,7 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 	char *sBuf;
 	char sPerm[3]={0,0,0};
 	FILE *fp;
+	unsigned __int64 llval;
 
 	sBuf=_tmcMat2String(fname);
 	sPerm[0]=(char)perm->value.complx.rData[0];
@@ -1634,7 +1635,8 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 	fp = fopen(sBuf,sPerm);
 	//_tmcCreateMatrix(h,1,1,tmcREAL);
 	//h->value.complx.rData[0]=(double)(unsigned __int64)fp;
-	_StoreHanleFromMat(mHandle, (const unsigned __int64*)&fp);
+	llval = (unsigned __int64)fp;
+	_StoreHanleFromMat(mHandle, (const unsigned __int64*)&llval);
 	MYFREE(sBuf);
 }
 void tmcfclose(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mHandle)
@@ -1642,7 +1644,9 @@ void tmcfclose(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mHandle)
 int stat;
 //FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
 FILE* fp;
-_ReadHanleFromMat((void*)&fp,  mHandle);
+unsigned __int64 llval;
+_ReadHanleFromMat(&llval,  mHandle);
+fp = (FILE*)llval;
 
 // this function is implemented with one output to avoid TMC compilation warnings.
 	if (nout>0)
@@ -1660,8 +1664,9 @@ void tmcfeof(long nout, long ninput, tmsMatrix *mIsEof, tmsMatrix *mHandle)
 	int stat;
 	//FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
 	FILE* fp;
-	_ReadHanleFromMat((void*)&fp, mHandle);
-
+	unsigned __int64 llval;
+	_ReadHanleFromMat(&llval, mHandle);
+	fp = (FILE*)llval;
 	if (fp)
 		stat = feof(fp);
 	else
@@ -1709,7 +1714,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 	tmsMatrix *M;
 	tmsMatrix *fmt;
 	char c;
-	FILE *fp;
+	FILE *fp; unsigned __int64 llval;
 	long len,kk;
 	va_start(marker, fm);     // Initialize variable arguments. 
 
@@ -1722,8 +1727,8 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 	else
 	{
 		//fp = (FILE*)(unsigned __int64)fm->value.complx.rData[0];
-		_ReadHanleFromMat((void*)&fp, fm);
-
+		_ReadHanleFromMat(&llval, fm);
+		fp = (FILE*)llval;
 		fmt = va_arg(marker, tmsMatrix *);
 		sBuf = _tmcMat2StringESC(fmt);
 		ind = 2;
@@ -1954,11 +1959,12 @@ void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *mHandle)
 //    included. Use FGETS to get the next line with the line terminator
 //    INCLUDED. If just an end-of-file is encountered then -1 is returned.
 char buffer[MAX_FGETS_LEN]; // max  length !!!
-FILE *fp;
+FILE *fp; unsigned __int64 llval;
 size_t len;//x64
 
 	//fp =(FILE*)(unsigned __int64)h->value.complx.rData[0];
-	_ReadHanleFromMat((void*)&fp, mHandle);
+	_ReadHanleFromMat(&llval, mHandle);
+	fp = (FILE*)llval;
 	if (	fgets(buffer,MAX_FGETS_LEN-2,fp) == NULL)
 	{
 		_tmcCreateMatrix(str,1,1,tmcREAL);
@@ -1981,11 +1987,12 @@ void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *mHandle)
 	// identifier FID as a MATLAB string. Read line from file, KEEP newline character.
 	// If just an end-of-file is encountered then -1 is returned.
 	char buffer[MAX_FGETS_LEN]; // max  length !!!
-	FILE *fp;
+	FILE *fp; unsigned __int64 llval;
 	size_t len;//x64
 
 	//fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
-	_ReadHanleFromMat((void*)&fp, mHandle);
+	_ReadHanleFromMat(&llval, mHandle);
+	fp = (FILE*)llval;
 	if (fgets(buffer, MAX_FGETS_LEN - 2, fp) == NULL)
 	{
 		_tmcCreateMatrix(str, 1, 1, tmcREAL);

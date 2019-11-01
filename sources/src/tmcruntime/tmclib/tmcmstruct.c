@@ -43,7 +43,7 @@ long k;
 	}
 	else
 	{
-	_tmcRaiseException(err_unsupported,"main","()","FATAL: () is unsupported for cells !!!.",1,src);
+	_tmcRaiseException(err_unsupported,"main","()","Internal error: _tmcGetByIndexStruct called for cells !!!.",1,src);
 	}
 }
 

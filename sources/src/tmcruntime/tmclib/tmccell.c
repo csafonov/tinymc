@@ -853,3 +853,87 @@ numdims = _tmcGetReducedDim(numdims,arrdims);
 	}
 
 }
+
+/**
+	\brief Get subset of cell array (Utility function)
+	Implements matres = src(I) or matres=src(I1,I2) for src:cell array
+	\param matres-> cleared matrix
+	\param src-> cell array matrix
+	\param matN -> array of indexes , free by caller.
+	\param M,N : dims of the result matrix
+	\param IsMagicColonIndex : mark if I1 and I2 are like (:)
+	\param bScalarSrc : 1 if src is a scalar 1x1
+
+	\sa tmcGetByIndex() for matrix
+*/
+void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, const tmsMatrix *matN[],short numdims, long M, long N,const short IsMagicColonIndex[], short bScalarSrc)
+{
+	long m, n, ind1,ind2,indI,i1,i2;
+	_tmcCreateCellArray(matres,M,N);
+	if (numdims == 1)
+	{
+		for (m = 0; m<M; m++)
+		{
+			// in matlab the matrix enumeration is by columns!
+			for (n = 0; n<N; n++)
+			{
+				ind1 = n * M + m;
+				if (IsMagicColonIndex[0])
+				{
+					indI = n * M + m;
+					ind2 = indI;
+				}
+				else
+				{
+					if (bScalarSrc == 0)
+					{
+						indI = n * _tmcGetM(matN[0]) + m;
+						ind2 = (long)(matN[0]->m_rData[indI] - 1);
+						// HAZARD: protect against unsupported boolean addressing. Should be solved at compiler level.
+						if (ind2 < 0)
+						{
+							_tmcRaiseException(err_bad_index, s_module, "_tmcGetByIndexSubCell", "unsupported boolean access detected like x( condition result )", 1, src);
+						}
+					}
+					else
+					{
+						ind2 = 0;
+					}
+				}
+				matres->value.m_cells[ind1] = tmcNewMatrix();
+				tmcCopyMat(matres->value.m_cells[ind1], src->value.m_cells[ind2]);
+			}
+		}
+
+	}
+	if (numdims == 2)
+	{
+		for (m = 0; m<M; m++)
+		{
+			for (n = 0; n<N; n++)
+			{//HAZARD- must correct
+				ind1 = n * M + m;
+				if (IsMagicColonIndex[0])
+				{
+					i1 = m;
+				}
+				else
+				{
+					i1 = (long)(matN[0]->m_rData[m] - 1);
+				}
+				if (IsMagicColonIndex[1])
+				{
+					i2 = n;
+				}
+				else
+				{
+					i2 = (long)(matN[1]->m_rData[n] - 1);
+				}
+				ind2 = (long)(i2 * _tmcGetM(src) + i1);
+				matres->value.m_cells[ind1] = tmcNewMatrix();
+				tmcCopyMat(matres->value.m_cells[ind1], src->value.m_cells[ind2]);
+			}
+		}
+	}
+	//MYFREE(matN);
+}

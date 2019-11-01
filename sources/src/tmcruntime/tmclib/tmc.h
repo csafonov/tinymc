@@ -300,7 +300,7 @@ void tmcwarning(long nout,long ninput, tmsMatrix *msg_string,tmsMatrix *msg_stri
 void _tmcInstallUnhandledExceptionFilter(void);
 void _tmcUninstallUnhandledExceptionFilter(void);
 void tmcerror(long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *msg_string);
-void _tmcRaiseException(long errcode,const char *module_name,const char *func_name,const char *errmsg,long numargin,tmsMatrix *x,...);
+void _tmcRaiseException(long errcode,const char *module_name,const char *func_name,const char *errmsg,long numargin,const tmsMatrix *x,...);
 void tmcSyntaxError(const char *msg); // run-time error
 extern long _tmcDumpErrors; // 1: display error info even if catched
 
@@ -363,7 +363,7 @@ void _tmcClearColumns(tmsMatrix *x,tmsMatrix *J);
 void _tmcClearRows(tmsMatrix *x,tmsMatrix *I);
 
 void _tmcCreateMatrix(tmsMatrix *res,long M,long N,short bHasImagine);
-long tmcNumElem(tmsMatrix *x);
+long tmcNumElem(const tmsMatrix *x);
 void  _tmcSetByIndex(tmsMatrix *matres,tmsMatrix *src,long numdims,tmcMatrixRef *refs);
 
 void  tmcGetEnd(tmsMatrix *matres,tmsMatrix *src,long dim,long numdims);
@@ -481,13 +481,14 @@ short _tmcGetReducedDim(short numdim,long* arrdims);
 void  _tmcRedimArrayMD(tmsMatrix *matres,short numdims,long *arrdims);
 
 long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[]);
+void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, const tmsMatrix *matN[], short numdims, long M, long N, const short IsMagicColonIndex[], short bScalarSrc);
 
 /////////////////////////////////////////////
 
 void tmcTransposeScalar(tmsMatrix *matres,tmsMatrix *src);
 void tmcTranspose(tmsMatrix *matres,tmsMatrix *src);
 
-void tmcDisplayMat(tmsMatrix *x,short bVerb);
+void tmcDisplayMat(const tmsMatrix *x,short bVerb);
 void tmcStoreMat(FILE *fp,const char*fn,tmsMatrix *x);//temp
 
 void tmcCreateColonBaseIncLimit(tmsMatrix *matres,tmsMatrix *base,tmsMatrix *increment,tmsMatrix *limit);

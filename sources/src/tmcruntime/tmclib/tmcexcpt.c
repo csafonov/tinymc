@@ -40,11 +40,11 @@ static char *s_module="tmcexcpt.c";
 
 long _tmcDumpErrors;
 
-void _tmcRaiseException(long errcode,const char *module_name,const char *func_name,const char *errmsg,long numargin,tmsMatrix *x,...)
+void _tmcRaiseException(long errcode,const char *module_name,const char *func_name,const char *errmsg,long numargin,const tmsMatrix *x,...)
 {
 va_list marker;
 long ind;
-tmsMatrix *M;
+const tmsMatrix *M;
 //   DWORD e_infos[1];
 #ifndef  _TMC_EMBEDDED_
 ULONG_PTR e_infos[1];//x64
