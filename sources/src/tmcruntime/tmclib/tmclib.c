@@ -159,6 +159,11 @@ void tmcFreeRegFrame(tmsMatrix **reg)
 	}
 }
 
+inline void _tmcMarkBooleanIndex(tmsMatrix *sum)
+{
+	sum->m_desc.m_modifier |= MODIFIER_MASK_BOOL;
+}
+
 void tmcStoreMat(FILE *fp,const char*vecName,tmsMatrix *x)
 {
 	if(_tmcHasIm(x)==0)
@@ -707,7 +712,8 @@ void tmcAssign(tmsMatrix *dest,tmsMatrix *src)
 		 {
 			dest->m_desc.m_modifier  &= ~MODIFIER_MASK_HAS_IM;
 		 }
-		 
+		 if (_tmcIsBooleanIndex(src))
+			  _tmcMarkBooleanIndex(dest);
 	}
 	if (src->m_desc.m_type == TYPE_FNC_HANDLE)
 	{
@@ -770,7 +776,7 @@ void tmcCopyMat(tmsMatrix *des,tmsMatrix *src)
 		return;
 	}
 
-
+	// HAZARD: compare fixes for tmcAssign() 
 	if (src->m_desc.m_type == TYPE_MATRIX || src->m_desc.m_type == TYPE_STRING)
 	{
 
@@ -790,6 +796,9 @@ void tmcCopyMat(tmsMatrix *des,tmsMatrix *src)
 		 {
 			des->m_desc.m_modifier  &= ~MODIFIER_MASK_HAS_IM;
 		 }
+		 if (_tmcIsBooleanIndex(src))
+			 _tmcMarkBooleanIndex(des);
+
 	}
 	if (src->m_desc.m_type == TYPE_FNC_HANDLE )
 	{
@@ -820,6 +829,8 @@ void tmcComplexScalar(tmsMatrix *dest,double xr,double xi)
 	dest->m_rData[0]=xr;
 	dest->m_iData[0]=xi;
 }
+
+
 
 
 enum CMP_CONDITIONS
@@ -910,6 +921,7 @@ double y;
 			}
 			sum->m_rData[ind]= y;
 		}
+		_tmcMarkBooleanIndex(sum);
 }
 
 void  tmcGt(tmsMatrix *sum,tmsMatrix *a,tmsMatrix *b)
@@ -1056,6 +1068,7 @@ double scal;
 				}
 			}
 	}
+	_tmcMarkBooleanIndex(y);
 }
 void tmcAndScalar(tmsMatrix *matres,tmsMatrix *src1,tmsMatrix *src2)
 {
@@ -1151,7 +1164,7 @@ void tmcAssignBool(tmsMatrix *matres,tmsMatrix *src)
 {// HAZARD_TODO all operations.
 
 	tmcScalar(matres,tmcIsTrue(src));
-//	matres->m_desc.m_modifier |= MODIFIER_MASK_BOOL;
+	matres->m_desc.m_modifier |= MODIFIER_MASK_BOOL;// mark the variable as boolean to prevent unsupported boolean assignment
 //	if (tmcIsFalse(src))
 //	{
 //		matres->m_desc.m_modifier &= ~MODIFIER_MASK_BOOL_TRUE;
@@ -1844,6 +1857,8 @@ short ind1_inc;
 		{
 			IsMagicColonIndex[0]=1;
 			MNi=tmcNumElem(matres);
+			if (MNi==0)
+				_tmcRaiseException(err_bad_index, s_module, "_tmcSetByIndex", "x is empty in x(:)=a", 2, I, src);
 		}
 
 		if (_tmcIsEmptyMatrix(src))
@@ -2247,12 +2262,20 @@ tmsMatrix **matN = (tmsMatrix **)MYMALLOC(sizeof(tmsMatrix *) * numdims);
 short IsMagicColonIndex[2]={0,0};
 short bScalarSrc=0;
 	matN[0]=I1;
+	if (_tmcIsBooleanIndex(I1))
+	{
+		_tmcRaiseException(err_bad_index, s_module, "_tmcGetByIndex", "unsupported boolean index detected like x( condition result )", 2, I1, src);
+	}
 
 	 _tmcClearRegister(matres);
 	va_start( marker, I1 );     // Initialize variable arguments. 
 	for (k=1;k<numdims;k++)
 	{
 		matN[k] = va_arg( marker,  tmsMatrix * );
+		if (_tmcIsBooleanIndex(matN[k]))
+		{
+			_tmcRaiseException(err_bad_index, s_module, "_tmcGetByIndex", "unsupported boolean index detected like x( condition result )", 2, matN[k], src);
+		}
 	}
 	va_end( marker );              // Reset variable arguments.      
 

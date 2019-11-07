@@ -118,7 +118,7 @@ void tmcCreateCellEmpty(tmsMatrix *matres)
 */
 void _tmcCollectCellRowsN(tmsMatrix *matres, long numrows, tmsMatrix **matN,long sum_row_dim, long act_numcols)
 {
-	long ind, ind1,ind2,m,n,M, nc;
+	long  ind1,ind2,m,n,M, nc;
 	long cnt;
 	_tmcCreateCellArray(matres, sum_row_dim, act_numcols);
 
@@ -284,7 +284,6 @@ tmsMatrix  * _tmcGetByIndexCellForce(tmsMatrix *src,long numdims,tmsMatrix **ref
 long ind,m,n;
 long  arrdims[MAX_MATRIX_DIM];
 long  d[MAX_MATRIX_DIM];
-long NN;
 long k;
 short bMustResize=0;
 	if (numdims == 1) //HSKOST 2019.09.05 FIX for numdims>1 cells
@@ -385,7 +384,7 @@ long ind,m,n;
 tmsMatrix **refs = (tmsMatrix **)MYMALLOC(sizeof(tmsMatrix *) * numdims);
 long  arrdims[MAX_MATRIX_DIM];
 long  d[MAX_MATRIX_DIM];
-long NN;
+
 
 	if (src->m_desc.m_type != TYPE_CELL_ARRAY)
 	{
@@ -395,11 +394,17 @@ long NN;
 
 
 	refs[0]=I1;
+	if (_tmcIsBooleanIndex(I1))
+		_tmcRaiseException(err_bad_index, s_module, "tmcGetByIndexCell", "unsupported boolean index detected like x{ condition result }", 2, I1, src);
+
 	_tmcClearRegister(matres);
 	va_start( marker, I1 );     // Initialize variable arguments. 
 	for (k=1;k<numdims;k++)
 	{
 		refs[k] = va_arg( marker,  tmsMatrix * );
+		if (_tmcIsBooleanIndex(refs[k]))
+		_tmcRaiseException(err_bad_index, s_module, "tmcGetByIndexCell", "unsupported boolean index detected like x{ condition result }", 2, refs[k], src);
+
 	}
 	va_end( marker );              // Reset variable arguments.      
 	if (numdims==1) //HSKOST 2019.09.05 FIX for numdims>1 cells
@@ -619,7 +624,7 @@ long ind,m,n;
 short bMustResize=0;
 long  arrdims[MAX_MATRIX_DIM];
 long  d[MAX_MATRIX_DIM];
-long NN;
+
 
 	if (matres->m_desc.m_type == TYPE_NOTHING)
 	{
@@ -935,5 +940,8 @@ void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, const tmsMat
 			}
 		}
 	}
+	if (numdims>2)
+	_tmcRaiseException(err_unsupported, "main", "()", "FATAL: () not supported for >2D cells !!!.", 1, src);
+
 	//MYFREE(matN);
 }

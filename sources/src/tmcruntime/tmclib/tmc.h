@@ -265,6 +265,7 @@ typedef struct tag_tmsMatrix* tmcMatrixRef ;
 #define _tmcHasIm(x) ((short)((x->m_desc.m_modifier & MODIFIER_MASK_HAS_IM) ? 1:0))
 #define _tmcIsChar(x) ((short)(x->m_desc.m_type==TYPE_STRING))
 #define _tmcIsCellArray(x) ((short)(x->m_desc.m_type==TYPE_CELL_ARRAY)?1:0)
+#define _tmcIsBooleanIndex(x) ((short)(x->m_desc.m_modifier & MODIFIER_MASK_BOOL)?1:0)
 
 #define _mdblIsInteger( x ) ((short)((x==floor(x)) ? 1:0))
 
