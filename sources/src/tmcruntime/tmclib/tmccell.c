@@ -871,7 +871,7 @@ numdims = _tmcGetReducedDim(numdims,arrdims);
 
 	\sa tmcGetByIndex() for matrix
 */
-void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, const tmsMatrix *matN[],short numdims, long M, long N,const short IsMagicColonIndex[], short bScalarSrc)
+void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, tmsMatrix **matN,short numdims, long M, long N,const short *IsMagicColonIndex, short bScalarSrc)
 {
 	long m, n, ind1,ind2,indI,i1,i2;
 	_tmcCreateCellArray(matres,M,N);

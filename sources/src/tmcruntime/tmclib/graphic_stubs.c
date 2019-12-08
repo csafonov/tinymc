@@ -4,7 +4,8 @@
  * The TMC Runtime software is covered under covered by simplified BSD 2-Clause license.
  * 
   *****************************************************************************/
-#ifndef  _TMC_EMBEDDED_
+
+#if defined(WIN32)
 #include <windows.h>
 #endif
 
@@ -33,7 +34,7 @@
 //	double y[];
 //};
 
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 
 #define WM_TMC_FIGURE		(WM_USER+1) // wParam=h
 #define WM_TMC_CLOSEFIGURE	(WM_USER+2) // wParam=h
@@ -177,7 +178,7 @@ void AssureTmcgra(void)
 #endif
 ///////////////////////
 
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 void _tmcStorePlot(FILE *fp,const double *x,const double *y,unsigned long colr,
 				  unsigned long len, short bNew,unsigned short nPlots,unsigned short plottype)
 {
@@ -218,7 +219,7 @@ void _tmcStorePlot(FILE *fp,const double *x,const double *y,unsigned long colr,
 //}
 
 
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 /// This function is platform-specific
 //void tmcwaitbar(long nout,long ninput,tmsMatrix *hand,tmsMatrix *frac, tmsMatrix *title,tmsMatrix *pt1,tmsMatrix *pv1,tmsMatrix *pt2,tmsMatrix *pv2)
 //{
@@ -280,7 +281,7 @@ void tmcfill(long nout,long ninput,tmsMatrix *hand, tmsMatrix *x, tmsMatrix *y, 
 		fprintf(stdout,"WARN: fill() not suppoted \n");
 }
 
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 unsigned long _tmcGetPlotType(tmsMatrix *c)
 {
 /*
@@ -341,7 +342,7 @@ char col = (char)c->value.complx.rData[0];
 
 void tmcplot(long nout,long ninput, tmsMatrix *hand, tmsMatrix *x, tmsMatrix *y, tmsMatrix *c,...)
 {
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 	HWND hWnd;
 	FILE *fp;
 			va_list marker;
@@ -431,7 +432,7 @@ void tmctitle(long nout,long ninput, tmsMatrix *hand,tmsMatrix *str,...)
 }
 void tmcsubplot(long nout,long ninput, tmsMatrix *hand,tmsMatrix *mM,...)
 {
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 
 	HWND hWnd;
 	long m,n,k;
@@ -480,7 +481,7 @@ void tmcgrid(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *onoff)
 }
 void tmcfigure(long nout,long ninput,tmsMatrix *fhand,tmsMatrix *fnum)
 {
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 
 WORD wParam=0;
 HWND hWnd;

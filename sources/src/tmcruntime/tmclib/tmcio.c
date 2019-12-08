@@ -19,9 +19,12 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#if !defined(_TMC_ANDROID_)
+#if !defined(_TMC_ANDROID_) && !defined(_TMC_GNU_LINUX_)
 #include <io.h>
 #else
+#include <sys/types.h>
+#include <unistd.h> 
+//off_t lseek(int fd, off_t offset, int whence);
 #define _write write
 #define _lseek lseek
 #define _open open
@@ -83,40 +86,63 @@ struct Cdatelmtype
 	char bCompress;
 };
 
-union buf_long
-{
-	long x;
-	char b[4];
-};
+#define MAT_4BYTE_SIZE 4
+
+#pragma pack(push,1)
+//union buf_long
+//{
+//	volatile long x;
+//	volatile char b[4];
+//};
 union buf_short
 {
-	short x;
-	char b[2];
+	volatile short x;
+	volatile char b[2];
 };
 union buf_longlong
 {
-	__int64 x;
-	char b[8];
+	volatile int64_t x;
+	volatile char b[8];
 };
 union buf_single
 {
-	float x;
-	char b[4];
+	volatile float x;
+	volatile char b[4];
 };
 union buf_double
 {
-	double x;
-	char b[8];
+	volatile double x;
+	volatile char b[8];
 };
+#pragma pack(pop)
 
+long _getLongFromBuf(unsigned char *buf)
+{
+long x;
+	x = buf[0] +
+		((unsigned long)buf[1]<<8)+
+		((unsigned long)buf[2]<<16)+
+		((long)buf[3]<<24);
+return x;
+}
 
+unsigned long _getUnsignedLongFromBuf(unsigned char *buf)
+{
+long ux;
+	ux = buf[0] +
+		((unsigned long)buf[1]<<8)+
+		((unsigned long)buf[2]<<16)+
+		((unsigned long)buf[3]<<24);
+return ux;
+}
 
 void elmdata2double(double **DimsArr,long *DimsArr_len,const char *buf,const struct Cdatelmtype *datelmtype)
 {
 long len=0;
 double *dptr=0;
 long k ;
-	union buf_long  l;
+//	union buf_long  l;
+unsigned char lb[4];
 	union buf_short s;
 	union buf_longlong ll;
 	union buf_single f;
@@ -173,18 +199,18 @@ long k ;
 		for (k=0;k<len;k++)
 		{
 
-				l.b[0]= buf[datelmtype->Idat[0]+k*4];//1
-				l.b[1]= buf[datelmtype->Idat[0]+k*4+1];//256
-				l.b[2]= buf[datelmtype->Idat[0]+k*4+2];//256^2
-				l.b[3]= buf[datelmtype->Idat[0]+k*4+3];//256^3
+				lb[0]= buf[datelmtype->Idat[0]+k*4];//1
+				lb[1]= buf[datelmtype->Idat[0]+k*4+1];//256
+				lb[2]= buf[datelmtype->Idat[0]+k*4+2];//256^2
+				lb[3]= buf[datelmtype->Idat[0]+k*4+3];//256^3
 			if (datelmtype->dtype==mi_INT32)
 			{
 
-				dptr[k]= (double)(signed long)l.x;
+				dptr[k]= (double)(signed long)  _getLongFromBuf(lb);// l.x;
 			}
 			else
 			{
-				dptr[k]= (double)(unsigned long)l.x;
+				dptr[k]= (double)(unsigned long)  _getUnsignedLongFromBuf(lb);//l.x;
 			}
 		}
 		break;
@@ -356,7 +382,7 @@ void matfgetsube(struct Cdatelmtype *datelmtype , char *buf,long ind)
 //% returns data type, subelement size, data  index (padded)
 	//union buf_long  *pl;
 	//union buf_short *ps;
-	union buf_long  l;
+	unsigned char lb[4];
 	union buf_short s;
 
 	if ( buf[ind+2]!=0 ||  buf[ind +3]!=0)
@@ -382,18 +408,18 @@ void matfgetsube(struct Cdatelmtype *datelmtype , char *buf,long ind)
 		datelmtype->bCompress=0;
 		//pl = (union buf_long*)&buf[ind];
 		//datelmtype->dtype = pl->x;
-		l.b[0]=buf[ind];
-		l.b[1]=buf[ind+1];
-		l.b[2]=buf[ind+2];
-		l.b[3]=buf[ind+3];
-		datelmtype->dtype =  l.x;
+		lb[0]=buf[ind];
+		lb[1]=buf[ind+1];
+		lb[2]=buf[ind+2];
+		lb[3]=buf[ind+3];
+		datelmtype->dtype = _getLongFromBuf(lb);// l.x;
 		//pl = (union buf_long*)&buf[ind+4];
 		//datelmtype->dsz = pl->x;
-		l.b[0]=buf[ind+4];
-		l.b[1]=buf[ind+5];
-		l.b[2]=buf[ind+6];
-		l.b[3]=buf[ind+7];
-		datelmtype->dsz =  l.x;
+		lb[0]=buf[ind+4];
+		lb[1]=buf[ind+5];
+		lb[2]=buf[ind+6];
+		lb[3]=buf[ind+7];
+		datelmtype->dsz =  _getLongFromBuf(lb);//l.x;
 		datelmtype->Idat[0]=ind+8;
 		datelmtype->Idat[1]=ind+8+datelmtype->dsz-1;
 	}
@@ -482,6 +508,7 @@ ArrName=char(elmdata2double(A,dtype3,dsz3,Idat3,bCompess)); %  (A([Idat3(1)+[0:d
    	matcls = (short)buf[dt1.Idat[0]];
 //hasIm=mod(floor(ArrayFlags(2)/8),2);
 	hasIm = ((buf[dt1.Idat[0]+1] >> 3) & 0x1);
+
 	switch (matcls)
 	{
 	case mx_CELL_CLASS://    =1, 
@@ -755,6 +782,7 @@ struct Cdatelmtype datelmtype;
 	}
 	else
 	{
+		//		fprintf(stdout,"skipped=%d\n",datelmtype.dtype);
 //		return datelmtype.Idat[2]+1; // only skip it TMC_HAZARD: BUG BUG BUG
 		 		return datelmtype.Idat[1]+1; // only skip it TMC_HAZARD: BUG BUG BUG
 	}
@@ -896,6 +924,9 @@ long my_filelength(int fh)
 {
 	long length;
 	length = lseek(fh, 0, SEEK_END)+1;
+#ifdef _TMC_GNU_LINUX_
+	length--;
+#endif
 	lseek(fh, 0, SEEK_SET);
 	return length;
 	/*
@@ -906,7 +937,7 @@ size = st.st_size;
 */
 
 }
-
+char debug_buffer_msg[1000];
 void tmcload(long nout,long ninput,tmsMatrix *W,tmsMatrix *fn,...)
 // implements W=load(fn)
 // reserved: filter loaded vars list 
@@ -923,20 +954,30 @@ void tmcload(long nout,long ninput,tmsMatrix *W,tmsMatrix *fn,...)
 
 
 	sBuf=_tmcMat2String(fn);
+	strcpy( debug_buffer_msg,sBuf );
+
 	fh = _open(sBuf,_O_RDONLY | _O_BINARY);
 	MYFREE(sBuf);
 	if (fh<0)
-	{
+	{		fprintf(stderr,"tmcload File not found %s \n ",debug_buffer_msg);
+			//MYFREE(sBuf);
 			_tmcRaiseException(file_not_found,s_module,"tmcload","File not found.",1,fn);
+			//return ;
 	}
 	flen = filelength( fh );
+	
 	A = (char *)MYMALLOC( sizeof(char)*flen);
 	readbytes = _read( fh, A, flen ) ;
 	if (readbytes != flen)
 	{
+			fprintf(stderr,"tmcload can't read file %s,readbytes=%d,flen=%d  \n ",debug_buffer_msg,readbytes,flen);
+			//MYFREE(sBuf);_close(fh);
 			_tmcRaiseException(file_not_found,s_module,"tmcload","can't read file.",1,fn);
+			//return ;
 	}
 	_close(fh);
+	//MYFREE(sBuf);
+
 	if (A[0]==0 || A[1]==0 || A[2]==0 || A[3]==0)
 	{
 		_tmcreadmatv4(W,A,flen);
@@ -948,6 +989,7 @@ void tmcload(long nout,long ninput,tmsMatrix *W,tmsMatrix *fn,...)
 	while (ind0 < flen)
 	{
 		ind0 = _tmcreaddataelm(W,A,ind0);
+		//tmcDisplayMat(W,0);
 	}
 
 //while ind2<length(A)
@@ -1036,12 +1078,25 @@ int _tmcwritesavebufpaddinguni(int fh,const void* databuf,long numofbytes,long *
 return 0;
 }
 
+void PutVal2LongBuffer(char*buf,double val)
+{
+unsigned long ltemp = (unsigned long)val;
+buf[0] = (ltemp & 0xFF);
+buf[1] = ((ltemp>>8) & 0xFF);
+buf[2] = ((ltemp>>16) & 0xFF);
+buf[3] = ((ltemp>>24) & 0xFF);
+//fprintf(stdout,"X=%g,%x %x %x %x \n",val,buf[0],buf[1],buf[2],buf[3],buf[3]);
+
+//fprintf(stdout," sizeof(unsigned long)=%d \n", sizeof(unsigned long) );
+}
+
 long stam;
 const char _tmcsaveEmptyName[1]={0};
 unsigned short * _tmcMat2StringW(tmsMatrix *src);
 int _tmcwritedataelm(int fh,tmsMatrix *MatN,const char *varnameN,long *posI)
 {
-union buf_long l;
+	unsigned char lb[4];
+	long ltemp;
 int len;
 long MN,k;
 short ndims, kDim;
@@ -1062,47 +1117,65 @@ const char *fn;
 	case TYPE_NOTHING:
 		// Print subelements:
 		// Array Flags
-		_tmcwritesavetag(fh,mi_UINT32,2*sizeof(unsigned long),posI);//2*sizeof(unsigned long)
-		memset(&l,0,sizeof(l));
+		_tmcwritesavetag(fh,mi_UINT32,2*MAT_4BYTE_SIZE,posI);//2*sizeof(unsigned long)
+		//memset(&l,0,sizeof(l));
+		memset(&lb,0,MAT_4BYTE_SIZE);
 		if (MatN->m_desc.m_type == TYPE_MATRIX ||  MatN->m_desc.m_type == TYPE_NOTHING)
 		{
-			l.b[1]=0x08 * _tmcHasIm(MatN);//??
+			/*l.b[1]=0x08 * _tmcHasIm(MatN);//??
 			l.b[0]=mx_DOUBLE_CLASS;
+			*/
+			lb[1]=0x08 * _tmcHasIm(MatN);//??
+			lb[0]=mx_DOUBLE_CLASS;
+			
+
 		}
 		else
 		{
-			l.b[0]=mx_CHAR_CLASS;
+			//l.b[0]=mx_CHAR_CLASS;
+			lb[0]=mx_CHAR_CLASS;
 		}
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		memset(&l,0,sizeof(l));
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		posI[0] += 2*sizeof(unsigned long);
+		//_write(fh,&l.b[0], sizeof(unsigned long));
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		//memset(&l,0,sizeof(l));
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		//_write(fh,&l.b[0], sizeof(unsigned long));
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		posI[0] += 2*MAT_4BYTE_SIZE;
 
 		ndims = _tmcGetNdim(MatN);
 		if (ndims <= 2)
 		{
-			_tmcwritesavetag(fh, mi_INT32, 2 * sizeof(long), posI);//num_of_dims*sizeof(long)
-			l.x = _tmcGetM(MatN);
-			_write(fh, &l.b[0], sizeof(long));
-			l.x = _tmcGetN(MatN);
-			_write(fh, &l.b[0], sizeof(long));
-			posI[0] += 2 * sizeof(long);
+			_tmcwritesavetag(fh, mi_INT32, 2 * MAT_4BYTE_SIZE, posI);//num_of_dims*sizeof(long)
+			//l.x = _tmcGetM(MatN);
+			//*(long*)&lb[0]=_tmcGetM(MatN);
+			//_write(fh, &l.b[0], sizeof(long));
+			PutVal2LongBuffer(lb,_tmcGetM(MatN));
+			_write(fh, &lb[0], 4);
+			//l.x = _tmcGetN(MatN);
+			//*(long*)&lb[0]=_tmcGetN(MatN);
+			//_write(fh, &l.b[0], sizeof(long));
+			PutVal2LongBuffer(lb,_tmcGetN(MatN));
+			_write(fh, &lb[0], 4);
+			posI[0] += 2 * MAT_4BYTE_SIZE;
 		}
 		else
 		{
 			// dimentions array
-			_tmcwritesavetag(fh, mi_INT32, ndims * sizeof(long), posI);//num_of_dims*sizeof(long)
+			_tmcwritesavetag(fh, mi_INT32, ndims * MAT_4BYTE_SIZE, posI);//num_of_dims*sizeof(long)
 			for (kDim = 1; kDim <= ndims; kDim++)
 			{
-				l.x = _tmcGetDim(MatN, kDim);
-				_write(fh, &l.b[0], sizeof(long));
-				posI[0] += sizeof(long);
+				PutVal2LongBuffer(lb,_tmcGetDim(MatN, kDim));
+				//l.x = _tmcGetDim(MatN, kDim);
+				_write(fh, &lb[0], MAT_4BYTE_SIZE);
+				posI[0] += MAT_4BYTE_SIZE;
 			}
 			if (ndims % 2) //  PADDING
 			{
-				l.x = 0;
-				_write(fh, &l.b[0], sizeof(long));
-				posI[0] += sizeof(long);
+				//l.x = 0;
+				PutVal2LongBuffer(lb,0);
+				_write(fh, &lb[0], MAT_4BYTE_SIZE);
+				posI[0] += MAT_4BYTE_SIZE;
 			}
 
 		}
@@ -1143,41 +1216,45 @@ const char *fn;
 	case TYPE_CELL_ARRAY:
 		// Print subelements:
 		// Array Flags
-		_tmcwritesavetag(fh,mi_UINT32,2*sizeof(unsigned long),posI);//2*sizeof(unsigned long)
-		memset(&l,0,sizeof(l));
-		l.b[1]=0x00;//no flags
-		l.b[0]=mx_CELL_CLASS;
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		memset(&l,0,sizeof(l));
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		posI[0] += 2 * sizeof(unsigned long);
+		_tmcwritesavetag(fh,mi_UINT32,2*MAT_4BYTE_SIZE,posI);//2*sizeof(unsigned long)
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		lb[1]=0x00;//no flags
+		lb[0]=mx_CELL_CLASS;
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		posI[0] += 2 * MAT_4BYTE_SIZE;
 
 		ndims =   _tmcGetNdim(MatN);
 		if (ndims <= 2)
 		{
 			// dimentions array
-			_tmcwritesavetag(fh, mi_INT32, 2 * sizeof(long), posI);//num_of_dims*sizeof(long)
-			l.x = _tmcGetM(MatN);
-			_write(fh, &l.b[0], sizeof(long));
-			l.x = _tmcGetN(MatN);
-			_write(fh, &l.b[0], sizeof(long));
-			posI[0] += 2 * sizeof(long);
+			_tmcwritesavetag(fh, mi_INT32, 2 * MAT_4BYTE_SIZE, posI);//num_of_dims*sizeof(long)
+			//l.x = _tmcGetM(MatN);
+			PutVal2LongBuffer(lb,_tmcGetM(MatN));
+			_write(fh, &lb[0], MAT_4BYTE_SIZE);
+			//l.x = _tmcGetN(MatN);
+			PutVal2LongBuffer(lb,_tmcGetN(MatN));
+			_write(fh, &lb[0], MAT_4BYTE_SIZE);
+			posI[0] += 2 * MAT_4BYTE_SIZE;
 		}
 		else
 		{
 			// dimentions array
-			_tmcwritesavetag(fh, mi_INT32, ndims * sizeof(long), posI);//num_of_dims*sizeof(long)
+			_tmcwritesavetag(fh, mi_INT32, ndims * MAT_4BYTE_SIZE, posI);//num_of_dims*sizeof(long)
 			for (kDim = 1; kDim <= ndims; kDim++)
 			{
-				l.x = _tmcGetDim(MatN, kDim);
-				_write(fh, &l.b[0], sizeof(long));
-				posI[0] +=  sizeof(long);
+				//l.x = _tmcGetDim(MatN, kDim);
+				PutVal2LongBuffer(lb,_tmcGetDim(MatN, kDim));
+				_write(fh, &lb[0], MAT_4BYTE_SIZE);
+				posI[0] +=  MAT_4BYTE_SIZE;
 			}
 			if (ndims % 2) //  PADDING
 			{
-				l.x = 0;
-				_write(fh, &l.b[0], sizeof(long));
-				posI[0] += sizeof(long);
+				//l.x = 0;
+				PutVal2LongBuffer(lb,0);
+				_write(fh, &lb[0], MAT_4BYTE_SIZE);
+				posI[0] += MAT_4BYTE_SIZE;
 			}
 		}
 
@@ -1196,31 +1273,33 @@ const char *fn;
 	case TYPE_STRUCT:
 		// Print subelements:
 		// Array Flags
-		_tmcwritesavetag(fh,mi_UINT32,2*sizeof(unsigned long),posI);//2*sizeof(unsigned long)
-		memset(&l,0,sizeof(l));
-		l.b[1]=0x00;//no flags
-		l.b[0]=mx_STRUCT_CLASS;
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		memset(&l,0,sizeof(l));
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		posI[0] += 2*sizeof(unsigned long);
+		_tmcwritesavetag(fh,mi_UINT32,2*MAT_4BYTE_SIZE,posI);//2*sizeof(unsigned long)
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		lb[1]=0x00;//no flags
+		lb[0]=mx_STRUCT_CLASS;
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		posI[0] += 2*MAT_4BYTE_SIZE;
 		// dimentions array
-		_tmcwritesavetag(fh,mi_INT32,2*sizeof(long),posI);//num_of_dims*sizeof(long)
-		l.x = _tmcGetM(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		l.x = _tmcGetN(MatN);
-		_write(fh,&l.b[0],sizeof(long));
-		posI[0] +=2*sizeof(long);
+		_tmcwritesavetag(fh,mi_INT32,2*MAT_4BYTE_SIZE,posI);//num_of_dims*sizeof(long)
+		//l.x = _tmcGetM(MatN);
+		PutVal2LongBuffer(lb,_tmcGetM(MatN));
+		_write(fh,&lb[0],MAT_4BYTE_SIZE);
+		//l.x = _tmcGetN(MatN);
+		PutVal2LongBuffer(lb,_tmcGetN(MatN));
+		_write(fh,&lb[0],MAT_4BYTE_SIZE);
+		posI[0] +=2*MAT_4BYTE_SIZE;
 		// array name
 		len = (long)strlen(varnameN);//x64
 		_tmcwritesavetag(fh,mi_INT8,len,posI);
 		_tmcwritesavebufpadding(fh,varnameN,len,posI);
 		// Field name length
 		_tmcwritesavetag(fh,mi_INT32,4,posI);
-		memset(&l,0,sizeof(l));
-		l.b[0] = 32;
-		_write(fh,&l.b[0], sizeof(unsigned long));
-		posI[0] += sizeof(long);
+		memset(&lb,0,MAT_4BYTE_SIZE);
+		lb[0] = 32;
+		_write(fh,&lb[0], MAT_4BYTE_SIZE);
+		posI[0] += MAT_4BYTE_SIZE;
 
 		// Field names
 		nfields = _tmcGetNf(MatN);
@@ -1286,7 +1365,7 @@ void tmcsave(long nout,long ninput,tmsMatrix *filename,tmsMatrix *Mat1,char *var
 	int n;
 	long posI0;
 
-#ifdef _TMC_ANDROID_ // HAZARD_TODO: no unicode support so far
+#if defined( _TMC_ANDROID_) || defined(_TMC_GNU_LINUX_) // HAZARD_TODO: no unicode support so far
 	char * sBuf=_tmcMat2String(filename);
 	fh = open(sBuf,_O_RDWR  | _O_CREAT | _O_TRUNC | _O_BINARY, _S_IREAD | _S_IWRITE );
 #else
@@ -1626,7 +1705,7 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 	char *sBuf;
 	char sPerm[3]={0,0,0};
 	FILE *fp;
-	unsigned __int64 llval;
+	u_int64_t llval;
 
 	sBuf=_tmcMat2String(fname);
 	sPerm[0]=(char)perm->value.complx.rData[0];
@@ -1634,17 +1713,17 @@ FID = FOPEN(FILENAME,PERMISSION) opens the file FILENAME in the
 		sPerm[1]=(char)perm->value.complx.rData[1];//FIX BUG
 	fp = fopen(sBuf,sPerm);
 	//_tmcCreateMatrix(h,1,1,tmcREAL);
-	//h->value.complx.rData[0]=(double)(unsigned __int64)fp;
-	llval = (unsigned __int64)fp;
-	_StoreHanleFromMat(mHandle, (const unsigned __int64*)&llval);
+	//h->value.complx.rData[0]=(double)(u_int64_t)fp;
+	llval = (u_int64_t)fp;
+	_StoreHanleFromMat(mHandle, (const u_int64_t*)&llval);
 	MYFREE(sBuf);
 }
 void tmcfclose(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *mHandle)
 {
 int stat;
-//FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+//FILE* fp = (FILE*)(u_int64_t)h->value.complx.rData[0];
 FILE* fp;
-unsigned __int64 llval;
+u_int64_t llval;
 _ReadHanleFromMat(&llval,  mHandle);
 fp = (FILE*)llval;
 
@@ -1662,9 +1741,9 @@ else
 void tmcfeof(long nout, long ninput, tmsMatrix *mIsEof, tmsMatrix *mHandle)
 {
 	int stat;
-	//FILE* fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+	//FILE* fp = (FILE*)(u_int64_t)h->value.complx.rData[0];
 	FILE* fp;
-	unsigned __int64 llval;
+	u_int64_t llval;
 	_ReadHanleFromMat(&llval, mHandle);
 	fp = (FILE*)llval;
 	if (fp)
@@ -1714,7 +1793,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 	tmsMatrix *M;
 	tmsMatrix *fmt;
 	char c;
-	FILE *fp; unsigned __int64 llval;
+	FILE *fp; u_int64_t llval;
 	long len,kk;
 	va_start(marker, fm);     // Initialize variable arguments. 
 
@@ -1726,7 +1805,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 	}
 	else
 	{
-		//fp = (FILE*)(unsigned __int64)fm->value.complx.rData[0];
+		//fp = (FILE*)(u_int64_t)fm->value.complx.rData[0];
 		_ReadHanleFromMat(&llval, fm);
 		fp = (FILE*)llval;
 		fmt = va_arg(marker, tmsMatrix *);
@@ -1772,7 +1851,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 			case 'u':
 				if (_mdblIsInteger(M->m_rData[0]))
 					{
-					fprintf(fp, "%I64d", (__int64)M->m_rData[0]);
+					fprintf(fp, "%I64d", (int64_t)M->m_rData[0]);
 					}
 				else
 				{
@@ -1809,7 +1888,7 @@ FPRINTF behaves like ANSI C with certain exceptions and extensions.
 				else
 				{
 					if (cPtr[1]=='d' && _mdblIsInteger(M->m_rData[0]))
-					fprintf(fp,"%I64d",(__int64)M->m_rData[0]);
+					fprintf(fp,"%I64d",(int64_t)M->m_rData[0]);
 					else
 					// printf as double
 					fprintf(fp,"%f",M->m_rData[0]);
@@ -1893,7 +1972,7 @@ void tmcsprintf(long nout, long ninput, tmsMatrix *sbuf, tmsMatrix *fm, ...)
 			case 'u':
 				if (_mdblIsInteger(M->m_rData[0]))
 				{
-					nStored = sprintf(out, "%I64d", (__int64)M->m_rData[0]);
+					nStored = sprintf(out, "%I64d", (int64_t)M->m_rData[0]);
 				}
 				else
 				{
@@ -1959,10 +2038,10 @@ void tmcfgetl(long nout,long ninput,tmsMatrix *str,tmsMatrix *mHandle)
 //    included. Use FGETS to get the next line with the line terminator
 //    INCLUDED. If just an end-of-file is encountered then -1 is returned.
 char buffer[MAX_FGETS_LEN]; // max  length !!!
-FILE *fp; unsigned __int64 llval;
+FILE *fp; u_int64_t llval;
 size_t len;//x64
 
-	//fp =(FILE*)(unsigned __int64)h->value.complx.rData[0];
+	//fp =(FILE*)(u_int64_t)h->value.complx.rData[0];
 	_ReadHanleFromMat(&llval, mHandle);
 	fp = (FILE*)llval;
 	if (	fgets(buffer,MAX_FGETS_LEN-2,fp) == NULL)
@@ -1987,10 +2066,10 @@ void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *mHandle)
 	// identifier FID as a MATLAB string. Read line from file, KEEP newline character.
 	// If just an end-of-file is encountered then -1 is returned.
 	char buffer[MAX_FGETS_LEN]; // max  length !!!
-	FILE *fp; unsigned __int64 llval;
+	FILE *fp; u_int64_t llval;
 	size_t len;//x64
 
-	//fp = (FILE*)(unsigned __int64)h->value.complx.rData[0];
+	//fp = (FILE*)(u_int64_t)h->value.complx.rData[0];
 	_ReadHanleFromMat(&llval, mHandle);
 	fp = (FILE*)llval;
 	if (fgets(buffer, MAX_FGETS_LEN - 2, fp) == NULL)
@@ -2010,3 +2089,28 @@ void tmcfgets(long nout, long ninput, tmsMatrix *str, tmsMatrix *mHandle)
 
 
 }
+
+/**
+	[A, COUNT] = FREAD(FID,SIZE,PRECISION)
+	Implemented only :
+			[A, COUNT] = FREAD(FID)
+*/
+
+/*void tmcfread(long nout,long ninput,tmsMatrix *mA,tmsMatrix *mHandle)
+{
+	FILE *fp; u_int64_t llval;
+	//fp =(FILE*)(u_int64_t)mFID->value.complx.rData[0];
+	_ReadHanleFromMat(&llval, mHandle);
+	fp = (FILE*)llval;
+
+	flen = filelength( fh );
+	A = (char *)MYMALLOC( sizeof(char)*flen);
+	readbytes = _read( fh, A, flen ) ;
+
+	if (nout>0)
+	{
+		_tmcCreateMatrix(mA,1,1,0);
+	}
+
+}
+*/

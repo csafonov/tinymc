@@ -47,8 +47,8 @@ int errno;
 #include "tmc.h"
 
 // fft tools
-int __cdecl zffti_(integer *n, doublereal *wsave);
-int __cdecl zfftf_(integer *n, doublereal *c__, doublereal *wsave);
+int _CDECL_ zffti_(integer *n, doublereal *wsave);
+int _CDECL_ zfftf_(integer *n, doublereal *c__, doublereal *wsave);
 
 //#include <stdlib.h>
 #ifndef  _TMC_EMBEDDED_
@@ -112,14 +112,14 @@ int __cdecl zfftf_(integer *n, doublereal *c__, doublereal *wsave);
 
 
 
-int __cdecl zffti(integer *n, doublereal *wsave)
+int _CDECL_ zffti(integer *n, doublereal *wsave)
 	{
 
 		fprintf(stderr,"zffti: **** FATAL ****NO FFT SUPPORT\n");
 		return -1;
 	}
 
-int __cdecl zfftf(integer *n, doublereal *c__, doublereal *wsave)
+int _CDECL_ zfftf(integer *n, doublereal *c__, doublereal *wsave)
 	{
 
 		fprintf(stderr,"zfftf: **** FATAL ****NO FFT SUPPORT\n");
@@ -1789,7 +1789,8 @@ r=eig(A,'nobalance')
 
 }
 
- __inline doublecomplex  ZMULT_A_Bhat(doublecomplex a,doublecomplex b)
+_INLINE_
+ doublecomplex  ZMULT_A_Bhat(doublecomplex a,doublecomplex b)
 // return a*b'
 {
 	doublecomplex c;
@@ -1797,7 +1798,9 @@ r=eig(A,'nobalance')
 	c.i = (a.i * b.r - a.r * b.i );
 	return c;
 }
- __inline doublecomplex  ZMULT_A_B(doublecomplex a,doublecomplex b)
+
+_INLINE_
+  doublecomplex  ZMULT_A_B(doublecomplex a,doublecomplex b)
 // return a*b
 {
 	doublecomplex c;

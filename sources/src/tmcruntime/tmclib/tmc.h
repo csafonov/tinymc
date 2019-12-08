@@ -13,23 +13,43 @@
 #define _tmc_h_
 
 //#define NO_LAPACK_DLL
-#ifndef  _TMC_SITARA_
+#ifdef  WIN32
 #pragma warning(disable : 4028) // temporary: int and long compat
 #pragma warning(disable : 4996) // unsafe
 #pragma warning( disable : 4102 ) // disable warning message "unreferenced label"
 #pragma warning( disable : 4554 ) // disable warning message "'<<' : check operator precedence for possible error; use parentheses to clarify precedence"
 #pragma warning( disable : 4102 ) // disable warning message "unreferenced label"
 #pragma warning( disable : 4723 ) // disable warning message "potential divide by 0"
+typedef	__int64			 int64_t;
+typedef	unsigned __int64 u_int64_t;
+#define _INLINE_	__inline
+#define _CDECL_ __cdecl
+#endif
 
-
-#else
+#ifdef _TMC_SITARA_
 #define _TMC_EMBEDDED_	1
-typedef	long long __int64;
+typedef	long long			 int64_t;
+typedef	unsigned long long u_int64_t;
 #define _isnan	isnan
-
+#define _INLINE_
 //typedef unsigned short wchar_t;
-#define __cdecl
+//#define __cdecl
+#define _CDECL_
 #include <stdlib.h>
+#endif
+
+#ifdef _TMC_GNU_LINUX_
+#define _isnan	isnan
+#define _CDECL_ 
+#include <stdlib.h>
+#define wchar_t	short   // vandal
+#define	TMC_NO_SEH
+#define	TRY			 ;
+#define	CATCH		 ;
+#define	ENDCATCH	 ;
+#define	FINALLY		 ;
+#define	ENDFINALLY   ;
+#define _INLINE_
 #endif
 
 #include <float.h>
@@ -50,7 +70,7 @@ typedef	long long __int64;
 #define  CLEAR_CRT_DEBUG_FIELD(a) ((void) 0)
 #endif
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && defined(WIN32)
 #define _DEBUG_MEMORY
 extern char dbg_buf[1000];
 #endif
@@ -482,7 +502,7 @@ short _tmcGetReducedDim(short numdim,long* arrdims);
 void  _tmcRedimArrayMD(tmsMatrix *matres,short numdims,long *arrdims);
 
 long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[]);
-void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, const tmsMatrix *matN[], short numdims, long M, long N, const short IsMagicColonIndex[], short bScalarSrc);
+void _tmcGetByIndexSubCell(tmsMatrix *matres, const tmsMatrix *src, tmsMatrix **matN, short numdims, long M, long N, const short *IsMagicColonIndex, short bScalarSrc);
 
 /////////////////////////////////////////////
 
@@ -820,8 +840,8 @@ void tmcmean(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 void tmcstd(long nout,long ninput, tmsMatrix *y,tmsMatrix *x);
 
 /// x64 - utilities
-void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle);
-void _StoreHanleFromMat(tmsMatrix *mHandle, const unsigned __int64 *fp);
+void _ReadHanleFromMat(u_int64_t *ptr, const tmsMatrix *mHandle);
+void _StoreHanleFromMat(tmsMatrix *mHandle, const u_int64_t *fp);
 
 
 #endif

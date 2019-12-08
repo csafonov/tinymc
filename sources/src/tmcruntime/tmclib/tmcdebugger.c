@@ -7,9 +7,11 @@
 // tmcdebugger.c
 
 // Windows-specific code
-#ifndef _TMC_EMBEDDED_
-#include <windows.h>
+//#include "tmc.h"
 
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 
 #include "tmc.h"
@@ -19,15 +21,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <STDARG.H> // ANSI compatibility
+#include <stdarg.h> // ANSI compatibility
 
 #include <stdio.h>
 #include <malloc.h>
 
-#include "tmc.h"
+#ifdef WIN32
 
-
-//#ifndef TMCDBG_CLI // this symbol defined in the debugger
+#ifndef TMCDBG_CLI // this symbol defined in the debugger
 static char *s_module = "tmcdebugger.c";
 
 TMC_DBG_STACK TmcDebugStack;
@@ -146,7 +147,7 @@ long tmcdbgCommonMemClose()
 	return 0;
 }
 
-//#else
+#else
 //// client API /////////
 HANDLE g_hClientMapFile;
 long tmcdbgCommonMemConnect(void** ptr)
@@ -179,4 +180,11 @@ long tmcdbgCommonMemDisconnect( void)
 }
 /////////////////////
 #endif
-//#endif
+#else
+void tmcdbgPushStackVar(const char *fncname,short nVars,tmsMatrix* var1,const char *varname1,...)
+{
+}
+void tmcdbgPopStackVar(short nVars)
+{
+}
+#endif

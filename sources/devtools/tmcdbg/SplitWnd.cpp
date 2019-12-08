@@ -361,7 +361,7 @@ hehr=3;
 
 	LPTSTR store_wchar_t_const_string(LPCTSTR wstr)
 	{
-		long namelen = wcslen(wstr)+1;
+		size_t namelen = wcslen(wstr)+1;
 		LPTSTR wstr_ =(LPTSTR) malloc( sizeof(wchar_t)*(namelen)   );
 		memcpy(wstr_,wstr,sizeof(wchar_t)*(namelen));
 		return wstr_;// to be free()

@@ -12,7 +12,7 @@
 #endif
 #endif
 
-#ifndef  _TMC_EMBEDDED_
+#ifdef  WIN32
 #include <windows.h>
 #endif
 
@@ -159,7 +159,8 @@ void tmcFreeRegFrame(tmsMatrix **reg)
 	}
 }
 
-inline void _tmcMarkBooleanIndex(tmsMatrix *sum)
+_INLINE_
+ void _tmcMarkBooleanIndex(tmsMatrix *sum)
 {
 	sum->m_desc.m_modifier |= MODIFIER_MASK_BOOL;
 }
@@ -1029,11 +1030,11 @@ double scal;
 				}
 				else if (bType==OpBitAND)
 				{// and
-					y->m_rData[k]= (double)((__int64)(ptr[k]) &  (__int64)scal); 
+					y->m_rData[k]= (double)((int64_t)(ptr[k]) &  (int64_t)scal);
 				}
 				else if (bType==OpBitOR)
 				{// or
-					y->m_rData[k]= (double)((__int64)(ptr[k]) | (__int64)scal); 
+					y->m_rData[k]= (double)((int64_t)(ptr[k]) | (int64_t)scal);
 				}
 
 			}
@@ -1060,11 +1061,11 @@ double scal;
 				}
 				else if (bType==OpBitAND)
 				{// and
-					y->m_rData[k]= (double)((__int64)(src1->m_rData[k]) &  (__int64)(src2->m_rData[k])); 
+					y->m_rData[k]= (double)((int64_t)(src1->m_rData[k]) &  (int64_t)(src2->m_rData[k]));
 				}
 				else if (bType==OpBitOR)
 				{// or
-					y->m_rData[k]= (double)((__int64)(src1->m_rData[k]) |  (__int64)(src2->m_rData[k])); 
+					y->m_rData[k]= (double)((int64_t)(src1->m_rData[k]) |  (int64_t)(src2->m_rData[k]));
 				}
 			}
 	}
@@ -1111,8 +1112,8 @@ BITSHIFT Bit-wise shift.
 	long M,N,MN,k;
 //	double shiftfactor;
 	short nshifts;
-	__int64 ltemp;
-	__int64 mask;
+	int64_t ltemp;
+	int64_t mask;
 	short maxbits;
 
 
@@ -1131,14 +1132,14 @@ BITSHIFT Bit-wise shift.
 					maxbits  = 53;
 
 		nshifts = (short)mK->m_rData[0];
-		mask = ( (__int64)1 << maxbits) - 1;
+		mask = ( (int64_t)1 << maxbits) - 1;
 
 		//if (nshifts)
 		//{
 		// if (nshifts>0)
-		//	shiftfactor =(double)  (((__int64)1)<<nshifts);
+		//	shiftfactor =(double)  (((int64_t)1)<<nshifts);
 		// else
-		//	shiftfactor = (1.0f / ( ((__int64)1)<<(-nshifts) ));
+		//	shiftfactor = (1.0f / ( ((int64_t)1)<<(-nshifts) ));
 		//}
 		//else
 		//	shiftfactor=1.0f;
@@ -1150,7 +1151,7 @@ BITSHIFT Bit-wise shift.
 			MN=tmcNumElem(src);
 			for (k=0;k<MN;k++)
 			{
-				ltemp =  (__int64) floor(src->m_rData[k]);
+				ltemp =  (int64_t) floor(src->m_rData[k]);
 				if (nshifts>=0)
 					ltemp = ( (ltemp << nshifts) & mask);
 				else
@@ -2178,7 +2179,7 @@ short ind1_inc;
 	matres->m_desc.m_type=src->m_desc.m_type;
 }
 
-void __tmcGetIndexSize2D(long *M,long *N, short *bScalarSrc,short IsMagicColonIndex[],const tmsMatrix *src, long numdims,const tmsMatrix *matN[])
+void __tmcGetIndexSize2D(long *M,long *N, short *bScalarSrc,short *IsMagicColonIndex, tmsMatrix *src, long numdims, tmsMatrix **matN)
 {
 	if (numdims == 1)
 	{
@@ -2972,7 +2973,7 @@ void tmcdec2hex(int nargout, int nargin,tmsMatrix *y,tmsMatrix *x,tmsMatrix *n)
 short maxnumdigs,numdigs;
 short m;
 double dval;
-__int64 val;
+int64_t val;
 short k;
 short c,mask,rshifts;
 	
@@ -2984,7 +2985,7 @@ short c,mask,rshifts;
 		{
 				_tmcRaiseException(out_of_int_range,s_module,"dec2hex","X must be 0..2^53-1",1,x);
 		}
-		val = (__int64)floor(dval);
+		val = (int64_t)floor(dval);
 		if (val != dval)
 		{
 				_tmcRaiseException(out_of_int_range,s_module,"dec2hex","X must be integer",1,x);
@@ -3005,7 +3006,7 @@ short c,mask,rshifts;
 	for (m=0; m< tmcNumElem(x);m++)
 	{
 		dval =  x->value.complx.rData[m];
-		val = (__int64)floor(dval);
+		val = (int64_t)floor(dval);
 		mask = 0xF;
 		rshifts =0;
 		for (k=0;k<maxnumdigs;k++)
@@ -4136,7 +4137,7 @@ short maxdigits;
 						nStored=sprintf(out,sBuf,x->m_rData[k]);// hazard "%d"
 					else
 						if (_mdblIsInteger(x->m_rData[k]))
-							nStored=sprintf(out,"%I64d",(__int64)x->m_rData[k]);
+							nStored=sprintf(out,"%I64d",(int64_t)x->m_rData[k]);
 						else
 							nStored=sprintf(out,"%.15e",x->m_rData[k]);// HAZARD: fixed precision
 
@@ -4149,7 +4150,7 @@ short maxdigits;
 						nStored=sprintf(out,sBuf,x->m_iData[k]);// hazard "%d"
 					else
 						if (_mdblIsInteger(x->m_iData[k]))
-							nStored=sprintf(out,"%I64d",(__int64)x->m_iData[k]);
+							nStored=sprintf(out,"%I64d",(int64_t)x->m_iData[k]);
 						else
 							nStored=sprintf(out,"%.15e",x->m_iData[k]);
 
@@ -4255,7 +4256,9 @@ void tmcnargchk(long nout,long ninput, tmsMatrix *message, tmsMatrix *low, tmsMa
 				_tmcSetMatrixEmpty(message);
 }
 /////// SET UTILS ///////////
-__inline short _is_cequal(struct Ccomplex_sort *pC1,struct Ccomplex_sort *pC2)
+
+_INLINE_
+ short _is_cequal(struct Ccomplex_sort *pC1,struct Ccomplex_sort *pC2)
 {
 	if (pC1->val_im==pC2->val_im && pC1->val_re==pC2->val_re)
 		return 1;
@@ -4517,10 +4520,10 @@ void tmcfeval(long nout,long ninput,tmsMatrix *y, tmsMatrix *fnc_handle, tmsMatr
 	fnc_handle->value.fnc_ptr(ninput-1,nout,y,x1);//HAZARD: only one input parameter is supported!!!
 }
 
-__int64 g_MemCnt=0;
-__int64 g_MemUsed=0;
+int64_t g_MemCnt=0;
+int64_t g_MemUsed=0;
 
-__int64 g_MemN=0;
+int64_t g_MemN=0;
 double *g_MemHe[1000];
 short  g_MemNbuf=0;
 
@@ -4750,6 +4753,10 @@ void tmcischar(long nout,long ninput,tmsMatrix *y,tmsMatrix *x)
 			_tmcCreateMatrix(y,1,1,tmcREAL);
 			y->m_rData[0]=  ( (x->m_desc.m_type ==TYPE_STRING) ? 1:0);
 }
+#ifdef _TMC_GNU_LINUX_
+unsigned int sleep(unsigned int seconds);
+#define Sleep sleep
+#endif
 
 void tmcpause(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *d)
 {// system specific demands <windows.h>
@@ -4767,7 +4774,7 @@ void tmcpause(long nout,long ninput,tmsMatrix *ydummy,tmsMatrix *d)
 #ifndef MATLAB_MEX_FILE
 void   mmy_free( void *memblock )
 {
-#ifndef  _TMC_EMBEDDED_ // TMC_HAZARD: no _msize in embedded system
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_) // TMC_HAZARD: no _msize in embedded system
 	g_MemUsed-=_msize(memblock);
 #endif
 
@@ -4814,7 +4821,7 @@ tmsMatrix* mxCreateString(const char *str)
 }
 
 //////////////////////////////////////////
-#ifndef  _TMC_EMBEDDED_
+#ifdef  WIN32
 HANDLE hWndDebug;
 HANDLE tmcconnectdebugger(long pass)
 {
@@ -5450,9 +5457,9 @@ long _tmcCalcSingleSubscript(tmsMatrix *X, short nsubs, long subs[])
 \param ptr: pointer to  up-to 64-bit handle
 \param	mHandle: Matrix where the handle is stored, 1x2-matrix.
 */
-void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle)
+void _ReadHanleFromMat(u_int64_t *ptr, const tmsMatrix *mHandle)
 {
-	unsigned __int64 bufx;
+	u_int64_t bufx;
 	unsigned long lw;
 	unsigned long hw;
 
@@ -5466,7 +5473,7 @@ void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle)
 		lw = 0xFFFFFFFF;// invalid handle
 		hw = 0xFFFFFFFF;
 	}
-	bufx = (unsigned __int64)lw | ((unsigned __int64)hw << 32);
+	bufx = (u_int64_t)lw | ((u_int64_t)hw << 32);
 	*ptr = bufx;
 }
 
@@ -5475,9 +5482,9 @@ void _ReadHanleFromMat(unsigned __int64 *ptr, const tmsMatrix *mHandle)
 \param	mHandle: Matrix for storage. Must be allocated. Result is 1x2-matrix.
 \param fp: up-to 64-bit handle
 */
-void _StoreHanleFromMat(tmsMatrix *mHandle, const unsigned __int64 *fp)
+void _StoreHanleFromMat(tmsMatrix *mHandle, const u_int64_t *fp)
 {
-	unsigned __int64 bufx;
+	u_int64_t bufx;
 	unsigned long lw;
 	unsigned long hw;
 

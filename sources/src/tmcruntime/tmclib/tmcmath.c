@@ -8,8 +8,8 @@
 
 #undef HW_INTEL_FPATAN
 #ifdef  HW_INTEL_FPATAN
-
-__inline double intel_atan2(double y,double x)
+_INLINE_
+double intel_atan2(double y,double x)
 {//FPATAN instruction computes the arctangent of ST(1) divided by ST(0),
  // comparison with MATL gives 4.e10-16. Speed is faster as 1.5
 	double z;
@@ -43,7 +43,7 @@ void _Catan(double *yre,double *yim,double xre,double xim);
 static char *s_module="tmcmath.c";
 
 void _tmcPolyVal(doublecomplex *y, doublecomplex *p,doublecomplex *x,integer N);
-
+/*
 #define sqrt	my_sqrt
 #define sinh	my_sinh
 #define pow		my_pow
@@ -113,12 +113,13 @@ extern double yn __P((int, double));
 extern double acosh __P((double));
 extern double asinh __P((double));
 extern double atanh __P((double));
+*/
 
 //////////// BASIC ////////////////////////
 short _tmcIsInfValue(double x)
 {
 	if (
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 			_fpclass(x)==_FPCLASS_PINF
 #else
 			isinf(x)
@@ -132,7 +133,7 @@ short _tmcIsInfValue(double x)
 short _tmcIsMinusInfValue(double x)
 {
 	if (
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 			_fpclass(x)==_FPCLASS_NINF
 #else
 			isinf(x)	// TMC_HAZARD: TODO recognize -Inf from Inf
@@ -149,7 +150,8 @@ struct tmccomplex
 	double re;
 	double im;
 };
-__inline double  _tmcCabs(double real,double imag)
+_INLINE_
+double  _tmcCabs(double real,double imag)
 {
 	double temp;
 
@@ -290,7 +292,9 @@ double t,r,imagpart,a,b;
 
 }
 */
-__inline void _tmcCsqrt(struct tmccomplex *y,double zr,double zi)
+
+_INLINE_
+void _tmcCsqrt(struct tmccomplex *y,double zr,double zi)
 {
 	double mag, t;
 
@@ -312,7 +316,9 @@ __inline void _tmcCsqrt(struct tmccomplex *y,double zr,double zi)
 		y->re = 0.5 * t;
 		}
 }
-__inline double _Rdiv(double u,double v)
+
+_INLINE_
+double _Rdiv(double u,double v)
 {// u/v
 	return  u/v;
 }
@@ -517,7 +523,7 @@ void _tmcMultByScalar(tmsMatrix *prod,tmsMatrix *X,tmsMatrix *sclB)
 short RealReciprocal(double *result,double D)
 {
 short claf;
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 	claf = (short)_fpclass(D);
 #else
 	claf = (short)isfinite(D);
@@ -3523,7 +3529,7 @@ void tmceps(long nout,long ninput,tmsMatrix *dest,tmsMatrix *R)
 	//union UdoublelongIEEE
 	//{	
 	//	double  d;
-	//	__int64 l;
+	//	int64_t l;
 	//} U;
 	tmcReallocRegister(dest);
 	_tmcCreateMatrix(dest,1,1,tmcREAL);
@@ -3546,8 +3552,8 @@ void tmceps(long nout,long ninput,tmsMatrix *dest,tmsMatrix *R)
 		else
 		{
 			// HAZARD: must check! 2^(log2(hex2double('001fffffffffffff'))-52)
-			E =(short)floor( my_log(x)/my_log(2.0));
-			y = my_pow(2.0, E-52.0) ;
+			E =(short)floor( log(x)/log(2.0));
+			y = pow(2.0, E-52.0) ;
 			//U.d=fabs(x);
 			//U.l=U.l+1; // this is the next number.?
 			//y = U.d - fabs(x);

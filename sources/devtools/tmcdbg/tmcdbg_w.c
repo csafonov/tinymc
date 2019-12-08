@@ -35,12 +35,11 @@ tmcdbg.obj : error LNK2001: unresolved external symbol "void __cdecl tmcdisp(lon
 
 #define DEBUG_MEM_LEN 10
 
-void *lpBaseAddress;
-char Buffer[DEBUG_MEM_LEN];
-DWORD nSize;
-DWORD NumberOfBytesRead;
+
+//char Buffer[DEBUG_MEM_LEN];
+//DWORD nSize;
+//SIZE_T NumberOfBytesRead;
 HANDLE hProcess_copy;
-DWORD h_Other_id;
 struct CTmcDbgCommonBlock *pcliTmcDbgCommonBlock;
 struct CTmcDbgStack			cliTmcDbgStack;
 DWORD err;
@@ -49,7 +48,7 @@ DWORD err;
 
 long remote_frame_length(void)
 {
-DWORD NumberOfBytesRead;
+SIZE_T NumberOfBytesRead;
 int	stat=ReadProcessMemory(hProcess_copy,pcliTmcDbgCommonBlock->stack_addr,&cliTmcDbgStack,2*sizeof(tmcindex),&NumberOfBytesRead);
 	if (!stat)
 		err=GetLastError();
@@ -63,7 +62,7 @@ char remote_varname[1000];
 LPCSTR  remote_frame_name_at(long k)
 {
 long m;
-DWORD NumberOfBytesRead;
+SIZE_T NumberOfBytesRead;
 int	stat=ReadProcessMemory(hProcess_copy,pcliTmcDbgCommonBlock->stack_addr,&cliTmcDbgStack,sizeof(cliTmcDbgStack),&NumberOfBytesRead);
 	if (!stat)
 		err=GetLastError();
@@ -83,7 +82,7 @@ return remote_varname;
 }
 void    * remote_frame_addr_at(long k)
 {
-DWORD NumberOfBytesRead;
+	SIZE_T NumberOfBytesRead;
 int	stat=ReadProcessMemory(hProcess_copy,pcliTmcDbgCommonBlock->stack_addr,&cliTmcDbgStack,sizeof(cliTmcDbgStack),&NumberOfBytesRead);
 	if (!stat)
 		err=GetLastError();
@@ -92,7 +91,7 @@ return cliTmcDbgStack.stack[k].vaddr;
 
 short  remote_etype_at(long k)
 {
-DWORD NumberOfBytesRead;
+	SIZE_T NumberOfBytesRead;
 int	stat=ReadProcessMemory(hProcess_copy,pcliTmcDbgCommonBlock->stack_addr,&cliTmcDbgStack,sizeof(cliTmcDbgStack),&NumberOfBytesRead);
 	if (!stat)
 		err=GetLastError();
@@ -102,7 +101,7 @@ int	stat=ReadProcessMemory(hProcess_copy,pcliTmcDbgCommonBlock->stack_addr,&cliT
 int debug1; 
 int ReadRemoteMatrix(tmsMatrix *mat,void* lpBaseAddress)
 {
-DWORD NumberOfBytesRead;
+	SIZE_T NumberOfBytesRead;
 int stat;
 double *ptr;
 long NN;
@@ -240,13 +239,14 @@ return 0;
 
 short ConnectTmc()
 {
+	DWORD h_Other_id;
 HWND hWnd;
 		hWnd=FindWindow(L"edit",L"tmcdebug");
 		if (hWnd)
 			GetWindowThreadProcessId(hWnd,&h_Other_id);
 		else
 		{
-			MessageBox(NULL,L"Cant connect to debugged appication.",L"fail",MB_OK);
+			MessageBox(NULL,L"Cant fine the debugged appication window(tmcdebug).",L"fail",MB_OK);
 		//	fprintf(stdout,"Cant connect to debugged appication. Start the application and try again!\n PRESS OK...");
 		//	getch();
 			return -1;
@@ -273,8 +273,8 @@ LPCTSTR uni_get_out(void)
 }
 void buffer_to_uni()
 {
-	long k;
-	long n=strlen(tembuffer);
+	SIZE_T k;
+	SIZE_T n=strlen(tembuffer);
 	for (k=0;k<n;k++)
 	{
 		uni_tembuffer[k]=tembuffer[k];
@@ -286,8 +286,8 @@ void buffer_to_uni()
 wchar_t wstambuf[1000];
 const wchar_t * string2uni(const char *str)
 {
-	long k;
-	long len=strlen(str);
+	SIZE_T k;
+	SIZE_T len=strlen(str);
 
 	for (k=0;k<len;k++)
 	{
@@ -393,6 +393,7 @@ short PrintMatrixLocal(tmsMatrix *mat,short fmt)
 }
 void LoadExternalMatrix(tmsMatrix *mat,void *_lpBaseAddress)
 {
+	void *lpBaseAddress;
 		lpBaseAddress=_lpBaseAddress;
 		ReadRemoteMatrix(mat,lpBaseAddress);
 }
@@ -419,20 +420,20 @@ FILE *fp;
 		fp = fopen("matrix_off.txt","w");
 
 
-		fprintf(fp,"szDouble=%d;\n",sizeof(double));
-		fprintf(fp,"szAddr=%d;\n",sizeof(HANDLE));
-		fprintf(fp,"szTmcMat=%d;\n",sizeof(tmsMatrix));
-		fprintf(fp,"ofs_m_type=%d;\n", offsetof( tmsMatrix, m_desc.m_type ));
-		fprintf(fp,"ofs_m_nRows=%d;\n", offsetof( tmsMatrix,m_desc.m_nRows));
-		fprintf(fp,"ofs_m_nCols=%d;\n", offsetof( tmsMatrix,m_desc.m_nCols));
-		fprintf(fp,"ofs_rData=%d;\n", offsetof( tmsMatrix,value.complx.rData));
-		fprintf(fp,"ofs_iData=%d;\n", offsetof( tmsMatrix,value.complx.iData));
-		fprintf(fp,"ofs_m_modifier=%d;\n", offsetof( tmsMatrix,m_desc.m_modifier));
-		fprintf(fp,"ofs_m_cells=%d;\n", offsetof( tmsMatrix,value.m_cells));
+		fprintf(fp,"szDouble=%zd;\n",sizeof(double));
+		fprintf(fp,"szAddr=%zd;\n",sizeof(HANDLE));
+		fprintf(fp,"szTmcMat=%zd;\n",sizeof(tmsMatrix));
+		fprintf(fp,"ofs_m_type=%zd;\n", offsetof( tmsMatrix, m_desc.m_type ));
+		fprintf(fp,"ofs_m_nRows=%zd;\n", offsetof( tmsMatrix,m_desc.m_nRows));
+		fprintf(fp,"ofs_m_nCols=%zd;\n", offsetof( tmsMatrix,m_desc.m_nCols));
+		fprintf(fp,"ofs_rData=%zd;\n", offsetof( tmsMatrix,value.complx.rData));
+		fprintf(fp,"ofs_iData=%zd;\n", offsetof( tmsMatrix,value.complx.iData));
+		fprintf(fp,"ofs_m_modifier=%zd;\n", offsetof( tmsMatrix,m_desc.m_modifier));
+		fprintf(fp,"ofs_m_cells=%zd;\n", offsetof( tmsMatrix,value.m_cells));
 
-		fprintf(fp,"ofs_m_nFields=%d;\n", offsetof( tmsMatrix,value.StructDef.m_nFields));
-		fprintf(fp,"ofs_hcFields=%d;\n", offsetof( tmsMatrix,value.StructDef.hcFields));
-		fprintf(fp,"ofs_m_fields=%d;\n", offsetof( tmsMatrix,value.StructDef.m_fields));
+		fprintf(fp,"ofs_m_nFields=%zd;\n", offsetof( tmsMatrix,value.StructDef.m_nFields));
+		fprintf(fp,"ofs_hcFields=%zd;\n", offsetof( tmsMatrix,value.StructDef.hcFields));
+		fprintf(fp,"ofs_m_fields=%zd;\n", offsetof( tmsMatrix,value.StructDef.m_fields));
 
 
 
@@ -450,7 +451,7 @@ const char * hcode2string_remote(STRINGCODE hcode)
 	short n;
 	unsigned long hashcode = ((hcode >> 16) & 0x0000FFFF);
 	int stat;
-	DWORD NumberOfBytesRead;
+	SIZE_T NumberOfBytesRead;
 	char c;
 	short ind;
 

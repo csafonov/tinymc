@@ -5,7 +5,7 @@
  * 
   *****************************************************************************/
 
-#ifndef  _TMC_EMBEDDED_
+#if defined(WIN32)
 #include <windows.h>
 #endif
 
@@ -21,7 +21,7 @@
 #include <stdarg.h> // ANSI compatibility
 
 #include <stdio.h>
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 #include <malloc.h>
 
 #define EXCEPTION_TMC_USER_ERROR	0xE0000001
@@ -46,7 +46,7 @@ va_list marker;
 long ind;
 const tmsMatrix *M;
 //   DWORD e_infos[1];
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 ULONG_PTR e_infos[1];//x64
 #endif
 
@@ -60,7 +60,7 @@ ULONG_PTR e_infos[1];//x64
 		ind=0;M =x;
 		while (ind<numargin)
 		{
-			fprintf(stderr,"Matrix addr=%llx\n",(unsigned __int64)(void*)M);
+			fprintf(stderr,"Matrix addr=%llx\n",(u_int64_t)(void*)M);
 			tmcDisplayMat(M,1);
 			fprintf(stderr,"*******************************\n");
 			M = va_arg( marker,  tmsMatrix * );
@@ -71,7 +71,7 @@ ULONG_PTR e_infos[1];//x64
    }
 	//RaiseException(( ((errcode & 0x0FFFFFFF )) | 0xE0000000 ),0,0,NULL);
 		sprintf(ExceptMessageBuf,"*** Run-time exception:\n %s\nin module %s,function %s ***\n",errmsg,module_name,func_name);
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 		e_infos[0] = (ULONG_PTR)&ExceptMessageBuf[0];
 
 		RaiseException(EXCEPTION_TMC_LIB_ERROR,0,1,&e_infos[0]);
@@ -82,7 +82,7 @@ ULONG_PTR e_infos[1];//x64
 }
 
 
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 long _tmcUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo)
 {
 // exception filter function for TMCLIB
@@ -93,12 +93,12 @@ char *ptrStr;
 	{
 		ptrStr = (char*)ExceptionInfo->ExceptionRecord->ExceptionInformation[0];
 				fprintf(stderr,"\nerror at ADDR=%llx:\n %s\n",
-					(unsigned __int64)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
+					(u_int64_t)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress,ptrStr);
 	}
 	else
 	{
 				fprintf(stderr,"\nEXCEPTION=%x,\nADDR=%llx,\n", ExceptionInfo->ExceptionRecord->ExceptionCode,
-					(unsigned __int64)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress);
+					(u_int64_t)(void*)ExceptionInfo->ExceptionRecord->ExceptionAddress);
 	}
 
 return EXCEPTION_EXECUTE_HANDLER;
@@ -108,14 +108,14 @@ return EXCEPTION_EXECUTE_HANDLER;
 void _tmcInstallUnhandledExceptionFilter(void)
 // installed TMC specific UnhandledExceptionFilter
 {
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 	SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)_tmcUnhandledExceptionFilter);
 #endif
 }
 void _tmcUninstallUnhandledExceptionFilter(void)
 // reset   UnhandledExceptionFilter to windows default
 {
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 	SetUnhandledExceptionFilter(NULL);
 #endif
 }
@@ -134,7 +134,7 @@ void tmcerror(long nout,long ninput,tmsMatrix *ydummy, tmsMatrix *msg_string)
 {
 long len,k;
 //   DWORD e_infos[1];
-#ifndef  _TMC_EMBEDDED_
+#if !defined(_TMC_EMBEDDED_) && !defined(_TMC_GNU_LINUX_)
 ULONG_PTR e_infos[1];//x64
 #endif
 
@@ -150,11 +150,13 @@ ULONG_PTR e_infos[1];//x64
 			ExceptMessageBuf[k]=(char)msg_string->value.complx.rData[k];
 		}
 		ExceptMessageBuf[k]='\0';
-#ifndef  _TMC_EMBEDDED_ // TMC_HAZARD: no error() support for embedded systems so far
+#if !defined(_TMC_GNU_LINUX_)
+#if !defined(_TMC_EMBEDDED_)  // TMC_HAZARD: no error() support for embedded systems so far
 		e_infos[0] = (ULONG_PTR)&ExceptMessageBuf[0];
 		RaiseException(EXCEPTION_TMC_USER_ERROR,0,1,&e_infos[0]);
 #else
 		javatmcSignalError(ExceptMessageBuf);// platform-specific function. No internal try-catch handling !
+#endif
 #endif
 	}
 	else
