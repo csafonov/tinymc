@@ -23,3 +23,6 @@ dotNET_component : C#-application   uses TMC-generated DLL as native code dll
 
 -- App_MPI --
 Usage of MPI interface for multi-processor calculations
+-- JsonEx ---
+Usage CMake for project creation. 
+Usage flex/bison with TMC to create JSON parser 

@@ -1,0 +1,3 @@
+-i ./MatSRC/
+-s ./MatSRC/
+-s ./Stubs/
