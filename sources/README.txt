@@ -1,6 +1,8 @@
-Yet not released:
+Release 1.20 of TMC Compiler:
 - Fixes in run-time
-   zero index in matrix due to unsupported logical value
+   (added run-time error on zero index in matrix due to unsupported logical value)
+- Added support for (~) output argument
+- Added example of CMake usage for application build
 	
 
 Release 1.11 of TMC Compiler:
@@ -58,7 +60,7 @@ Needed tools to build applications and runtime:
 -----------------------------------------------
 http://sourceforge.net/projects/mingw-w64/
 http://sourceforge.net/projects/mingw/
-ADT Eclipse (for Android application example)
+ADT Eclipse or Android Studio (for Android application example)
 
 Support:
 -----------------------------------------------
